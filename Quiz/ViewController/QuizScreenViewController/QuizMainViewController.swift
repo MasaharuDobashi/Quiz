@@ -14,9 +14,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        let frame:CGRect = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + (self.tabBarController?.tabBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height))
-        
-        let quizMainView:QuizMainView = QuizMainView(frame: frame)
+        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(viewController: self))
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)

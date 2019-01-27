@@ -26,9 +26,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let frame:CGRect = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height))
-        
-        quizScreenView = QuizScreenView(frame: frame, quizId: num!)
+        quizScreenView = QuizScreenView(frame: frame_Size(viewController: self), quizId: num!)
         quizScreenView?.quizScreenViewDelagate = self
         self.view.addSubview(quizScreenView!)
     }

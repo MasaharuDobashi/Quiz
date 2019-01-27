@@ -16,10 +16,7 @@ class ResultScreenViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButton))
         
-        
-        let frame:CGRect = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height))
-        
-        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame)
+        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(viewController: self))
         self.view.addSubview(resultScreenView)
     }
     

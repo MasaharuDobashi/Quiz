@@ -24,6 +24,7 @@
 		D08EBA6A21F9FA5300B63F02 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D08EBA6821F9FA5300B63F02 /* LaunchScreen.storyboard */; };
 		D08EBA7521F9FA5300B63F02 /* QuizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7421F9FA5300B63F02 /* QuizTests.swift */; };
 		D08EBA8021F9FA5300B63F02 /* QuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7F21F9FA5300B63F02 /* QuizUITests.swift */; };
+		D0E197D721FD8A340062728F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D621FD8A340062728F /* Extension.swift */; };
 		D423BA718A6FD7495D82582D /* Pods_Quiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3013F219E014E77969A6E29 /* Pods_Quiz.framework */; };
 		DB1348EA520607911F677C5A /* Pods_QuizTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5B8C49DA12B0B7D4C92FF6 /* Pods_QuizTests.framework */; };
 /* End PBXBuildFile section */
@@ -77,6 +78,7 @@
 		D08EBA7B21F9FA5300B63F02 /* QuizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuizUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08EBA7F21F9FA5300B63F02 /* QuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUITests.swift; sourceTree = "<group>"; };
 		D08EBA8121F9FA5300B63F02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0E197D621FD8A340062728F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 				D08EBA6621F9FA5300B63F02 /* Assets.xcassets */,
 				D08EBA6821F9FA5300B63F02 /* LaunchScreen.storyboard */,
 				D08EBA6B21F9FA5300B63F02 /* Info.plist */,
+				D0E197D821FD8B480062728F /* Extensions */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -246,6 +249,14 @@
 				D08EBA8121F9FA5300B63F02 /* Info.plist */,
 			);
 			path = QuizUITests;
+			sourceTree = "<group>";
+		};
+		D0E197D821FD8B480062728F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D0E197D621FD8A340062728F /* Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,6 +490,7 @@
 				D01CEA2621F9FCC000AF1266 /* QuizMainView.swift in Sources */,
 				D01CEA2221F9FC8E00AF1266 /* QuizScreenViewController.swift in Sources */,
 				D01CEA2A21F9FD0E00AF1266 /* ResultScreenView.swift in Sources */,
+				D0E197D721FD8A340062728F /* Extension.swift in Sources */,
 				D01CEA2C21F9FD6400AF1266 /* QuizModel.swift in Sources */,
 				D01CEA2E21F9FDD100AF1266 /* MainTabViewController.swift in Sources */,
 				D01CEA2821F9FCDA00AF1266 /* QuizScreenView.swift in Sources */,
