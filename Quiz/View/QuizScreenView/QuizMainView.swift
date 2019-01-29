@@ -7,13 +7,16 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol QuizMainViewDelegate: class {
-    func quizStartButtonAction()
+    func quizStartButtonAction(isCount: Bool)
 }
 
 class QuizMainView: UIView {
     
+    let realm:Realm = try! Realm()
+    var isCount:Bool = false
     var quizMainViewDelegate:QuizMainViewDelegate?
     
     override init(frame: CGRect) {
@@ -31,7 +34,14 @@ class QuizMainView: UIView {
         
         let button:UIButton = UIButton()
         button.setTitle("クイズスタート", for: .normal)
-        button.backgroundColor = .orange
+        
+        if realm.objects(QuizModel.self).count != 0 {
+            button.backgroundColor = .orange
+            isCount = true
+        } else {
+            button.backgroundColor = .gray
+        }
+        
         button.addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
         self.addSubview(button)
         
@@ -43,7 +53,7 @@ class QuizMainView: UIView {
     }
     
     @objc func buttonTapAction(){
-        quizMainViewDelegate?.quizStartButtonAction()
+        quizMainViewDelegate?.quizStartButtonAction(isCount: isCount)
     }
     
 }

@@ -127,7 +127,6 @@ class QuizScreenView: UIView {
         
         
         quizModel.id = "0"
-        quizModel.quizType = "test"
         quizModel.quizTitle = "テスト問題1"
         quizModel.falseAnswer2 = "0"
         quizModel.falseAnswer1 = "２"

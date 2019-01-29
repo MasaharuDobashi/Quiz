@@ -11,7 +11,6 @@ import RealmSwift
 
 class QuizModel:Object {
     @objc dynamic var id:String = ""
-    @objc dynamic var quizType:String?
     @objc dynamic var quizTitle:String = ""
     @objc dynamic var trueAnswer:String = ""
     @objc dynamic var falseAnswer1:String = ""

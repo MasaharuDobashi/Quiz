@@ -12,7 +12,6 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
         let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(viewController: self))
         quizMainView.quizMainViewDelegate = self
@@ -21,12 +20,16 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     }
     
     
-    func quizStartButtonAction() {
-        let viewContorller:QuizScreenViewController = QuizScreenViewController()
-        //        self.navigationController?.pushViewController(viewContorller, animated: true)
-        
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewContorller)
+    func quizStartButtonAction(isCount: Bool) {
+        if isCount {
+        let viewController:QuizScreenViewController = QuizScreenViewController()
+        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)
+        } else {
+            let alert:UIAlertController = UIAlertController(title: "クイズを作成してください。", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil )
+        }
     }
     
 }
