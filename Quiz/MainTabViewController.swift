@@ -16,11 +16,14 @@ class MainTabViewController: UITabBarController {
         var viewControllers = [UIViewController]()
         
         let quizMainViewController:QuizMainViewController = QuizMainViewController()
+        let quizCreateViewController:QuizManagementViewController = QuizManagementViewController()
         quizMainViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        quizMainViewController.tabBarItem.title = "メイン"
-        
+        quizCreateViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+//        quizMainViewController.tabBarItem.title = "メイン"
+//        quizCreateViewController.tabBarItem.title = "管理"
         
         viewControllers.append(quizMainViewController)
+        viewControllers.append(quizCreateViewController)
         viewControllers = viewControllers.map{ UINavigationController(rootViewController: $0)}
         self.navigationController?.navigationBar.isTranslucent = true
         self.setViewControllers(viewControllers, animated: false)
