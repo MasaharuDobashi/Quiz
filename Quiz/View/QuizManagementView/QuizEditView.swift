@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
-class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource {
-
+class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    let realm:Realm = try! Realm()
+    var quizModel:QuizModel = QuizModel()
+    let titleTextField:UITextField = UITextField()
+    let true_TextField:UITextField = UITextField()
+    let false1_TextField:UITextField = UITextField()
+    let false2_textField:UITextField = UITextField()
+    let false3_textField:UITextField = UITextField()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -48,6 +56,35 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         
         
+        
+        
+        switch indexPath.section {
+        case 0:
+            titleTextField.placeholder = "クイズのタイトルを入力してください。"
+            setTextFieldAutoLayout(textField: titleTextField, cell: cell)
+        case 1:
+            true_TextField.placeholder = "正解の回答を入力してください。"
+            setTextFieldAutoLayout(textField: true_TextField, cell: cell)
+        case 2:
+            false1_TextField.placeholder = "不正解の回答を入力してください。"
+            setTextFieldAutoLayout(textField: false1_TextField, cell: cell)
+        case 3:
+            false2_textField.placeholder = "不正解の回答を入力してください。"
+            setTextFieldAutoLayout(textField: false2_textField, cell: cell)
+        case 4:
+            false3_textField.placeholder = "不正解の回答を入力してください。"
+            setTextFieldAutoLayout(textField: false3_textField, cell: cell)
+        default:
+            break
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         return cell
     }
     
@@ -82,7 +119,7 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return section == 0 ? 40 : 20
     }
     
     
@@ -90,4 +127,37 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource {
         return nil
     }
     
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.endEditing(true)
+        return true
+    }
+    
+    
+    // MARK: - Realm func
+    
+    func addRealm(){
+        quizModel.id = String(realm.objects(QuizModel.self).count)
+        quizModel.quizTitle = titleTextField.text!
+        quizModel.trueAnswer = true_TextField.text!
+        quizModel.falseAnswer1 = false1_TextField.text!
+        quizModel.falseAnswer2 = false2_textField.text!
+        quizModel.falseAnswer3 = false3_textField.text!
+        
+        
+        try! realm.write() {
+            realm.add(quizModel)
+        }
+    }
+    
+    func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
+        textField.delegate = self
+        cell.contentView.addSubview(textField)
+        
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true
+        textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 20).isActive = true
+        textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
+        textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
+    }
 }
