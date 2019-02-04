@@ -9,8 +9,14 @@
 import UIKit
 import RealmSwift
 
+
+protocol QuizManagementViewDelegate {
+    func cellTapAction(indexPath:IndexPath)
+}
+
 class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     let realm:Realm = try! Realm()
+    var quizManagementViewDelegate:QuizManagementViewDelegate?
     
     
     override init(frame: CGRect) {
@@ -99,7 +105,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        quizManagementViewDelegate?.cellTapAction(indexPath: indexPath)
     }
     
 }

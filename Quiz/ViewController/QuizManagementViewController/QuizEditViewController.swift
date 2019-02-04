@@ -12,7 +12,22 @@ import UIKit
 class QuizEditViewController: UIViewController {
     
     var quizEditView:QuizEditView?
-
+    var quzi_id:Int?
+  
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    convenience init(quzi_id:Int){
+        self.init(nibName: nil, bundle: nil)
+        self.quzi_id = quzi_id
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -20,7 +35,7 @@ class QuizEditViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
 
-        quizEditView = QuizEditView(frame: frame_Size(viewController: self))
+        quizEditView = QuizEditView(frame: frame_Size(viewController: self),quiz_id: quzi_id)
         self.view.addSubview(quizEditView!)
         
     }
@@ -56,6 +71,11 @@ class QuizEditViewController: UIViewController {
         }
         
         
-        quizEditView?.addRealm()
+        if quzi_id == nil {
+            quizEditView?.addRealm()
+        } else {
+            quizEditView?.updateRealm()
+        }
+        leftButtonAction()
     }
 }

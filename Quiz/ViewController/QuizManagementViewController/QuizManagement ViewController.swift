@@ -8,25 +8,39 @@
 
 import UIKit
 
-class QuizManagementViewController: UIViewController {
+class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
+
+    
     
     var quizCreateView:QuizManagementView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        quizCreateView = QuizManagementView(frame: frame_Size(viewController: self))
-        self.view.addSubview(quizCreateView!)
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        quizCreateView = QuizManagementView(frame: frame_Size(viewController: self))
+        quizCreateView?.quizManagementViewDelegate = self
+        self.view.addSubview(quizCreateView!)
+    }
     
     
     
     
     @objc func rightButtonAction(){
         let viewController:QuizEditViewController = QuizEditViewController()
+        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+        self.present(navigationController,animated: true, completion: nil)
+    }
+    
+    
+    func cellTapAction(indexPath: IndexPath) {
+        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row)
         let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)
     }

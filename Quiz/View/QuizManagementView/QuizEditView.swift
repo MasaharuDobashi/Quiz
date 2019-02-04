@@ -12,6 +12,7 @@ import RealmSwift
 class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     let realm:Realm = try! Realm()
     var quizModel:QuizModel = QuizModel()
+    var quiz_id:Int?
     let titleTextField:UITextField = UITextField()
     let true_TextField:UITextField = UITextField()
     let false1_TextField:UITextField = UITextField()
@@ -24,6 +25,12 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
         viewload()
     }
     
+    
+    convenience init(frame: CGRect, quiz_id: Int?) {
+        self.init(frame: frame)
+        self.quiz_id = quiz_id
+        
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,7 +62,13 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
         
-        
+        if quiz_id != nil {
+            titleTextField.text = realm.objects(QuizModel.self)[quiz_id!].quizTitle
+            true_TextField.text = realm.objects(QuizModel.self)[quiz_id!].trueAnswer
+            false1_TextField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer1
+            false2_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer2
+            false3_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer3
+        }
         
         
         switch indexPath.section {
@@ -77,13 +90,7 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
         default:
             break
         }
-        
-        
-        
-        
-        
-        
-        
+
         
         return cell
     }
@@ -149,6 +156,19 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
             realm.add(quizModel)
         }
     }
+    
+    
+    
+    func updateRealm(){        
+        try! realm.write() {
+            realm.objects(QuizModel.self)[quiz_id!].quizTitle = titleTextField.text!
+            realm.objects(QuizModel.self)[quiz_id!].trueAnswer = true_TextField.text!
+            realm.objects(QuizModel.self)[quiz_id!].falseAnswer1 = false1_TextField.text!
+            realm.objects(QuizModel.self)[quiz_id!].falseAnswer2 = false2_textField.text!
+            realm.objects(QuizModel.self)[quiz_id!].falseAnswer3 = false3_textField.text!
+        }
+    }
+    
     
     func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
         textField.delegate = self

@@ -22,9 +22,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     func quizStartButtonAction(isCount: Bool) {
         if isCount {
-        let viewController:QuizScreenViewController = QuizScreenViewController()
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
+            let viewController:QuizScreenViewController = QuizScreenViewController()
+            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController,animated: true, completion: nil)
         } else {
             let alert:UIAlertController = UIAlertController(title: "クイズを作成してください。", message: nil, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
