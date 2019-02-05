@@ -26,9 +26,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController,animated: true, completion: nil)
         } else {
-            let alert:UIAlertController = UIAlertController(title: "クイズを作成してください。", message: nil, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "閉じる", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil )
+            AlertManager().alertAction(viewController: self, title: nil, message:  "クイズを作成してください", handler: {_ -> Void in})
         }
     }
     

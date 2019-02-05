@@ -30,7 +30,6 @@ class QuizMainView: UIView {
     }
     
     func viewLoad(){
-        self.backgroundColor = .white
         
         let button:UIButton = UIButton()
         button.setTitle("クイズスタート", for: .normal)

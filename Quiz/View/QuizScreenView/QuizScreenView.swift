@@ -36,7 +36,6 @@ class QuizScreenView: UIView {
     }
     
     func viewLoad(){
-//                addRealm()
         var stringArray:[String] = [
             realm.objects(QuizModel.self)[quizId!].trueAnswer,
             realm.objects(QuizModel.self)[quizId!].falseAnswer1,
@@ -122,21 +121,5 @@ class QuizScreenView: UIView {
     @objc private func buttonTapAction(){
         quizScreenViewDelagate?.buttonTapAction()
     }
-    
-    func addRealm(){
-        
-        
-        quizModel.id = "0"
-        quizModel.quizTitle = "テスト問題1"
-        quizModel.falseAnswer2 = "0"
-        quizModel.falseAnswer1 = "２"
-        quizModel.trueAnswer = "1"
-        quizModel.falseAnswer3 = "３"
-        
-        try! realm.write() {
-            realm.add(quizModel)
-        }
-    }
-    
     
 }
