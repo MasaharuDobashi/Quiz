@@ -11,7 +11,9 @@ import RealmSwift
 
 protocol QuizScreenViewDelagate:class {
     func buttonTapAction()
-    
+    func trueConut()
+    var num:Int {get}
+    var trueConunt:Int {get}
 }
 
 class QuizScreenView: UIView {
@@ -118,7 +120,10 @@ class QuizScreenView: UIView {
     }
     
     
-    @objc private func buttonTapAction(){
+    @objc private func buttonTapAction(sender:UIButton){
+        if sender.titleLabel!.text == realm.objects(QuizModel.self)[quizId!].trueAnswer {
+            quizScreenViewDelagate?.trueConut()
+        }
         quizScreenViewDelagate?.buttonTapAction()
     }
     
