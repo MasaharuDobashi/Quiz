@@ -11,8 +11,8 @@ import RealmSwift
 
 
 class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
-    var quizScreenView:QuizScreenView?
-    let realm:Realm = try! Realm()
+    private var quizScreenView:QuizScreenView?
+    private let realm:Realm = try! Realm()
     // QuizScreenViewDelagate var
     var num: Int = 0
     var trueConunt: Int = 0
@@ -20,7 +20,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -46,11 +46,5 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     func trueConut(){
          trueConunt += 1
     }
-    
-    //
-    @objc func leftButton(){
-        self.dismiss(animated: true, completion: nil)
-    }
-    
     
 }

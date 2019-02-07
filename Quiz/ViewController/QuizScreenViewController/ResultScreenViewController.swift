@@ -28,16 +28,10 @@ class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButton))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         
         let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(viewController: self), trueConunt:trueConunt)
         self.view.addSubview(resultScreenView)
-    }
-    
-    
-    
-    @objc func leftButton(){
-        self.dismiss(animated: true, completion: nil)
     }
     
 }

@@ -12,7 +12,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
 
     
     
-    var quizCreateView:QuizManagementView?
+    private var quizCreateView:QuizManagementView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     
     
     
-    @objc func rightButtonAction(){
+    @objc private func rightButtonAction(){
         let viewController:QuizEditViewController = QuizEditViewController()
         let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)

@@ -13,7 +13,7 @@ protocol ResultScreenViewDelegate:class {
 }
 
 class ResultScreenView: UIView {
-    var trueConunt:String?
+    private var trueConunt:String?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -31,11 +31,11 @@ class ResultScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewLoad(){
+    private func viewLoad(){
         self.backgroundColor = .white
         
         let correctView:UIView = UIView()
-        let correctString:String = trueConunt!
+        let correctString:String = trueConunt ?? "0"
         let correctCountLabel:UILabel = UILabel()
         
         correctView.backgroundColor = .orange

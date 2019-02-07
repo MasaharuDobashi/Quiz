@@ -17,10 +17,10 @@ protocol QuizScreenViewDelagate:class {
 }
 
 class QuizScreenView: UIView {
-    let realm:Realm = try! Realm()
-    var quizModel:QuizModel = QuizModel()
+    private let realm:Realm = try! Realm()
+    private var quizModel:QuizModel = QuizModel()
     weak var quizScreenViewDelagate:QuizScreenViewDelagate?
-    var quizId:Int?
+    private var quizId:Int?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -37,7 +37,7 @@ class QuizScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewLoad(){
+    private func viewLoad(){
         var stringArray:[String] = [
             realm.objects(QuizModel.self)[quizId!].trueAnswer,
             realm.objects(QuizModel.self)[quizId!].falseAnswer1,

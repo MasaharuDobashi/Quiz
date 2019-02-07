@@ -10,13 +10,13 @@ import UIKit
 import RealmSwift
 
 
-protocol QuizManagementViewDelegate {
+protocol QuizManagementViewDelegate: class {
     func cellTapAction(indexPath:IndexPath)
 }
 
 class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
-    let realm:Realm = try! Realm()
-    var quizManagementViewDelegate:QuizManagementViewDelegate?
+    private let realm:Realm = try! Realm()
+    weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
     
     override init(frame: CGRect) {
@@ -29,7 +29,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewload(){
+    private func viewload(){
         
         
         if realm.objects(QuizModel.self).count == 0 {

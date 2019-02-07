@@ -10,9 +10,9 @@ import UIKit
 import RealmSwift
 
 class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    let realm:Realm = try! Realm()
-    var quizModel:QuizModel = QuizModel()
-    var quiz_id:Int?
+    private let realm:Realm = try! Realm()
+    private var quizModel:QuizModel = QuizModel()
+    private var quiz_id:Int?
     let titleTextField:UITextField = UITextField()
     let true_TextField:UITextField = UITextField()
     let false1_TextField:UITextField = UITextField()
@@ -36,7 +36,7 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     }
     
     
-    func viewload(){
+    private func viewload(){
         let tableView:UITableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
@@ -170,7 +170,7 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     }
     
     
-    func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
+    private func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
         textField.delegate = self
         cell.contentView.addSubview(textField)
         

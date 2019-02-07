@@ -11,8 +11,8 @@ import UIKit
 
 class QuizEditViewController: UIViewController {
     
-    var quizEditView:QuizEditView?
-    var quzi_id:Int?
+    private var quizEditView:QuizEditView?
+    private var quzi_id:Int?
   
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -39,12 +39,8 @@ class QuizEditViewController: UIViewController {
         self.view.addSubview(quizEditView!)
         
     }
-    
-    @objc func leftButtonAction(){
-        self.dismiss(animated: true, completion: nil)
-    }
 
-    @objc func rightButtonAction(){
+    @objc private func rightButtonAction(){
         if quizEditView?.titleTextField.text?.count == 0 {
             AlertManager().alertAction(viewController: self, title: nil, message: "クイズのタイトルが未入力です。", handler: {_ -> Void in})
             return

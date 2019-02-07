@@ -16,4 +16,9 @@ extension UIViewController {
         
         return CGRect(x: 0, y: (viewController.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((viewController.navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height))
     }
+    
+    
+    @objc func leftButtonAction(){
+        self.dismiss(animated: true, completion: nil)
+    }
 }
