@@ -12,23 +12,22 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        let frame:CGRect = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + (self.tabBarController?.tabBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height))
-        
-        let quizMainView:QuizMainView = QuizMainView(frame: frame)
+        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(viewController: self))
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)
     }
     
     
-    func quizStartButtonAction() {
-        let viewContorller:QuizScreenViewController = QuizScreenViewController()
-        //        self.navigationController?.pushViewController(viewContorller, animated: true)
-        
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewContorller)
-        self.present(navigationController,animated: true, completion: nil)
+    func quizStartButtonAction(isCount: Bool) {
+        if isCount {
+            let viewController:QuizScreenViewController = QuizScreenViewController()
+            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController,animated: true, completion: nil)
+        } else {
+            AlertManager().alertAction(viewController: self, title: nil, message:  "クイズを作成してください", handler: {_ -> Void in})
+        }
     }
     
 }

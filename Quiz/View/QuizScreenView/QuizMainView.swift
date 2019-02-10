@@ -7,14 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol QuizMainViewDelegate: class {
-    func quizStartButtonAction()
+    func quizStartButtonAction(isCount: Bool)
 }
 
 class QuizMainView: UIView {
     
-    var quizMainViewDelegate:QuizMainViewDelegate?
+    private let realm:Realm = try! Realm()
+    private var isCount:Bool = false
+    weak var quizMainViewDelegate:QuizMainViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -26,12 +29,18 @@ class QuizMainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewLoad(){
-        self.backgroundColor = .white
+    private func viewLoad(){
         
         let button:UIButton = UIButton()
         button.setTitle("クイズスタート", for: .normal)
-        button.backgroundColor = .orange
+        
+        if realm.objects(QuizModel.self).count != 0 {
+            button.backgroundColor = .orange
+            isCount = true
+        } else {
+            button.backgroundColor = .gray
+        }
+        
         button.addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
         self.addSubview(button)
         
@@ -42,8 +51,8 @@ class QuizMainView: UIView {
         button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     }
     
-    @objc func buttonTapAction(){
-        quizMainViewDelegate?.quizStartButtonAction()
+    @objc private func buttonTapAction(){
+        quizMainViewDelegate?.quizStartButtonAction(isCount: isCount)
     }
     
 }

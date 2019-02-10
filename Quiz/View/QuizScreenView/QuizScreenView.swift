@@ -11,14 +11,16 @@ import RealmSwift
 
 protocol QuizScreenViewDelagate:class {
     func buttonTapAction()
-    
+    func trueConut()
+    var num:Int {get}
+    var trueConunt:Int {get}
 }
 
 class QuizScreenView: UIView {
-    let realm:Realm = try! Realm()
-    var quizModel:QuizModel = QuizModel()
+    private let realm:Realm = try! Realm()
+    private var quizModel:QuizModel = QuizModel()
     weak var quizScreenViewDelagate:QuizScreenViewDelagate?
-    var quizId:Int?
+    private var quizId:Int?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -35,8 +37,7 @@ class QuizScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func viewLoad(){
-//                addRealm()
+    private func viewLoad(){
         var stringArray:[String] = [
             realm.objects(QuizModel.self)[quizId!].trueAnswer,
             realm.objects(QuizModel.self)[quizId!].falseAnswer1,
@@ -119,25 +120,11 @@ class QuizScreenView: UIView {
     }
     
     
-    @objc private func buttonTapAction(){
+    @objc private func buttonTapAction(sender:UIButton){
+        if sender.titleLabel!.text == realm.objects(QuizModel.self)[quizId!].trueAnswer {
+            quizScreenViewDelagate?.trueConut()
+        }
         quizScreenViewDelagate?.buttonTapAction()
     }
-    
-    func addRealm(){
-        
-        
-        quizModel.id = "0"
-        quizModel.quizType = "test"
-        quizModel.quizTitle = "テスト問題1"
-        quizModel.falseAnswer2 = "0"
-        quizModel.falseAnswer1 = "２"
-        quizModel.trueAnswer = "1"
-        quizModel.falseAnswer3 = "３"
-        
-        try! realm.write() {
-            realm.add(quizModel)
-        }
-    }
-    
     
 }

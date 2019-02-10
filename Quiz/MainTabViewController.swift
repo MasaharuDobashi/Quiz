@@ -16,26 +16,18 @@ class MainTabViewController: UITabBarController {
         var viewControllers = [UIViewController]()
         
         let quizMainViewController:QuizMainViewController = QuizMainViewController()
+        let quizCreateViewController:QuizManagementViewController = QuizManagementViewController()
         quizMainViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        quizMainViewController.tabBarItem.title = "メイン"
-        
+        quizCreateViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed, tag: 1)
+//        quizMainViewController.tabBarItem.title = "メイン"
+//        quizCreateViewController.tabBarItem.title = "管理"
         
         viewControllers.append(quizMainViewController)
+        viewControllers.append(quizCreateViewController)
         viewControllers = viewControllers.map{ UINavigationController(rootViewController: $0)}
         self.navigationController?.navigationBar.isTranslucent = true
         self.setViewControllers(viewControllers, animated: false)
         // Do any additional setup after loading the view.
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }

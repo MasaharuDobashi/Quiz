@@ -11,39 +11,40 @@ import RealmSwift
 
 
 class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
-    var quizScreenView:QuizScreenView?
-    let realm:Realm = try! Realm()
-    var num:Int? = 0
+    private var quizScreenView:QuizScreenView?
+    private let realm:Realm = try! Realm()
+    // QuizScreenViewDelagate var
+    var num: Int = 0
+    var trueConunt: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        
-        
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let frame:CGRect = CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height))
-        
-        quizScreenView = QuizScreenView(frame: frame, quizId: num!)
+        quizScreenView = QuizScreenView(frame: frame_Size(viewController: self), quizId: num)
         quizScreenView?.quizScreenViewDelagate = self
         self.view.addSubview(quizScreenView!)
     }
     
+    
+    // QuizScreenViewDelagate Func
     func buttonTapAction() {
-        num? += 1
-        if  num! < realm.objects(QuizModel.self).count {
+        num += 1
+        if  num < realm.objects(QuizModel.self).count {
             self.viewWillAppear(true)
         }else{
-            let viewController:ResultScreenViewController = ResultScreenViewController()
+            let viewController:ResultScreenViewController = ResultScreenViewController(trueConunt: trueConunt)
             self.navigationController?.pushViewController(viewController, animated: true)
         }
-        
-        
-        
+    }
+    
+    func trueConut(){
+         trueConunt += 1
     }
     
 }

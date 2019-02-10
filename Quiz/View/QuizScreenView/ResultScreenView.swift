@@ -8,11 +8,21 @@
 
 import UIKit
 
+protocol ResultScreenViewDelegate:class {
+    var trueConunt:Int {get}
+}
 
 class ResultScreenView: UIView {
+    private var trueConunt:String?
     
     override init(frame: CGRect) {
         super.init(frame:frame)
+    }
+    
+    
+    convenience init(frame:CGRect, trueConunt:Int){
+        self.init(frame: frame)
+        self.trueConunt = String(trueConunt)
         
         viewLoad()
     }
@@ -21,15 +31,12 @@ class ResultScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    func viewLoad(){
+    private func viewLoad(){
         self.backgroundColor = .white
         
         let correctView:UIView = UIView()
-        let correctString:String = "n"
+        let correctString:String = trueConunt ?? "0"
         let correctCountLabel:UILabel = UILabel()
-        
-        
         
         correctView.backgroundColor = .orange
         self.addSubview(correctView)
@@ -57,9 +64,6 @@ class ResultScreenView: UIView {
             correctView.frame.origin.y += UIScreen.main.bounds.height / 2
         }, completion: nil)
         
-        
-        
-        
-        
+
     }
 }
