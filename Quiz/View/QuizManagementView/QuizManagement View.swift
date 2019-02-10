@@ -11,7 +11,8 @@ import RealmSwift
 
 
 protocol QuizManagementViewDelegate: class {
-    func cellTapAction(indexPath:IndexPath)
+    func editAction(indexPath:IndexPath)
+    func deleteAction(indexPath:IndexPath)
 }
 
 class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
@@ -105,7 +106,37 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        quizManagementViewDelegate?.cellTapAction(indexPath: indexPath)
+        quizManagementViewDelegate?.editAction(indexPath: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let edit = UITableViewRowAction(style: .normal, title: "編集") {
+            (action, indexPath) in
+            
+            self.quizManagementViewDelegate?.editAction(indexPath: indexPath)
+        }
+        
+        edit.backgroundColor = UIColor.orange
+        
+        
+        let del = UITableViewRowAction(style: .destructive, title: "削除") {
+         (action, indexPath) in
+            
+            self.quizManagementViewDelegate?.deleteAction(indexPath: indexPath)
+            
+        }
+
+        return [edit, del]
+    }
+    
+    
+    func deleteRealm(indexPath: IndexPath){
+        let toDoModel = realm.objects(QuizModel.self)[indexPath.row]
+        
+        try! realm.write() {
+            realm.delete(toDoModel)
+        }
+        
     }
     
 }

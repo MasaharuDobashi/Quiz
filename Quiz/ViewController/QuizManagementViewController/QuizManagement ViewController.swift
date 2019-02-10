@@ -9,8 +9,6 @@
 import UIKit
 
 class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
-
-    
     
     private var quizCreateView:QuizManagementView?
     
@@ -39,9 +37,18 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     }
     
     
-    func cellTapAction(indexPath: IndexPath) {
+    func editAction(indexPath: IndexPath) {
         let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row)
         let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)
+    }
+    
+    func deleteAction(indexPath: IndexPath) {
+        AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
+            self?.quizCreateView?.deleteRealm(indexPath: indexPath)
+            
+            self?.viewWillAppear(true)
+            }, handler2: {_ -> Void in})
+        
     }
 }
