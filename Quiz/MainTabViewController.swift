@@ -18,7 +18,7 @@ class MainTabViewController: UITabBarController {
         let quizMainViewController:QuizMainViewController = QuizMainViewController()
         let quizCreateViewController:QuizManagementViewController = QuizManagementViewController()
         quizMainViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        quizCreateViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        quizCreateViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed, tag: 1)
 //        quizMainViewController.tabBarItem.title = "メイン"
 //        quizCreateViewController.tabBarItem.title = "管理"
         

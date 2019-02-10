@@ -13,14 +13,16 @@ class QuizEditViewController: UIViewController {
     
     private var quizEditView:QuizEditView?
     private var quzi_id:Int?
+    private var mode: ModeEnum = ModeEnum.edit
   
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
-    convenience init(quzi_id:Int){
+    convenience init(quzi_id:Int, mode: ModeEnum){
         self.init(nibName: nil, bundle: nil)
         self.quzi_id = quzi_id
+        self.mode = mode
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -30,12 +32,14 @@ class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if mode == ModeEnum.edit {
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        }
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
-
-        quizEditView = QuizEditView(frame: frame_Size(viewController: self),quiz_id: quzi_id)
+        
+        quizEditView = QuizEditView(frame: frame_Size(viewController: self),quiz_id: quzi_id, mode: mode)
         self.view.addSubview(quizEditView!)
         
     }
@@ -69,9 +73,18 @@ class QuizEditViewController: UIViewController {
         
         if quzi_id == nil {
             quizEditView?.addRealm()
+            
+            AlertManager().alertAction(viewController: self, title: nil, message: "問題を作成しました", handler: {_ -> Void in
+                self.leftButtonAction()
+            })
         } else {
             quizEditView?.updateRealm()
+            
+            
+            AlertManager().alertAction(viewController: self, title: nil, message: "問題を更新しました", handler: {_ -> Void in
+                self.leftButtonAction()
+            })
         }
-        leftButtonAction()
+        
     }
 }

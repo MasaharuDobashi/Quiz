@@ -36,9 +36,13 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         self.present(navigationController,animated: true, completion: nil)
     }
     
+    func detailAction(indexPath: IndexPath) {
+        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
     
     func editAction(indexPath: IndexPath) {
-        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row)
+        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.edit)
         let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)
     }

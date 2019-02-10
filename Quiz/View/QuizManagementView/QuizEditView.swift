@@ -13,6 +13,7 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     private let realm:Realm = try! Realm()
     private var quizModel:QuizModel = QuizModel()
     private var quiz_id:Int?
+    private var mode:ModeEnum?
     let titleTextField:UITextField = UITextField()
     let true_TextField:UITextField = UITextField()
     let false1_TextField:UITextField = UITextField()
@@ -26,9 +27,10 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     }
     
     
-    convenience init(frame: CGRect, quiz_id: Int?) {
+    convenience init(frame: CGRect, quiz_id: Int?, mode:ModeEnum) {
         self.init(frame: frame)
         self.quiz_id = quiz_id
+        self.mode = mode
         
     }
     required init?(coder aDecoder: NSCoder) {
@@ -68,6 +70,14 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
             false1_TextField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer1
             false2_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer2
             false3_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer3
+            
+            if mode == ModeEnum.detail {
+                titleTextField.isEnabled = false
+                true_TextField.isEnabled = false
+                false1_TextField.isEnabled = false
+                false2_textField.isEnabled = false
+                false3_textField.isEnabled = false
+            }
         }
         
         

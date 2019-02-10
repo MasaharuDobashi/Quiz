@@ -13,9 +13,12 @@ import RealmSwift
 protocol QuizManagementViewDelegate: class {
     func editAction(indexPath:IndexPath)
     func deleteAction(indexPath:IndexPath)
+    func detailAction(indexPath:IndexPath)
 }
 
 class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
+    
+    var tableView:UITableView?
     private let realm:Realm = try! Realm()
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
@@ -48,17 +51,17 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
             return
         }
         
-        let tableView:UITableView = UITableView(frame: .zero, style: .grouped)
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.addSubview(tableView)
+        tableView = UITableView(frame: .zero, style: .grouped)
+        tableView?.delegate = self
+        tableView?.dataSource = self
+        self.addSubview(tableView!)
         
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        tableView?.translatesAutoresizingMaskIntoConstraints = false
+        tableView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        tableView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        tableView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        tableView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
     }
 
@@ -106,7 +109,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        quizManagementViewDelegate?.editAction(indexPath: indexPath)
+        quizManagementViewDelegate?.detailAction(indexPath: indexPath)
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
