@@ -12,13 +12,16 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
         let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(viewController: self))
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)
     }
-    
     
     func quizStartButtonAction(isCount: Bool) {
         if isCount {
