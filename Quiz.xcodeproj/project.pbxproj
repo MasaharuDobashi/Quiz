@@ -353,13 +353,16 @@
 				TargetAttributes = {
 					D08EBA5B21F9FA5100B63F02 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 					};
 					D08EBA6F21F9FA5300B63F02 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = D08EBA5B21F9FA5100B63F02;
 					};
 					D08EBA7A21F9FA5300B63F02 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = D08EBA5B21F9FA5100B63F02;
 					};
 				};
@@ -688,7 +691,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.Quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -707,7 +710,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.Quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -728,7 +731,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.QuizTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiz.app/Quiz";
 			};
@@ -750,7 +753,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.QuizTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Quiz.app/Quiz";
 			};
@@ -771,7 +774,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.QuizUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Quiz;
 			};
@@ -792,7 +795,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.QuizUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = Quiz;
 			};
