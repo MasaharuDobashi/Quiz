@@ -26,7 +26,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        quizScreenView = QuizScreenView(frame: frame_Size(viewController: self), quizId: num)
+        quizScreenView = QuizScreenView(frame: frame_Size(self), quizId: num)
         quizScreenView?.quizScreenViewDelagate = self
         self.view.addSubview(quizScreenView!)
     }

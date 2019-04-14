@@ -7,50 +7,67 @@
 //
 
 import UIKit
-import RealmSwift
 
-class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
-    private let realm:Realm = try! Realm()
-    private var quizModel:QuizModel = QuizModel()
-    private var quiz_id:Int?
-    private var mode:ModeEnum?
+class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    
+    private var quizModel:[QuizModel]?
+    private var mode:ModeEnum!
+    
     let titleTextField:UITextField = UITextField()
     let true_TextField:UITextField = UITextField()
     let false1_TextField:UITextField = UITextField()
     let false2_textField:UITextField = UITextField()
     let false3_textField:UITextField = UITextField()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    // MARK: - Init
+    
+    override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
         
-        viewload()
+        self.delegate = self
+        self.dataSource = self
+    }
+    
+    /// add Init
+    convenience init(frame: CGRect, style: UITableView.Style, mode:ModeEnum) {
+        self.init(frame: frame, style: style)
+        self.mode = mode
     }
     
     
-    convenience init(frame: CGRect, quiz_id: Int?, mode:ModeEnum) {
-        self.init(frame: frame)
-        self.quiz_id = quiz_id
+    /// edit,detail Init
+    convenience init(frame: CGRect, style: UITableView.Style, quizModel: [QuizModel]?, mode:ModeEnum) {
+        self.init(frame: frame, style: style)
+        self.quizModel = quizModel
         self.mode = mode
         
+        
+        if mode != .add {
+            titleTextField.text = quizModel![0].quizTitle
+            true_TextField.text = quizModel![0].trueAnswer
+            false1_TextField.text = quizModel![0].falseAnswer1
+            false2_textField.text = quizModel![0].falseAnswer2
+            false3_textField.text = quizModel![0].falseAnswer3
+            
+            
+            if mode == .detail {
+                titleTextField.isEnabled = false
+                true_TextField.isEnabled = false
+                false1_TextField.isEnabled = false
+                false2_textField.isEnabled = false
+                false3_textField.isEnabled = false
+            }
+        }
+        
     }
+    
+  
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
-    private func viewload(){
-        let tableView:UITableView = UITableView(frame: .zero, style: .grouped)
-        tableView.delegate = self
-        tableView.dataSource = self
-        self.addSubview(tableView)
-        
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-    }
+
+    // MARK: - TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
@@ -63,22 +80,6 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
-        
-        if quiz_id != nil {
-            titleTextField.text = realm.objects(QuizModel.self)[quiz_id!].quizTitle
-            true_TextField.text = realm.objects(QuizModel.self)[quiz_id!].trueAnswer
-            false1_TextField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer1
-            false2_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer2
-            false3_textField.text = realm.objects(QuizModel.self)[quiz_id!].falseAnswer3
-            
-            if mode == ModeEnum.detail {
-                titleTextField.isEnabled = false
-                true_TextField.isEnabled = false
-                false1_TextField.isEnabled = false
-                false2_textField.isEnabled = false
-                false3_textField.isEnabled = false
-            }
-        }
         
         
         switch indexPath.section {
@@ -145,40 +146,15 @@ class QuizEditView: UIView, UITableViewDelegate, UITableViewDataSource, UITextFi
     }
     
     
+    // MARK: - UITextFieldDelegate
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
         return true
     }
     
     
-    // MARK: - Realm func
-    
-    func addRealm(){
-        quizModel.id = String(realm.objects(QuizModel.self).count)
-        quizModel.quizTitle = titleTextField.text!
-        quizModel.trueAnswer = true_TextField.text!
-        quizModel.falseAnswer1 = false1_TextField.text!
-        quizModel.falseAnswer2 = false2_textField.text!
-        quizModel.falseAnswer3 = false3_textField.text!
-        
-        
-        try! realm.write() {
-            realm.add(quizModel)
-        }
-    }
-    
-    
-    
-    func updateRealm(){        
-        try! realm.write() {
-            realm.objects(QuizModel.self)[quiz_id!].quizTitle = titleTextField.text!
-            realm.objects(QuizModel.self)[quiz_id!].trueAnswer = true_TextField.text!
-            realm.objects(QuizModel.self)[quiz_id!].falseAnswer1 = false1_TextField.text!
-            realm.objects(QuizModel.self)[quiz_id!].falseAnswer2 = false2_textField.text!
-            realm.objects(QuizModel.self)[quiz_id!].falseAnswer3 = false3_textField.text!
-        }
-    }
-    
+    // MARK: - Other
     
     private func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
         textField.delegate = self

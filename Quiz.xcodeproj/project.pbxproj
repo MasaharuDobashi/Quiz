@@ -22,8 +22,8 @@
 		D08EBA8021F9FA5300B63F02 /* QuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7F21F9FA5300B63F02 /* QuizUITests.swift */; };
 		D0C6E9AA2201D48D0001B4FE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C6E9A92201D48D0001B4FE /* AlertManager.swift */; };
 		D0E197D721FD8A340062728F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D621FD8A340062728F /* Extension.swift */; };
-		D0E197DA21FDD1620062728F /* QuizManagement ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D921FDD1610062728F /* QuizManagement ViewController.swift */; };
-		D0E197DC21FDD19F0062728F /* QuizManagement View.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197DB21FDD19F0062728F /* QuizManagement View.swift */; };
+		D0E197DA21FDD1620062728F /* QuizManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D921FDD1610062728F /* QuizManagementViewController.swift */; };
+		D0E197DC21FDD19F0062728F /* QuizManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197DB21FDD19F0062728F /* QuizManagementView.swift */; };
 		D0E82C432210091300960D7C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E82C422210091300960D7C /* Enums.swift */; };
 		D0E94A1C21FF2DE80071DB64 /* QuizEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */; };
 		D0E94A1E21FF2DFF0071DB64 /* QuizEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */; };
@@ -78,8 +78,8 @@
 		D08EBA8121F9FA5300B63F02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0C6E9A92201D48D0001B4FE /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		D0E197D621FD8A340062728F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		D0E197D921FDD1610062728F /* QuizManagement ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuizManagement ViewController.swift"; sourceTree = "<group>"; };
-		D0E197DB21FDD19F0062728F /* QuizManagement View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "QuizManagement View.swift"; sourceTree = "<group>"; };
+		D0E197D921FDD1610062728F /* QuizManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizManagementViewController.swift; sourceTree = "<group>"; };
+		D0E197DB21FDD19F0062728F /* QuizManagementView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizManagementView.swift; sourceTree = "<group>"; };
 		D0E82C422210091300960D7C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditView.swift; sourceTree = "<group>"; };
 		D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditViewController.swift; sourceTree = "<group>"; };
@@ -175,7 +175,7 @@
 		D0866CB821FC9AD2005AFFC2 /* QuizManagementView */ = {
 			isa = PBXGroup;
 			children = (
-				D0E197DB21FDD19F0062728F /* QuizManagement View.swift */,
+				D0E197DB21FDD19F0062728F /* QuizManagementView.swift */,
 				D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */,
 			);
 			path = QuizManagementView;
@@ -194,7 +194,7 @@
 		D0866CBA21FC9B15005AFFC2 /* QuizManagementViewController */ = {
 			isa = PBXGroup;
 			children = (
-				D0E197D921FDD1610062728F /* QuizManagement ViewController.swift */,
+				D0E197D921FDD1610062728F /* QuizManagementViewController.swift */,
 				D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */,
 			);
 			path = QuizManagementViewController;
@@ -518,9 +518,9 @@
 				D0E94A1C21FF2DE80071DB64 /* QuizEditView.swift in Sources */,
 				D0E94A1E21FF2DFF0071DB64 /* QuizEditViewController.swift in Sources */,
 				D01CEA2C21F9FD6400AF1266 /* QuizModel.swift in Sources */,
-				D0E197DA21FDD1620062728F /* QuizManagement ViewController.swift in Sources */,
+				D0E197DA21FDD1620062728F /* QuizManagementViewController.swift in Sources */,
 				D01CEA2E21F9FDD100AF1266 /* MainTabViewController.swift in Sources */,
-				D0E197DC21FDD19F0062728F /* QuizManagement View.swift in Sources */,
+				D0E197DC21FDD19F0062728F /* QuizManagementView.swift in Sources */,
 				D01CEA2821F9FCDA00AF1266 /* QuizScreenView.swift in Sources */,
 				D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */,
 				D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */,

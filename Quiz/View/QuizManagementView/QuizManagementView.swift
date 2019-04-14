@@ -54,6 +54,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
         tableView = UITableView(frame: .zero, style: .grouped)
         tableView?.delegate = self
         tableView?.dataSource = self
+        tableView?.separatorInset = .zero
         self.addSubview(tableView!)
         
         
@@ -113,19 +114,19 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let edit = UITableViewRowAction(style: .normal, title: "編集") {
+        let edit = UITableViewRowAction(style: .normal, title: "編集") { [weak self]
             (action, indexPath) in
             
-            self.quizManagementViewDelegate?.editAction(indexPath: indexPath)
+            self?.quizManagementViewDelegate?.editAction(indexPath: indexPath)
         }
         
         edit.backgroundColor = UIColor.orange
         
         
-        let del = UITableViewRowAction(style: .destructive, title: "削除") {
+        let del = UITableViewRowAction(style: .destructive, title: "削除") { [weak self]
          (action, indexPath) in
             
-            self.quizManagementViewDelegate?.deleteAction(indexPath: indexPath)
+            self?.quizManagementViewDelegate?.deleteAction(indexPath: indexPath)
             
         }
 

@@ -30,7 +30,7 @@ class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         
-        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(viewController: self), trueConunt:trueConunt)
+        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self), trueConunt:trueConunt)
         self.view.addSubview(resultScreenView)
     }
     

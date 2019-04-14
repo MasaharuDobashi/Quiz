@@ -22,7 +22,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         super.viewWillAppear(animated)
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        quizCreateView = QuizManagementView(frame: frame_Size(viewController: self))
+        quizCreateView = QuizManagementView(frame: frame_Size(self))
         quizCreateView?.quizManagementViewDelegate = self
         self.view.addSubview(quizCreateView!)
     }
@@ -31,7 +31,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     
     
     @objc private func rightButtonAction(){
-        let viewController:QuizEditViewController = QuizEditViewController()
+        let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
         let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
         self.present(navigationController,animated: true, completion: nil)
     }

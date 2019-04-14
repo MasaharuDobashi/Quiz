@@ -10,6 +10,7 @@ import Foundation
 
 
 enum ModeEnum {
+    case add
     case edit
     case detail
 }

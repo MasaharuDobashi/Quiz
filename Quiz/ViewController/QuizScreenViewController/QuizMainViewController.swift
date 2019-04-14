@@ -17,7 +17,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(viewController: self))
+        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)

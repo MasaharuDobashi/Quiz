@@ -35,7 +35,11 @@ class ResultScreenView: UIView {
         self.backgroundColor = .white
         
         let correctView:UIView = UIView()
-        let correctString:String = trueConunt ?? "0"
+
+        guard let correctString:String = trueConunt else {
+            return
+        }
+        
         let correctCountLabel:UILabel = UILabel()
         
         correctView.backgroundColor = .orange
@@ -59,11 +63,11 @@ class ResultScreenView: UIView {
         correctCountLabel.heightAnchor.constraint(equalTo: correctView.heightAnchor).isActive = true
         
         
-        
+        /*
         UIView.animate(withDuration: 0.5, delay: 1, options: [.curveEaseIn], animations: {() -> Void in
             correctView.frame.origin.y += UIScreen.main.bounds.height / 2
         }, completion: nil)
-        
+        */
 
     }
 }
