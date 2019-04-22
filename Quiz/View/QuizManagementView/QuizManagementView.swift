@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 
 protocol QuizManagementViewDelegate: class {
@@ -16,19 +15,29 @@ protocol QuizManagementViewDelegate: class {
     func detailAction(indexPath:IndexPath)
 }
 
-class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
+ class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     var tableView:UITableView?
-    private let realm:Realm = try! Realm()
+    var quizModel:[QuizModel]?
+    
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        viewload()
+    override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
     }
     
+    
+    convenience init(frame: CGRect, style: UITableView.Style, quizModel: [QuizModel]) {
+        self.init(frame: frame, style: style)
+        
+        self.quizModel = quizModel
+        
+        self.delegate = self
+        self.dataSource = self
+        self.separatorInset = .zero
+        self.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
+    }
+  
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -36,7 +45,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
     private func viewload(){
         
         
-        if realm.objects(QuizModel.self).count == 0 {
+        if quizModel?.count == 0 {
             let label:UILabel = UILabel()
             label.text = "まだクイズが作成されていません"
             label.sizeToFit()
@@ -52,9 +61,7 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
         }
         
         tableView = UITableView(frame: .zero, style: .grouped)
-        tableView?.delegate = self
-        tableView?.dataSource = self
-        tableView?.separatorInset = .zero
+ 
         self.addSubview(tableView!)
         
         
@@ -68,38 +75,23 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return realm.objects(QuizModel.self).count
+        return quizModel!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
     
         
         switch indexPath.section {
         case 0:
+            if quizModel?.count == 0 {
+                cell.textLabel?.text = "まだクイズが作成されていません"
+                
+                return cell
+            }
             
-            let label:UILabel = UILabel()
-            label.text = "問題\(indexPath.row + 1)"
-            label.sizeToFit()
-            cell.contentView.addSubview(label)
+            cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!)
             
-            let questionLabel:UILabel = UILabel()
-            questionLabel.text = realm.objects(QuizModel.self)[indexPath.row].quizTitle
-            questionLabel.numberOfLines = 0
-            cell.contentView.addSubview(questionLabel)
-            
-            
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true
-            label.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 20).isActive = true
-            label.widthAnchor.constraint(equalToConstant: label.bounds.width).isActive = true
-            label.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
-            
-            questionLabel.translatesAutoresizingMaskIntoConstraints = false
-            questionLabel.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true
-            questionLabel.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 70 + 30).isActive = true
-            questionLabel.trailingAnchor.constraint(equalTo: cell.trailingAnchor).isActive = true
-            questionLabel.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
         default:
             break
         }
@@ -133,14 +125,43 @@ class QuizManagementView: UIView, UITableViewDelegate, UITableViewDataSource {
         return [edit, del]
     }
     
+}
+
+
+
+
+
+fileprivate final class QuizListCell:UITableViewCell {
+    let quizNoLabel:UILabel = UILabel()
+    let quizTitleLabel:UILabel = UILabel()
     
-    func deleteRealm(indexPath: IndexPath){
-        let toDoModel = realm.objects(QuizModel.self)[indexPath.row]
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        try! realm.write() {
-            realm.delete(toDoModel)
-        }
+        
+        self.contentView.addSubview(quizNoLabel)
+        self.contentView.addSubview(quizTitleLabel)
+        
+        quizNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        quizNoLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        quizNoLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
+        quizNoLabel.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
+        quizNoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
+        quizTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        quizTitleLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        quizTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70 + 30).isActive = true
+        quizTitleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        quizTitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setCell(quizNo:String, quizTitle:String){
+        quizNoLabel.text = quizNo
+        quizTitleLabel.text = quizTitle
+    }
 }
