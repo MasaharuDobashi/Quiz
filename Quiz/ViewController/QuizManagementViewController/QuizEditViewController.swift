@@ -110,7 +110,6 @@ class QuizEditViewController: UIViewController {
                 self?.leftButtonAction()
             })
         }
-        
     }
     
     // MARK: - Realm func
@@ -132,11 +131,11 @@ class QuizEditViewController: UIViewController {
     
     func updateRealm(){
         try! realm.write() {
-            realm.objects(QuizModel.self)[0].quizTitle = (quizEditView?.titleTextField.text)!
-            realm.objects(QuizModel.self)[0].trueAnswer = (quizEditView?.true_TextField.text)!
-            realm.objects(QuizModel.self)[0].falseAnswer1 = (quizEditView?.false1_TextField.text)!
-            realm.objects(QuizModel.self)[0].falseAnswer2 = (quizEditView?.false2_textField.text)!
-            realm.objects(QuizModel.self)[0].falseAnswer3 = (quizEditView?.false3_textField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].quizTitle = (quizEditView?.titleTextField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].trueAnswer = (quizEditView?.true_TextField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = (quizEditView?.false1_TextField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = (quizEditView?.false2_textField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = (quizEditView?.false3_textField.text)!
         }
     }
     
