@@ -49,6 +49,7 @@ class QuizMainView: UIView {
         button.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         button.heightAnchor.constraint(equalToConstant: 50).isActive = true
         button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        button.layer.cornerRadius = 50 / 8
     }
     
     @objc private func buttonTapAction(){

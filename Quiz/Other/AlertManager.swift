@@ -35,5 +35,21 @@ class AlertManager {
         viewController.present(controller, animated: true, completion: nil)
     }
     
+    func alertAction(viewController:UIViewController, title: String?, message: String, handler1: @escaping (UIAlertAction)->()){
+        let controller:UIAlertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        controller.addAction(UIAlertAction(title: "はい",
+                                           style: .default,
+                                           handler: handler1)
+        )
+        
+        controller.addAction(UIAlertAction(title: "いいえ",
+                                           style: .default,
+                                           handler: nil)
+        )
+        viewController.present(controller, animated: true, completion: nil)
+    }
+    
+    
     
 }
