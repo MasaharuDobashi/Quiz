@@ -18,6 +18,16 @@ protocol QuizManagementViewDelegate: class {
  class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     var quizModel:[QuizModel]?
+    let noneLabel:UILabel = {
+        let label:UILabel = UILabel()
+        label.bounds.size.height = 50
+        label.text = "まだクイズが作成されていません"
+        label.backgroundColor = UIColor.lightGray
+        label.clipsToBounds = true
+        label.textAlignment = .center
+        
+        return label
+    }()
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
@@ -35,6 +45,18 @@ protocol QuizManagementViewDelegate: class {
         self.dataSource = self
         self.separatorInset = .zero
         self.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
+        
+        
+        if self.quizModel?.count == 0 {
+            addSubview(noneLabel)
+            
+            noneLabel.translatesAutoresizingMaskIntoConstraints = false
+            noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+            noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+            noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
+            noneLabel.layer.cornerRadius = noneLabel.bounds.height / 8
+        }
     }
   
     required init?(coder aDecoder: NSCoder) {
@@ -46,22 +68,20 @@ protocol QuizManagementViewDelegate: class {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
     
-        
-        switch indexPath.section {
-        case 0:
-            if quizModel?.count == 0 {
-                cell.textLabel?.text = "まだクイズが作成されていません"
-                
-                return cell
-            }
+        if quizModel == nil {
+            let cell:UITableViewCell = dequeueReusableCell(withIdentifier: "Cell")!
+            cell.textLabel?.text = "まだクイズが作成されていません"
             
-            cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!)
-            
-        default:
-            break
+            return cell
         }
+        
+        if noneLabel.isDescendant(of: self) {
+            noneLabel.removeFromSuperview()
+        }
+        
+        let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
+        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!)
         
         return cell
     }
