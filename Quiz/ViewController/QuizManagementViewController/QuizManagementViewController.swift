@@ -37,7 +37,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
             quizManagementView?.quizModel?.append(self.quizModel!.last!)
         }
         
-        quizManagementView?.tableView?.reloadData()
+        quizManagementView?.reloadData()
     }
     
     

@@ -17,7 +17,6 @@ protocol QuizManagementViewDelegate: class {
 
  class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
-    var tableView:UITableView?
     var quizModel:[QuizModel]?
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
@@ -41,39 +40,7 @@ protocol QuizManagementViewDelegate: class {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func viewload(){
-        
-        
-        if quizModel?.count == 0 {
-            let label:UILabel = UILabel()
-            label.text = "まだクイズが作成されていません"
-            label.sizeToFit()
-            self.addSubview(label)
-            
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-            label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-            label.heightAnchor.constraint(equalToConstant: label.bounds.height).isActive = true
-            label.widthAnchor.constraint(equalToConstant: label.bounds.width).isActive = true
-            
-            return
-        }
-        
-        tableView = UITableView(frame: .zero, style: .grouped)
- 
-        self.addSubview(tableView!)
-        
-        
-        tableView?.translatesAutoresizingMaskIntoConstraints = false
-        tableView?.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        tableView?.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        tableView?.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        tableView?.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-    }
 
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quizModel!.count
     }
