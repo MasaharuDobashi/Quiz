@@ -1,5 +1,5 @@
 //
-//  Extension.swift
+//  UIViewControllerExtension.swift
 //  Quiz
 //
 //  Created by 土橋正晴 on 2019/01/27.

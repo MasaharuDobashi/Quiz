@@ -18,7 +18,7 @@ protocol QuizManagementViewDelegate: class {
  class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     var quizModel:[QuizModel]?
-    let noneLabel:UILabel = {
+    private let noneLabel:UILabel = {
         let label:UILabel = UILabel()
         label.bounds.size.height = 50
         label.text = "まだクイズが作成されていません"

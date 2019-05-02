@@ -32,8 +32,9 @@ class QuizMainView: UIView {
     private func viewLoad(){
         
         let button:UIButton = UIButton()
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitle("クイズスタート", for: .normal)
-        
+        button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         if realm.objects(QuizModel.self).count != 0 {
             button.backgroundColor = .orange
             isCount = true
@@ -47,9 +48,8 @@ class QuizMainView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         button.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        button.heightAnchor.constraint(equalToConstant: button.bounds.height).isActive = true
         button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
-        button.layer.cornerRadius = 50 / 8
     }
     
     @objc private func buttonTapAction(){

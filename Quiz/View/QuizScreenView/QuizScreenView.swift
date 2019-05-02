@@ -57,15 +57,22 @@ class QuizScreenView: UIView {
         
         quizScreenLabel.backgroundColor = .gray
         quizScreenLabel.numberOfLines = 0
+        quizScreenLabel.font = UIFont.systemFont(ofSize: 20)
+        quizScreenLabel.clipsToBounds = true
+        quizScreenLabel.bounds.size.height = UIScreen.main.bounds.height * 0.4
+        quizScreenLabel.layer.cornerRadius = quizScreenLabel.bounds.height / 9
         quizScreenLabel.text = realm.objects(QuizModel.self)[quizId!].quizTitle
+        quizScreenLabel.textAlignment = .center
         self.addSubview(quizScreenLabel)
         
         quizScreenLabel.translatesAutoresizingMaskIntoConstraints = false
         quizScreenLabel.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: -10).isActive = true
         quizScreenLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
         quizScreenLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -20).isActive = true
-        quizScreenLabel.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.4).isActive = true
+        quizScreenLabel.heightAnchor.constraint(equalToConstant: quizScreenLabel.bounds.height).isActive = true
         
+        
+
         button1.backgroundColor = .blue
         button1.setTitle(realm.objects(QuizModel.self)[quizId!].trueAnswer, for: .normal)
         button2.backgroundColor = .green
@@ -84,6 +91,8 @@ class QuizScreenView: UIView {
             
             buttons[i].setTitle(stringArray[num], for: .normal)
             buttons[i].addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
+            buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
+            buttons[i].titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
             self.addSubview(buttons[i])
             
             numbers.remove(at: num)
@@ -95,7 +104,7 @@ class QuizScreenView: UIView {
         button1.topAnchor.constraint(equalTo: self.centerYAnchor, constant: 50).isActive = true
         button1.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
         button1.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -10).isActive = true
-        button1.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.1).isActive = true
+        button1.heightAnchor.constraint(equalToConstant: button1.bounds.height).isActive = true
         
         button2.translatesAutoresizingMaskIntoConstraints = false
         button2.topAnchor.constraint(equalTo: button1.topAnchor).isActive = true
@@ -108,7 +117,7 @@ class QuizScreenView: UIView {
         button3.topAnchor.constraint(equalTo: button1.bottomAnchor, constant: 30).isActive = true
         button3.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
         button3.trailingAnchor.constraint(equalTo: self.centerXAnchor, constant: -10).isActive = true
-        button3.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.1).isActive = true
+        button3.heightAnchor.constraint(equalTo: button1.heightAnchor).isActive = true
         
         
         button4.translatesAutoresizingMaskIntoConstraints = false
