@@ -34,7 +34,7 @@ class ResultScreenView: UIView {
     private func viewLoad(){
         self.backgroundColor = .white
         
-        let correctView:UIView = UIView()
+        
 
         guard let correctString:String = trueConunt else {
             return
@@ -42,32 +42,29 @@ class ResultScreenView: UIView {
         
         let correctCountLabel:UILabel = UILabel()
         
-        correctView.backgroundColor = .orange
-        self.addSubview(correctView)
-        
-        correctCountLabel.text = "あなたは\(correctString)問正解しました。"
-        correctView.addSubview(correctCountLabel)
-        
-        
-        
-        correctView.translatesAutoresizingMaskIntoConstraints = false
-        correctView.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
-        correctView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
-        correctView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        correctView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        correctCountLabel.backgroundColor = .orange
+        correctCountLabel.clipsToBounds = true
+        correctCountLabel.bounds.size.height = 100
+        correctCountLabel.text = "   あなたは\(correctString)問正解しました。"
+        self.addSubview(correctCountLabel)
         
         correctCountLabel.translatesAutoresizingMaskIntoConstraints = false
-        correctCountLabel.topAnchor.constraint(equalTo: correctView.topAnchor).isActive = true
-        correctCountLabel.leadingAnchor.constraint(equalTo: correctView.leadingAnchor, constant: 5).isActive = true
-        correctCountLabel.trailingAnchor.constraint(equalTo: correctView.trailingAnchor, constant: -5).isActive = true
-        correctCountLabel.heightAnchor.constraint(equalTo: correctView.heightAnchor).isActive = true
+        correctCountLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
+        correctCountLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        correctCountLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
+        correctCountLabel.heightAnchor.constraint(equalToConstant: correctCountLabel.bounds.height).isActive = true
+        correctCountLabel.layer.cornerRadius = correctCountLabel.bounds.height / 8
         
         
-        /*
-        UIView.animate(withDuration: 0.5, delay: 1, options: [.curveEaseIn], animations: {() -> Void in
-            correctView.frame.origin.y += UIScreen.main.bounds.height / 2
-        }, completion: nil)
-        */
-
+        UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.7, options: [.curveLinear], animations: {() -> Void in
+            correctCountLabel.frame.origin.y += UIScreen.main.bounds.height / 2
+            }) { _ in
+                UIView.animate(withDuration: 3, delay: 3, options: [.curveLinear, .repeat, .autoreverse], animations: {() -> Void in
+                    correctCountLabel.layoutIfNeeded()
+                    correctCountLabel.bounds.size.height += 10
+                    correctCountLabel.bounds.size.width += 10
+                }, completion: nil)
+            }
+        
     }
 }
