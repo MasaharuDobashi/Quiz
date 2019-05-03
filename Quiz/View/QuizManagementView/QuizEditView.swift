@@ -137,7 +137,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 40 : 20
+        return section == 0 ? 40 : 30
     }
     
     
@@ -145,6 +145,14 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         return nil
     }
     
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return section == 4 ? 350 : CGFloat.leastNormalMagnitude
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
     
     // MARK: - UITextFieldDelegate
     
