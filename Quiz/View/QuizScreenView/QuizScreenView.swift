@@ -57,8 +57,9 @@ class QuizScreenView: UIView {
         
         quizScreenLabel.backgroundColor = .gray
         quizScreenLabel.numberOfLines = 0
-        quizScreenLabel.font = UIFont.systemFont(ofSize: 20)
+        quizScreenLabel.font = UIFont.boldSystemFont(ofSize: 20)
         quizScreenLabel.clipsToBounds = true
+        quizScreenLabel.textColor = .white
         quizScreenLabel.bounds.size.height = UIScreen.main.bounds.height * 0.4
         quizScreenLabel.layer.cornerRadius = quizScreenLabel.bounds.height / 9
         quizScreenLabel.text = realm.objects(QuizModel.self)[quizId!].quizTitle
