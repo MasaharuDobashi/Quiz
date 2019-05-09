@@ -13,7 +13,12 @@ protocol ResultScreenViewDelegate:class {
 }
 
 class ResultScreenView: UIView {
+    
+    // MARK: Properties
+    
     private var trueConunt:String?
+    
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -30,6 +35,8 @@ class ResultScreenView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: ViewLoad
     
     private func viewLoad(){
         self.backgroundColor = .white

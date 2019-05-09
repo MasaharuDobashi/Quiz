@@ -17,6 +17,8 @@ protocol QuizManagementViewDelegate: class {
 
  class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Properties
+    
     var quizModel:[QuizModel]?
     private let noneLabel:UILabel = {
         let label:UILabel = UILabel()
@@ -30,6 +32,8 @@ protocol QuizManagementViewDelegate: class {
     }()
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
+    
+    // MARK: Init
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -63,6 +67,8 @@ protocol QuizManagementViewDelegate: class {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: UITableView
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quizModel!.count
     }
@@ -116,11 +122,16 @@ protocol QuizManagementViewDelegate: class {
 
 
 
-
+// MARK: - QuizListCell
 
 fileprivate final class QuizListCell:UITableViewCell {
+    
+    // MARK: Properties
+    
     let quizNoLabel:UILabel = UILabel()
     let quizTitleLabel:UILabel = UILabel()
+    
+    // MARK: Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -146,6 +157,8 @@ fileprivate final class QuizListCell:UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: InternalFunc
     
     func setCell(quizNo:String, quizTitle:String){
         quizNoLabel.text = quizNo

@@ -10,6 +10,8 @@ import UIKit
 
 class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -23,6 +25,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         self.view.addSubview(quizMainView)
     }
     
+    // MARK: QuizMainViewDelegate
     func quizStartButtonAction(isCount: Bool) {
         if isCount {
             let viewController:QuizScreenViewController = QuizScreenViewController()

@@ -10,6 +10,8 @@ import UIKit
 
 class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
+    // MARK: Properties
+    
     private var quizModel:[QuizModel]?
     private var mode:ModeEnum!
     
@@ -19,7 +21,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     let false2_textField:UITextField = UITextField()
     let false3_textField:UITextField = UITextField()
     
-    // MARK: - Init
+    // MARK: Init
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -67,7 +69,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
 
-    // MARK: - TableView
+    // MARK: TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 5
@@ -154,7 +156,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         return UIView()
     }
     
-    // MARK: - UITextFieldDelegate
+    // MARK: UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
@@ -162,7 +164,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     
-    // MARK: - Other
+    // MARK: Other
     
     private func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
         textField.delegate = self

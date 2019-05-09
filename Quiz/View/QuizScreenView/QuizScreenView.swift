@@ -17,10 +17,16 @@ protocol QuizScreenViewDelagate:class {
 }
 
 class QuizScreenView: UIView {
+    
+    // MARK: Properties
+    
     private let realm:Realm = try! Realm()
     private var quizModel:QuizModel = QuizModel()
     weak var quizScreenViewDelagate:QuizScreenViewDelagate?
     private var quizId:Int?
+    
+    
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -36,6 +42,8 @@ class QuizScreenView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: ViewLoad
     
     private func viewLoad(){
         var stringArray:[String] = [
@@ -129,6 +137,7 @@ class QuizScreenView: UIView {
         
     }
     
+    // MARK: ButtonAction
     
     @objc private func buttonTapAction(sender:UIButton){
         if sender.titleLabel!.text == realm.objects(QuizModel.self)[quizId!].trueAnswer {

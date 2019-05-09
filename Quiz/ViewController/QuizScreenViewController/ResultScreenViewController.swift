@@ -9,7 +9,11 @@
 import UIKit
 
 class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
+    
+    // MARK: QuizScreenViewDelagate Properties
     var trueConunt: Int = 0
+    
+    // MARK: Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -24,6 +28,7 @@ class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

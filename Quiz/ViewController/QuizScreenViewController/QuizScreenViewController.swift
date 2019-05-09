@@ -11,12 +11,16 @@ import RealmSwift
 
 
 class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
+    
+    // MARK: Properties
     private var quizScreenView:QuizScreenView?
     private let realm:Realm = try! Realm()
-    // QuizScreenViewDelagate var
+    
+    // MARK: QuizScreenViewDelagate Properties
     var num: Int = 0
     var trueConunt: Int = 0
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,7 +36,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }
     
     
-    // QuizScreenViewDelagate Func
+    // MARK: QuizScreenViewDelagate Func
     func buttonTapAction() {
         num += 1
         if  num < realm.objects(QuizModel.self).count {

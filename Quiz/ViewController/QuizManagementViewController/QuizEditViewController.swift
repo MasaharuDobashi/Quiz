@@ -10,6 +10,9 @@ import UIKit
 import RealmSwift
 
 class QuizEditViewController: UIViewController {
+    
+    // MARK: Properties
+    
     private let realm:Realm = try! Realm()
     private var quizEditView:QuizEditView?
     private var quzi_id:Int?
@@ -17,7 +20,7 @@ class QuizEditViewController: UIViewController {
     private var quizModel: [QuizModel]!
   
     
-    // MARK: - Init
+    // MARK: Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -43,6 +46,8 @@ class QuizEditViewController: UIViewController {
     }
     
     
+    // MARK: Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,10 +68,10 @@ class QuizEditViewController: UIViewController {
         
     }
     
+    // MARK: - Private func
+    // MARK: NavigationItem Func
     
-    // MARK: - NavigationItem Func
-    
-    func navigationItemAction(){
+    private func navigationItemAction(){
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
@@ -112,9 +117,9 @@ class QuizEditViewController: UIViewController {
         }
     }
     
-    // MARK: - Realm func
     
-    func addRealm(){
+    // MARK: Realm Func
+    private func addRealm(){
         let quizModel = QuizModel()
         quizModel.id = String(realm.objects(QuizModel.self).count)
         quizModel.quizTitle = (quizEditView?.titleTextField.text)!
@@ -129,7 +134,7 @@ class QuizEditViewController: UIViewController {
         }
     }
     
-    func updateRealm(){
+    private func updateRealm(){
         try! realm.write() {
             realm.objects(QuizModel.self)[quzi_id!].quizTitle = (quizEditView?.titleTextField.text)!
             realm.objects(QuizModel.self)[quzi_id!].trueAnswer = (quizEditView?.true_TextField.text)!
@@ -140,9 +145,9 @@ class QuizEditViewController: UIViewController {
     }
     
     
-    // MARK: - Other
+    // MARK: Other
     
-    func quizModelAppend(quiz_id:Int){
+    private func quizModelAppend(quiz_id:Int){
         quizModel = [QuizModel]()
         
         quizModel.append(realm.objects(QuizModel.self)[quiz_id])

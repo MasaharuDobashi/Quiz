@@ -15,9 +15,13 @@ protocol QuizMainViewDelegate: class {
 
 class QuizMainView: UIView {
     
+    // MARK: Properties
+    
     private let realm:Realm = try! Realm()
     private var isCount:Bool = false
     weak var quizMainViewDelegate:QuizMainViewDelegate?
+    
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame:frame)
@@ -28,6 +32,8 @@ class QuizMainView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: ViewLoad
     
     private func viewLoad(){
         
@@ -52,6 +58,7 @@ class QuizMainView: UIView {
         button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     }
     
+    // MARK: ButtonAction
     @objc private func buttonTapAction(){
         quizMainViewDelegate?.quizStartButtonAction(isCount: isCount)
     }
