@@ -68,6 +68,9 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     func buttonTapAction() {
         num += 1
         if  num < quizModel.count {
+            if (quizScreenView?.isDescendant(of: self.view))! {
+                quizScreenView?.removeFromSuperview()
+            }
             self.viewWillAppear(true)
         }else{
             let viewController:ResultScreenViewController = ResultScreenViewController(trueConunt: trueConunt)

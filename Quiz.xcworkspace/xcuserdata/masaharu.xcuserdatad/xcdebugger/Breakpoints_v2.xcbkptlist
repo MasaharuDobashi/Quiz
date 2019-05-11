@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Quiz/View/QuizScreenView/QuizScreenView.swift"
-            timestampString = "579257654.839586"
+            filePath = "Quiz/ViewController/QuizScreenViewController/QuizScreenViewController.swift"
+            timestampString = "579274777.919057"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
-            landmarkName = "viewLoad()"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
+            landmarkName = "buttonTapAction()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
