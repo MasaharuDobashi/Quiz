@@ -87,7 +87,7 @@ protocol QuizManagementViewDelegate: class {
         }
         
         let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!)
+        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!, displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
         
         return cell
     }
@@ -160,8 +160,18 @@ fileprivate final class QuizListCell:UITableViewCell {
     
     // MARK: InternalFunc
     
-    func setCell(quizNo:String, quizTitle:String){
+    func setCell(quizNo:String, quizTitle:String, displaySwitch: String){
         quizNoLabel.text = quizNo
         quizTitleLabel.text = quizTitle
+        if displaySwitch == "1" {
+            self.backgroundColor = .lightGray
+        }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.backgroundColor = .white
+    }
+    
 }

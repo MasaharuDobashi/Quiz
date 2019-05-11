@@ -16,4 +16,7 @@ class QuizModel:Object {
     @objc dynamic var falseAnswer1:String = ""
     @objc dynamic var falseAnswer2:String = ""
     @objc dynamic var falseAnswer3:String = ""
+    @objc dynamic var displayFlag:String = ""
 }
+
+

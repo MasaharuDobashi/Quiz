@@ -12,8 +12,8 @@ import RealmSwift
 class QuizEditViewController: UIViewController {
     
     // MARK: Properties
-    
-    private let realm:Realm = try! Realm()
+    let config = Realm.Configuration(schemaVersion: 1)
+    private var realm:Realm!
     private var quizEditView:QuizEditView?
     private var quzi_id:Int?
     private var mode: ModeEnum = ModeEnum.add
@@ -50,7 +50,7 @@ class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        realm = try! Realm(configuration: config)
         switch mode {
         case .add:
             navigationItemAction()
@@ -127,6 +127,7 @@ class QuizEditViewController: UIViewController {
         quizModel.falseAnswer1 = (quizEditView?.false1_TextField.text)!
         quizModel.falseAnswer2 = (quizEditView?.false2_textField.text)!
         quizModel.falseAnswer3 = (quizEditView?.false3_textField.text)!
+        quizModel.displayFlag = quizEditView?.displaySwitch.isOn == true ? "0" : "1"
         
         
         try! realm.write() {
@@ -141,6 +142,7 @@ class QuizEditViewController: UIViewController {
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = (quizEditView?.false1_TextField.text)!
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = (quizEditView?.false2_textField.text)!
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = (quizEditView?.false3_textField.text)!
+            realm.objects(QuizModel.self)[quzi_id!].displayFlag = quizEditView?.displaySwitch.isOn == true ? "0" : "1"
         }
     }
     

@@ -12,8 +12,8 @@ import RealmSwift
 class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
     
     // MARK: Properties
-    
-    private let realm:Realm = try! Realm()
+    private let config = Realm.Configuration(schemaVersion: 1)
+    private var realm:Realm!
     private var quizManagementView:QuizManagementView?
     private var quizModel:[QuizModel]?
     
@@ -21,7 +21,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+         realm = try! Realm(configuration: config)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
         quizModelAppend()
