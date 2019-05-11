@@ -11,14 +11,17 @@ import RealmSwift
 
 class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
     
-    private let realm:Realm = try! Realm()
+    // MARK: Properties
+    private let config = Realm.Configuration(schemaVersion: 1)
+    private var realm:Realm!
     private var quizManagementView:QuizManagementView?
-    var quizModel:[QuizModel]?
+    private var quizModel:[QuizModel]?
     
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+         realm = try! Realm(configuration: config)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
         quizModelAppend()
@@ -40,7 +43,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         quizManagementView?.reloadData()
     }
     
-    
+    // MARK: Private Func
     private func quizModelAppend(){
         quizModel = [QuizModel]()
         
@@ -58,6 +61,16 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     }
     
     
+    private func deleteRealm(indexPath: IndexPath){
+        let quizModel = realm.objects(QuizModel.self)[indexPath.row]
+        
+        
+        try! realm.write() {
+            realm.delete(quizModel)
+        }
+    }
+    
+    // MARK: QuizManagementViewDelegate Func
     
     func detailAction(indexPath: IndexPath) {
         let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
@@ -81,15 +94,6 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
             }, handler2: {_ -> Void in})
         
     }
-    
-    
-    func deleteRealm(indexPath: IndexPath){
-        let quizModel = realm.objects(QuizModel.self)[indexPath.row]
-        
-        
-        try! realm.write() {
-            realm.delete(quizModel)
-        }
-    }
+
 }
 

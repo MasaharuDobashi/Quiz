@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import RealmSwift
+
 
 protocol QuizScreenViewDelagate:class {
     func buttonTapAction()
@@ -17,18 +17,24 @@ protocol QuizScreenViewDelagate:class {
 }
 
 class QuizScreenView: UIView {
-    private let realm:Realm = try! Realm()
-    private var quizModel:QuizModel = QuizModel()
+    
+    // MARK: Properties
+    
+    private var quizModel:QuizModel!
     weak var quizScreenViewDelagate:QuizScreenViewDelagate?
     private var quizId:Int?
+
+    
+    
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame:frame)
     }
     
-    convenience init(frame:CGRect, quizId:Int){
+    convenience init(frame:CGRect,  quizModel:QuizModel){
         self.init(frame: frame)
-        self.quizId = quizId
+        self.quizModel = quizModel
         
         viewLoad()
     }
@@ -37,12 +43,14 @@ class QuizScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: ViewLoad
+    
     private func viewLoad(){
         var stringArray:[String] = [
-            realm.objects(QuizModel.self)[quizId!].trueAnswer,
-            realm.objects(QuizModel.self)[quizId!].falseAnswer1,
-            realm.objects(QuizModel.self)[quizId!].falseAnswer2,
-            realm.objects(QuizModel.self)[quizId!].falseAnswer3
+            quizModel.trueAnswer,
+            quizModel.falseAnswer1,
+            quizModel.falseAnswer2,
+            quizModel.falseAnswer3,
         ]
         
         
@@ -57,11 +65,12 @@ class QuizScreenView: UIView {
         
         quizScreenLabel.backgroundColor = .gray
         quizScreenLabel.numberOfLines = 0
-        quizScreenLabel.font = UIFont.systemFont(ofSize: 20)
+        quizScreenLabel.font = UIFont.boldSystemFont(ofSize: 20)
         quizScreenLabel.clipsToBounds = true
+        quizScreenLabel.textColor = .white
         quizScreenLabel.bounds.size.height = UIScreen.main.bounds.height * 0.4
         quizScreenLabel.layer.cornerRadius = quizScreenLabel.bounds.height / 9
-        quizScreenLabel.text = realm.objects(QuizModel.self)[quizId!].quizTitle
+        quizScreenLabel.text = quizModel.quizTitle
         quizScreenLabel.textAlignment = .center
         self.addSubview(quizScreenLabel)
         
@@ -74,13 +83,13 @@ class QuizScreenView: UIView {
         
 
         button1.backgroundColor = .blue
-        button1.setTitle(realm.objects(QuizModel.self)[quizId!].trueAnswer, for: .normal)
+//        button1.setTitle(stringArray[0], for: .normal)
         button2.backgroundColor = .green
-        button2.setTitle(realm.objects(QuizModel.self)[quizId!].falseAnswer1, for: .normal)
+//        button2.setTitle(stringArray[1], for: .normal)
         button3.backgroundColor = .orange
-        button3.setTitle(realm.objects(QuizModel.self)[quizId!].falseAnswer2, for: .normal)
+//        button3.setTitle(stringArray[2], for: .normal)
         button4.backgroundColor = UIColor.magenta
-        button4.setTitle(realm.objects(QuizModel.self)[quizId!].falseAnswer3, for: .normal)
+//        button4.setTitle(stringArray[3], for: .normal)
         
         
         let buttons:[UIButton] = [button1,button2,button3,button4]
@@ -128,9 +137,10 @@ class QuizScreenView: UIView {
         
     }
     
+    // MARK: ButtonAction
     
     @objc private func buttonTapAction(sender:UIButton){
-        if sender.titleLabel!.text == realm.objects(QuizModel.self)[quizId!].trueAnswer {
+        if sender.titleLabel!.text == quizModel.trueAnswer {
             quizScreenViewDelagate?.trueConut()
         }
         quizScreenViewDelagate?.buttonTapAction()

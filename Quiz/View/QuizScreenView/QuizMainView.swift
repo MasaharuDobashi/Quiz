@@ -7,27 +7,40 @@
 //
 
 import UIKit
-import RealmSwift
+
 
 protocol QuizMainViewDelegate: class {
-    func quizStartButtonAction(isCount: Bool)
+    func quizStartButtonAction()
 }
 
 class QuizMainView: UIView {
     
-    private let realm:Realm = try! Realm()
-    private var isCount:Bool = false
+    // MARK: Properties
+    var isActiveQuiz: Bool!
+    
+
     weak var quizMainViewDelegate:QuizMainViewDelegate?
+    
+    // MARK: Init
     
     override init(frame: CGRect) {
         super.init(frame:frame)
         
+        
+    }
+    
+    convenience init(frame: CGRect, isActiveQuiz: Bool) {
+        self.init(frame:frame)
+        self.isActiveQuiz = isActiveQuiz
         viewLoad()
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // MARK: ViewLoad
     
     private func viewLoad(){
         
@@ -35,9 +48,8 @@ class QuizMainView: UIView {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitle("クイズスタート", for: .normal)
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
-        if realm.objects(QuizModel.self).count != 0 {
+        if isActiveQuiz {
             button.backgroundColor = .orange
-            isCount = true
         } else {
             button.backgroundColor = .gray
         }
@@ -52,8 +64,9 @@ class QuizMainView: UIView {
         button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
     }
     
+    // MARK: ButtonAction
     @objc private func buttonTapAction(){
-        quizMainViewDelegate?.quizStartButtonAction(isCount: isCount)
+        quizMainViewDelegate?.quizStartButtonAction()
     }
     
 }

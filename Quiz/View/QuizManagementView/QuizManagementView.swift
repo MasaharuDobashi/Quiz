@@ -17,6 +17,8 @@ protocol QuizManagementViewDelegate: class {
 
  class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Properties
+    
     var quizModel:[QuizModel]?
     private let noneLabel:UILabel = {
         let label:UILabel = UILabel()
@@ -30,6 +32,8 @@ protocol QuizManagementViewDelegate: class {
     }()
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
+    
+    // MARK: Init
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -63,6 +67,8 @@ protocol QuizManagementViewDelegate: class {
         fatalError("init(coder:) has not been implemented")
     }
 
+    //MARK: UITableView
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return quizModel!.count
     }
@@ -81,7 +87,7 @@ protocol QuizManagementViewDelegate: class {
         }
         
         let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!)
+        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!, displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
         
         return cell
     }
@@ -116,11 +122,16 @@ protocol QuizManagementViewDelegate: class {
 
 
 
-
+// MARK: - QuizListCell
 
 fileprivate final class QuizListCell:UITableViewCell {
+    
+    // MARK: Properties
+    
     let quizNoLabel:UILabel = UILabel()
     let quizTitleLabel:UILabel = UILabel()
+    
+    // MARK: Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -147,8 +158,20 @@ fileprivate final class QuizListCell:UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setCell(quizNo:String, quizTitle:String){
+    // MARK: InternalFunc
+    
+    func setCell(quizNo:String, quizTitle:String, displaySwitch: String){
         quizNoLabel.text = quizNo
         quizTitleLabel.text = quizTitle
+        if displaySwitch == "1" {
+            self.backgroundColor = .lightGray
+        }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        self.backgroundColor = .white
+    }
+    
 }

@@ -10,6 +10,8 @@ import UIKit
 
 class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
+    // MARK: Properties
+    
     private var quizModel:[QuizModel]?
     private var mode:ModeEnum!
     
@@ -18,8 +20,11 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     let false1_TextField:UITextField = UITextField()
     let false2_textField:UITextField = UITextField()
     let false3_textField:UITextField = UITextField()
+    let displaySwitch: UISwitch = UISwitch()
     
-    // MARK: - Init
+    
+    
+    // MARK: Init
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
@@ -48,6 +53,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
             false1_TextField.text = quizModel![0].falseAnswer1
             false2_textField.text = quizModel![0].falseAnswer2
             false3_textField.text = quizModel![0].falseAnswer3
+            displaySwitch.isOn = quizModel![0].displayFlag == "0" ? true : false
             
             
             if mode == .detail {
@@ -56,6 +62,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
                 false1_TextField.isEnabled = false
                 false2_textField.isEnabled = false
                 false3_textField.isEnabled = false
+                displaySwitch.isEnabled = false
             }
         }
         
@@ -67,10 +74,10 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
 
-    // MARK: - TableView
+    // MARK: TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -98,6 +105,13 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         case 4:
             false3_textField.placeholder = "不正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: false3_textField, cell: cell)
+        case 5:
+            mode == .add ? displaySwitch.isOn = true : nil
+            cell.textLabel?.text = " 表示・非表示"
+            cell.addSubview(displaySwitch)
+            displaySwitch.translatesAutoresizingMaskIntoConstraints = false
+            displaySwitch.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
+            displaySwitch.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
         default:
             break
         }
@@ -122,6 +136,8 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
             headerLabel.text = "不正解2"
         case 4:
             headerLabel.text = "不正解3"
+        case 5:
+            headerLabel.text = "表示"
         default:
             break
         }
@@ -147,14 +163,14 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == 4 ? 350 : CGFloat.leastNormalMagnitude
+        return section == tableView.numberOfSections ? 350 : CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
     
-    // MARK: - UITextFieldDelegate
+    // MARK: UITextFieldDelegate
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
@@ -162,7 +178,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     
-    // MARK: - Other
+    // MARK: Other
     
     private func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
         textField.delegate = self

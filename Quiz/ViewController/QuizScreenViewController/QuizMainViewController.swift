@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import RealmSwift
 
 class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
+    // MARK: Properties
+    private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 1))
+    private var isActiveQuiz: Bool = false
+    
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -17,14 +23,19 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(self))
+        if realm.objects(QuizModel.self).count != 0 {
+            isActiveQuiz = true
+        }
+        
+        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)
     }
     
-    func quizStartButtonAction(isCount: Bool) {
-        if isCount {
+    // MARK: QuizMainViewDelegate
+    func quizStartButtonAction() {
+        if isActiveQuiz {
             let viewController:QuizScreenViewController = QuizScreenViewController()
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController,animated: true, completion: nil)
