@@ -106,6 +106,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
             false3_textField.placeholder = "不正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: false3_textField, cell: cell)
         case 5:
+            mode == .add ? displaySwitch.isOn = true : nil
             cell.textLabel?.text = " 表示・非表示"
             cell.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false
