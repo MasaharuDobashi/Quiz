@@ -81,23 +81,14 @@ class QuizScreenView: UIView {
         quizScreenLabel.heightAnchor.constraint(equalToConstant: quizScreenLabel.bounds.height).isActive = true
         
         
-
-        button1.backgroundColor = .blue
-//        button1.setTitle(stringArray[0], for: .normal)
-        button2.backgroundColor = .green
-//        button2.setTitle(stringArray[1], for: .normal)
-        button3.backgroundColor = .orange
-//        button3.setTitle(stringArray[2], for: .normal)
-        button4.backgroundColor = UIColor.magenta
-//        button4.setTitle(stringArray[3], for: .normal)
-        
         
         let buttons:[UIButton] = [button1,button2,button3,button4]
         var numbers = [0,1,2,3]
+        let colors:[UIColor] = [.blue, .green, .orange, .magenta]
         
         for i in 0..<buttons.count {
             let num:Int = Int(arc4random_uniform(UInt32(numbers.count)))
-            
+            buttons[i].setButton(title: stringArray[num], backgroundColor: colors[i], font: UIFont.boldSystemFont(ofSize: 18), target: self, action: #selector(buttonTapAction))
             buttons[i].setTitle(stringArray[num], for: .normal)
             buttons[i].addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
             buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
