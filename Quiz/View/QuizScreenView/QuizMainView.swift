@@ -45,16 +45,13 @@ class QuizMainView: UIView {
     private func viewLoad(){
         
         let button:UIButton = UIButton()
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        button.setTitle("クイズスタート", for: .normal)
+        button.setButton(title: "クイズスタート",
+                         backgroundColor: .orange,
+                         font: UIFont.boldSystemFont(ofSize: 18),
+                         target: self, action: #selector(buttonTapAction)
+        )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
-        if isActiveQuiz {
-            button.backgroundColor = .orange
-        } else {
-            button.backgroundColor = .gray
-        }
-        
-        button.addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
+        if isActiveQuiz == false { button.backgroundColor = .gray }
         self.addSubview(button)
         
         button.translatesAutoresizingMaskIntoConstraints = false
