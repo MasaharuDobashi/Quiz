@@ -14,6 +14,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     // MARK: Properties
     private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 1))
     private var isActiveQuiz: Bool = false
+    var quizMainView:QuizMainView!
     
     // MARK: Lifecycle
     override func viewDidLoad() {
@@ -22,15 +23,20 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+      
+        isActiveQuiz = realm.objects(QuizModel.self).count != 0 ? true : false
         
-        if realm.objects(QuizModel.self).count != 0 {
-            isActiveQuiz = true
-        }
-        
-        let quizMainView:QuizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
+        quizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
         quizMainView.quizMainViewDelegate = self
         
         self.view.addSubview(quizMainView)
+    }
+    
+  
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        quizMainView.removeFromSuperview()
     }
     
     // MARK: QuizMainViewDelegate
