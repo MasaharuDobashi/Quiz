@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		79006CCF61F9FD86B87DA0C1 /* Pods_QuizUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DBF156FA50A61DC5BE9505 /* Pods_QuizUITests.framework */; };
+		D000711D2287F01400898310 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D000711C2287F01400898310 /* LaunchScreen.storyboard */; };
 		D00B95F5227A8F2B00CD60F3 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */; };
 		D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA1F21F9FC6D00AF1266 /* QuizMainViewController.swift */; };
 		D01CEA2221F9FC8E00AF1266 /* QuizScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA2121F9FC8E00AF1266 /* QuizScreenViewController.swift */; };
@@ -59,6 +60,7 @@
 		95DBF156FA50A61DC5BE9505 /* Pods_QuizUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuizUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3013F219E014E77969A6E29 /* Pods_Quiz.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Quiz.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4F748B74DA03903E708401A /* Pods-Quiz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiz.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quiz/Pods-Quiz.release.xcconfig"; sourceTree = "<group>"; };
+		D000711C2287F01400898310 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
 		D01CEA1F21F9FC6D00AF1266 /* QuizMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMainViewController.swift; sourceTree = "<group>"; };
 		D01CEA2121F9FC8E00AF1266 /* QuizScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizScreenViewController.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 				D08EBA6B21F9FA5300B63F02 /* Info.plist */,
 				D08EBA5F21F9FA5200B63F02 /* AppDelegate.swift */,
 				D01CEA2D21F9FDD100AF1266 /* MainTabViewController.swift */,
+				D000711C2287F01400898310 /* LaunchScreen.storyboard */,
 				D01CEA1D21F9FC1F00AF1266 /* ViewController */,
 				D01CEA1C21F9FC1800AF1266 /* View */,
 				D01CEA1B21F9FC0800AF1266 /* Model */,
@@ -396,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */,
+				D000711D2287F01400898310 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
