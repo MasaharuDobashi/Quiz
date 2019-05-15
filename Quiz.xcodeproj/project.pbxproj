@@ -18,6 +18,7 @@
 		D01CEA2A21F9FD0E00AF1266 /* ResultScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA2921F9FD0E00AF1266 /* ResultScreenView.swift */; };
 		D01CEA2C21F9FD6400AF1266 /* QuizModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA2B21F9FD6400AF1266 /* QuizModel.swift */; };
 		D01CEA2E21F9FDD100AF1266 /* MainTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA2D21F9FDD100AF1266 /* MainTabViewController.swift */; };
+		D073E25F2289974B000F9874 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D073E25E2289974B000F9874 /* UILabelExtension.swift */; };
 		D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA5F21F9FA5200B63F02 /* AppDelegate.swift */; };
 		D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D08EBA6621F9FA5300B63F02 /* Assets.xcassets */; };
 		D08EBA7521F9FA5300B63F02 /* QuizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7421F9FA5300B63F02 /* QuizTests.swift */; };
@@ -70,6 +71,7 @@
 		D01CEA2921F9FD0E00AF1266 /* ResultScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultScreenView.swift; sourceTree = "<group>"; };
 		D01CEA2B21F9FD6400AF1266 /* QuizModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModel.swift; sourceTree = "<group>"; };
 		D01CEA2D21F9FDD100AF1266 /* MainTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabViewController.swift; sourceTree = "<group>"; };
+		D073E25E2289974B000F9874 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		D08EBA5C21F9FA5200B63F02 /* Quiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08EBA5F21F9FA5200B63F02 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D08EBA6621F9FA5300B63F02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 			children = (
 				D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */,
 				D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */,
+				D073E25E2289974B000F9874 /* UILabelExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */,
 				D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */,
 				D0E82C432210091300960D7C /* Enums.swift in Sources */,
+				D073E25F2289974B000F9874 /* UILabelExtension.swift in Sources */,
 				D01CEA2421F9FCAA00AF1266 /* ResultScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -56,23 +56,16 @@ class QuizScreenView: UIView {
         
         
         self.backgroundColor = .white
-        let quizScreenLabel:UILabel = UILabel()
-        let button1:UIButton = UIButton()
-        let button2:UIButton = UIButton()
-        let button3:UIButton = UIButton()
-        let button4:UIButton = UIButton()
-        
-        
-        quizScreenLabel.backgroundColor = .gray
-        quizScreenLabel.numberOfLines = 0
-        quizScreenLabel.font = UIFont.boldSystemFont(ofSize: 20)
-        quizScreenLabel.clipsToBounds = true
-        quizScreenLabel.textColor = .white
-        quizScreenLabel.bounds.size.height = UIScreen.main.bounds.height * 0.4
-        quizScreenLabel.layer.cornerRadius = quizScreenLabel.bounds.height / 9
-        quizScreenLabel.text = quizModel.quizTitle
-        quizScreenLabel.textAlignment = .center
+        let quizScreenLabel:UILabel = UILabel(title: quizModel.quizTitle,
+                                              font: UIFont.boldSystemFont(ofSize: 20),
+                                              textColor: .white,
+                                              backgroundColor: .gray,
+                                              textAlignment: .center,
+                                              numberOfLines: 0
+        )
+        quizScreenLabel.labelHeight(multiplier: 0.4, cornerRadius: 9)
         self.addSubview(quizScreenLabel)
+        
         
         quizScreenLabel.translatesAutoresizingMaskIntoConstraints = false
         quizScreenLabel.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: -10).isActive = true
@@ -81,6 +74,10 @@ class QuizScreenView: UIView {
         quizScreenLabel.heightAnchor.constraint(equalToConstant: quizScreenLabel.bounds.height).isActive = true
         
         
+        let button1:UIButton = UIButton()
+        let button2:UIButton = UIButton()
+        let button3:UIButton = UIButton()
+        let button4:UIButton = UIButton()
         
         let buttons:[UIButton] = [button1,button2,button3,button4]
         var numbers = [0,1,2,3]
@@ -88,11 +85,14 @@ class QuizScreenView: UIView {
         
         for i in 0..<buttons.count {
             let num:Int = Int(arc4random_uniform(UInt32(numbers.count)))
-            buttons[i].setButton(title: stringArray[num], backgroundColor: colors[i], font: UIFont.boldSystemFont(ofSize: 18), target: self, action: #selector(buttonTapAction))
-            buttons[i].setTitle(stringArray[num], for: .normal)
-            buttons[i].addTarget(self, action: #selector(buttonTapAction), for: .touchUpInside)
+            buttons[i].setButton(title: stringArray[num],
+                                 backgroundColor: colors[i],
+                                 font: UIFont.boldSystemFont(ofSize: 18),
+                                 target: self,
+                                 action: #selector(buttonTapAction)
+            )
+            
             buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
-            buttons[i].titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
             self.addSubview(buttons[i])
             
             numbers.remove(at: num)

@@ -12,7 +12,7 @@ import RealmSwift
 class QuizEditViewController: UIViewController {
     
     // MARK: Properties
-    let config = Realm.Configuration(schemaVersion: 1)
+    private let config = Realm.Configuration(schemaVersion: 1)
     private var realm:Realm!
     private var quizEditView:QuizEditView?
     private var quzi_id:Int?

@@ -41,18 +41,18 @@ class ResultScreenView: UIView {
     private func viewLoad(){
         self.backgroundColor = .white
         
-        
-
         guard let correctString:String = trueConunt else {
             return
         }
         
-        let correctCountLabel:UILabel = UILabel()
-        
-        correctCountLabel.backgroundColor = .orange
-        correctCountLabel.clipsToBounds = true
-        correctCountLabel.bounds.size.height = 100
-        correctCountLabel.text = "   あなたは\(correctString)問正解しました。"
+        let correctCountLabel:UILabel = UILabel(title: "   あなたは\(correctString)問正解しました。",
+            font: UIFont.systemFont(ofSize: 18),
+            textColor: .black,
+            backgroundColor: .orange,
+            textAlignment: .left,
+            numberOfLines: 0
+        )
+        correctCountLabel.labelHeight(height: 100, cornerRadius: 8)
         self.addSubview(correctCountLabel)
         
         correctCountLabel.translatesAutoresizingMaskIntoConstraints = false
