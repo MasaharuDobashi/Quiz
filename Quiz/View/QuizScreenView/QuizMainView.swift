@@ -16,7 +16,8 @@ protocol QuizMainViewDelegate: class {
 class QuizMainView: UIView {
     
     // MARK: Properties
-    var isActiveQuiz: Bool!
+    private let button:UIButton = UIButton()
+    var isActiveQuiz: Bool = false
     
 
     weak var quizMainViewDelegate:QuizMainViewDelegate?
@@ -44,13 +45,13 @@ class QuizMainView: UIView {
     
     private func viewLoad(){
         
-        let button:UIButton = UIButton()
         button.setButton(title: "クイズスタート",
                          backgroundColor: .orange,
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(buttonTapAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        
         if isActiveQuiz == false { button.backgroundColor = .gray }
         self.addSubview(button)
         
@@ -64,6 +65,14 @@ class QuizMainView: UIView {
     // MARK: ButtonAction
     @objc private func buttonTapAction(){
         quizMainViewDelegate?.quizStartButtonAction()
+    }
+    
+    func buttonColorChange(){
+        if isActiveQuiz == false {
+            button.backgroundColor = .gray
+        } else {
+             button.backgroundColor = .orange
+        }
     }
     
 }
