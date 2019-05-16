@@ -54,14 +54,7 @@ protocol QuizManagementViewDelegate: class {
         
         
         if self.quizModel?.count == 0 {
-            addSubview(noneLabel)
-            
-            noneLabel.translatesAutoresizingMaskIntoConstraints = false
-            noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
-            noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-            noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
-            noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
-            
+            setNoneLabel()
         }
     }
   
@@ -76,13 +69,6 @@ protocol QuizManagementViewDelegate: class {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
-        if quizModel == nil {
-            let cell:UITableViewCell = dequeueReusableCell(withIdentifier: "Cell")!
-            cell.textLabel?.text = "まだクイズが作成されていません"
-            
-            return cell
-        }
         
         if noneLabel.isDescendant(of: self) {
             noneLabel.removeFromSuperview()
@@ -118,6 +104,17 @@ protocol QuizManagementViewDelegate: class {
         }
 
         return [edit, del]
+    }
+    
+    
+    private func setNoneLabel(){
+        addSubview(noneLabel)
+        
+        noneLabel.translatesAutoresizingMaskIntoConstraints = false
+        noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+        noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
     }
     
 }

@@ -37,7 +37,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         
         if quizModel!.count < realm.objects(QuizModel.self).count {
             quizModel?.append(realm.objects(QuizModel.self).last!)
-            quizManagementView?.quizModel?.append(self.quizModel!.last!)
+            quizManagementView?.quizModel? = self.quizModel!
         }
         
         quizManagementView?.reloadData()
