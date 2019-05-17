@@ -42,11 +42,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController,animated: true, completion: nil)
         } else {
-            AlertManager().alertAction(viewController: self, title: nil, message: "クイズを作成してください", handler1: { [weak self] _ in
-                let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
-                let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-                self?.present(navigationController,animated: true, completion: nil)})
-        }
+            let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
+            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+            self.present(navigationController,animated: true, completion: nil)}
     }
 }
 
