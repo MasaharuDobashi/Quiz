@@ -49,8 +49,9 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             return
         }
 
-        
-        if quizNum == 0 {return}
+        #if DEBUG
+        print(quizModel[quizNum])
+        #endif
         
         quizScreenView?.quizModel = quizModel[quizNum]
         quizScreenView?.quizChange()
