@@ -42,10 +42,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         
         quizManagementView?.reloadData()
         
-        #if DEBUG
-        print(quizModel!)
-        #endif
-        
+        debugPrint(object: quizModel)
     }
     
     // MARK: Private Func

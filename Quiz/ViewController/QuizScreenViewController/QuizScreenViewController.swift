@@ -48,10 +48,8 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             })
             return
         }
-
-        #if DEBUG
-        print(quizModel[quizNum])
-        #endif
+        
+        debugPrint(object: quizModel[quizNum])
         
         quizScreenView?.quizModel = quizModel[quizNum]
         quizScreenView?.quizChange()

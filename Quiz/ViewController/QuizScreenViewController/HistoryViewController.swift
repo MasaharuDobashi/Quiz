@@ -34,9 +34,7 @@ final class HistoryViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        #if DEBUG
-        print(historyModel!)
-        #endif
+        debugPrint(object: historyModel)
         
         historyView.lineAnimetion()
     }

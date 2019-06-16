@@ -49,9 +49,6 @@ class ResultScreenViewController: UIViewController {
         let conunt: String = String(trueConunt)
         historyModel = HistoryModel()
         realm = try! Realm()
-        #if DEBUG
-        print("true: \(conunt)\ndate: \(nowDate())")
-        #endif
         
         
         historyModel.quizTrueCount = conunt
@@ -61,6 +58,8 @@ class ResultScreenViewController: UIViewController {
         try! realm.write() {
             realm.add(historyModel)
         }
+        
+        debugPrint(object: historyModel)
     }
     
     
