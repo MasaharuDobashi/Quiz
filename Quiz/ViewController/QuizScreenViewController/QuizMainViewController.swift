@@ -46,5 +46,11 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
             self.present(navigationController,animated: true, completion: nil)}
     }
+    
+    
+    func historyButtonAction() {
+        let viewController:HistoryViewController = HistoryViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 

@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol ResultScreenViewDelegate:class {
-    var trueConunt:Int {get}
-}
-
 class ResultScreenView: UIView {
     
     // MARK: Properties

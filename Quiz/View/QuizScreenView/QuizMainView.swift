@@ -11,12 +11,14 @@ import UIKit
 
 protocol QuizMainViewDelegate: class {
     func quizStartButtonAction()
+    func historyButtonAction()
 }
 
 class QuizMainView: UIView {
     
     // MARK: Properties
-    private let quizStartButton:UIButton = UIButton()
+    private var quizStartButton:UIButton!
+    private var historyButton: UIButton!
     var isActiveQuiz: Bool = false
     
 
@@ -44,6 +46,7 @@ class QuizMainView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
+        quizStartButton = UIButton()
         
         quizStartButton.setButton(title: "",
                          backgroundColor: .orange,
@@ -52,18 +55,47 @@ class QuizMainView: UIView {
         )
         quizStartButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         buttonColorChange()
-        self.addSubview(quizStartButton)
+        addSubview(quizStartButton)
         
-        quizStartButton.translatesAutoresizingMaskIntoConstraints = false
-        quizStartButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        quizStartButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
-        quizStartButton.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        
+        historyButton = UIButton()
+        historyButton.setButton(title: "履歴",
+                                backgroundColor: .blue,
+                                font: quizStartButton.titleLabel!.font,
+                                target: self, action: #selector(historyButtonAction)
+        )
+        
+        historyButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        addSubview(historyButton)
+        
+        
+        setConstraint()
     }
+    
+    private func setConstraint(){
+        quizStartButton.translatesAutoresizingMaskIntoConstraints = false
+        quizStartButton.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
+        quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+        quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+        
+        
+        historyButton.translatesAutoresizingMaskIntoConstraints = false
+        historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
+        historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+        historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
+    }
+    
     
     // MARK: ButtonAction
     @objc private func buttonTapAction(){
         quizMainViewDelegate?.quizStartButtonAction()
+    }
+    
+    
+    @objc private func historyButtonAction(){
+        quizMainViewDelegate?.historyButtonAction()
     }
     
     // MARK: internalFunc
