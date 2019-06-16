@@ -8,12 +8,15 @@
 
 import UIKit
 
+fileprivate let screenWidth = UIScreen.main.bounds.width
+
 final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    private var view:UIView!
-    private var table: UITableView!
+    private var lineGraphView:UIView!
+    private var totalsTable: UITableView!
     private var boderView:LineView!
     private var historyModel: [HistoryModel]!
+    private var trueCounts:[CGFloat]!
     
     
     
@@ -21,15 +24,19 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         super.init(frame: frame)
         
         backgroundColor = .white
-        
-        
-        
-       
+
     }
     
     convenience init(frame: CGRect, historyModel model: [HistoryModel]) {
         self.init(frame: frame)
         historyModel = model
+        trueCounts = [CGFloat]()
+        
+        for i in 0..<historyModel.count {
+            let count:Int = Int(historyModel[i].quizTrueCount)!
+            trueCounts.append(CGFloat(count))
+        }
+        
         
         viewLoad()
     }
@@ -41,18 +48,21 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func viewLoad(){
-        view = UIView()
-        addSubview(view)
+        lineGraphView = UIView()
+        addSubview(lineGraphView)
         
         boderView = LineView()
-        view.addSubview(boderView)
+//        lineGraphView.layer.borderWidth = 1
+        
+        boderView.getCounts(trueCount: trueCounts)
+        lineGraphView.addSubview(boderView)
         
         
-        table = UITableView()
-        table.register(HistoryCell.self, forCellReuseIdentifier: "historyCell")
-        table.delegate = self
-        table.dataSource = self
-        addSubview(table)
+        totalsTable = UITableView()
+        totalsTable.register(HistoryCell.self, forCellReuseIdentifier: "historyCell")
+        totalsTable.delegate = self
+        totalsTable.dataSource = self
+        addSubview(totalsTable)
         
         setConstraint()
         
@@ -60,19 +70,24 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func setConstraint(){
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        view.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        view.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
-        view.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.4).isActive = true
+        lineGraphView.translatesAutoresizingMaskIntoConstraints = false
+        lineGraphView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        lineGraphView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        lineGraphView.widthAnchor.constraint(equalToConstant: screenWidth * 0.9).isActive = true
+        lineGraphView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         
+        boderView.translatesAutoresizingMaskIntoConstraints = false
+        boderView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
+        boderView.leadingAnchor.constraint(equalTo: lineGraphView.leadingAnchor).isActive = true
+        boderView.trailingAnchor.constraint(equalTo: lineGraphView.trailingAnchor).isActive = true
+        boderView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
-        table.translatesAutoresizingMaskIntoConstraints = false
-        table.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
-        table.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        table.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
-        table.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        totalsTable.translatesAutoresizingMaskIntoConstraints = false
+        totalsTable.topAnchor.constraint(equalTo: lineGraphView.bottomAnchor, constant: 0).isActive = true
+        totalsTable.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        totalsTable.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
+        totalsTable.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         
     }
     
@@ -105,6 +120,11 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
 
 
 
+
+
+
+
+
 fileprivate final class HistoryCell: UITableViewCell {
     
     
@@ -129,9 +149,18 @@ fileprivate final class HistoryCell: UITableViewCell {
 
 
 
+
+
+
+
+
+
+
+
 fileprivate final class LineView: UIView {
     
     let lineLayer:CAShapeLayer = CAShapeLayer()
+    var totals: [CGFloat]!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -143,15 +172,20 @@ fileprivate final class LineView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func getCounts(trueCount: [CGFloat]){
+        totals = trueCount
+    }
+    
     func lineAnimetion(){
-        let screenWidth = UIScreen.main.bounds.width
+        let viewHeight: CGFloat = 290
+        
         
         let path = UIBezierPath()
-        path.move(to: CGPoint(x: 10, y: 90))
-        path.addLine(to: CGPoint(x: screenWidth * 0.1, y: 280))
-        path.addLine(to: CGPoint(x: screenWidth * 0.3, y: 20))
-        path.addLine(to: CGPoint(x: screenWidth * 0.5, y: 130))
-        path.addLine(to: CGPoint(x: UIScreen.main.bounds.width - 10, y: 100))
+        
+        path.move(to: CGPoint(x: 10, y: viewHeight - totals[0] * 40))
+        for i in 1..<totals.count {
+            path.addLine(to: CGPoint(x: screenWidth * (CGFloat(i) * 0.05), y: viewHeight - totals[i] * 40))
+        }
         
         
         layer.addSublayer(lineLayer)
