@@ -12,7 +12,7 @@ fileprivate let screenWidth = UIScreen.main.bounds.width
 
 final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    private var lineGraphView:UIView!
+    private var lineGraphViewScrollView:UIScrollView!
     private var totalsTable: UITableView!
     private var boderView:LineView!
     private var historyModel: [HistoryModel]!
@@ -48,14 +48,14 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func viewLoad(){
-        lineGraphView = UIView()
-        addSubview(lineGraphView)
+        lineGraphViewScrollView = UIScrollView()
+        addSubview(lineGraphViewScrollView)
         
         boderView = LineView()
-//        lineGraphView.layer.borderWidth = 1
+        lineGraphViewScrollView.layer.borderWidth = 1
         
         boderView.getCounts(trueCount: trueCounts)
-        lineGraphView.addSubview(boderView)
+        lineGraphViewScrollView.addSubview(boderView)
         
         
         totalsTable = UITableView()
@@ -64,27 +64,28 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         totalsTable.dataSource = self
         addSubview(totalsTable)
         
+        
+        lineGraphViewScrollView.contentSize = CGSize(width: 20 * trueCounts.count, height: 300)
         setConstraint()
         
     }
     
     
     private func setConstraint(){
-        lineGraphView.translatesAutoresizingMaskIntoConstraints = false
-        lineGraphView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        lineGraphView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        lineGraphView.widthAnchor.constraint(equalToConstant: screenWidth * 0.9).isActive = true
-        lineGraphView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        lineGraphViewScrollView.translatesAutoresizingMaskIntoConstraints = false
+        lineGraphViewScrollView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        lineGraphViewScrollView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        lineGraphViewScrollView.widthAnchor.constraint(equalToConstant: screenWidth * 0.9).isActive = true
+        lineGraphViewScrollView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         
         boderView.translatesAutoresizingMaskIntoConstraints = false
-        boderView.topAnchor.constraint(equalTo: topAnchor, constant: 0).isActive = true
-        boderView.leadingAnchor.constraint(equalTo: lineGraphView.leadingAnchor).isActive = true
-        boderView.trailingAnchor.constraint(equalTo: lineGraphView.trailingAnchor).isActive = true
+        boderView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
+        boderView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
         boderView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         totalsTable.translatesAutoresizingMaskIntoConstraints = false
-        totalsTable.topAnchor.constraint(equalTo: lineGraphView.bottomAnchor, constant: 0).isActive = true
+        totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 0).isActive = true
         totalsTable.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         totalsTable.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         totalsTable.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -184,7 +185,7 @@ fileprivate final class LineView: UIView {
         
         path.move(to: CGPoint(x: 10, y: viewHeight - totals[0] * 40))
         for i in 1..<totals.count {
-            path.addLine(to: CGPoint(x: screenWidth * (CGFloat(i) * 0.05), y: viewHeight - totals[i] * 40))
+            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: viewHeight - totals[i] * 40))
         }
         
         
