@@ -24,6 +24,10 @@ final class HistoryViewController: UIViewController {
         
         for i in 0..<realm.objects(HistoryModel.self).count {
             historyModel.append(realm.objects(HistoryModel.self)[i])
+            
+            historyModel.sort{
+                $0.date < $1.date
+            }
         }
         historyView = HistoryView(frame: frame_Size(self), historyModel: historyModel)
         view.addSubview(historyView)

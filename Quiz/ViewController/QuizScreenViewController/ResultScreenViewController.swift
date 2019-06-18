@@ -58,10 +58,33 @@ class ResultScreenViewController: UIViewController {
         try! realm.write() {
             realm.add(historyModel)
         }
-        
+    
+        if realm.objects(HistoryModel.self).count > 30 {
+            deleteRealm()
+        }
+ 
         debugPrint(object: historyModel)
     }
     
+    
+    
+    private func deleteRealm(){
+        var historyModel:[HistoryModel] = [HistoryModel]()
+        for i in 0..<realm.objects(HistoryModel.self).count {
+            historyModel.append(realm.objects(HistoryModel.self)[i])
+            
+            historyModel.sort{
+                $0.date < $1.date
+            }
+        }
+        
+        debugPrint(object: historyModel.first)
+        
+        try! realm.write() {
+            realm.delete(historyModel.first!)
+        }
+ 
+    }
     
     func nowDate() -> String {
         let format = DateFormatter()

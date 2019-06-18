@@ -85,7 +85,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         boderView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         totalsTable.translatesAutoresizingMaskIntoConstraints = false
-        totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 0).isActive = true
+        totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 10).isActive = true
         totalsTable.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         totalsTable.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         totalsTable.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
