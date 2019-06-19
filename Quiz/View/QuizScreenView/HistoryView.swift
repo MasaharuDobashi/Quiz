@@ -183,9 +183,9 @@ fileprivate final class LineView: UIView {
         
         let path = UIBezierPath()
         
-        path.move(to: CGPoint(x: 10, y: viewHeight - totals[0] * 40))
+        path.move(to: CGPoint(x: 10, y: viewHeight - totals[0] * 25))
         for i in 1..<totals.count {
-            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: viewHeight - totals[i] * 40))
+            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: viewHeight - totals[i] * 25))
         }
         
         

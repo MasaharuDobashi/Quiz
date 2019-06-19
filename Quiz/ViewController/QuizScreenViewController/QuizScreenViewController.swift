@@ -31,6 +31,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         
         quizModelAppend()
         if quizModel.count == 0 {return}
+        if quizModel.count > 10 {return}
         
         quizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[quizNum])
         quizScreenView?.quizScreenViewDelagate = self
@@ -47,6 +48,11 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
                 self.leftButtonAction()
             })
             return
+        } else if quizModel.count > 10 {
+            self.view.backgroundColor = .white
+            AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+                self.leftButtonAction()
+            })
         }
         
         debugPrint(object: quizModel[quizNum])
