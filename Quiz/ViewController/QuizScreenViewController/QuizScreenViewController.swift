@@ -18,17 +18,24 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     private var quizModel:[QuizModel]!
     
     // MARK: QuizScreenViewDelagate Properties
-    var num: Int = 0
-    var trueConunt: Int = 0
+     var quizNum: Int = 0
+     var trueConunt: Int = 0
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        
+        
         
         quizModelAppend()
-    
+        if quizModel.count == 0 {return}
+        if quizModel.count > 10 {return}
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        quizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[quizNum])
+        quizScreenView?.quizScreenViewDelagate = self
+        self.view.addSubview(quizScreenView!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,13 +47,18 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
                 self.leftButtonAction()
             })
-            
             return
+        } else if quizModel.count > 10 {
+            self.view.backgroundColor = .white
+            AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+                self.leftButtonAction()
+            })
         }
         
-        quizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[num])
-        quizScreenView?.quizScreenViewDelagate = self
-        self.view.addSubview(quizScreenView!)
+        debugPrint(object: quizModel[quizNum])
+        
+        quizScreenView?.quizModel = quizModel[quizNum]
+        quizScreenView?.quizChange()
     }
     
     
@@ -66,11 +78,8 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     
     // MARK: QuizScreenViewDelagate Func
     func buttonTapAction() {
-        num += 1
-        if  num < quizModel.count {
-            if (quizScreenView?.isDescendant(of: self.view))! {
-                quizScreenView?.removeFromSuperview()
-            }
+        quizNum += 1
+        if  quizNum < quizModel.count {
             self.viewWillAppear(true)
         }else{
             let viewController:ResultScreenViewController = ResultScreenViewController(trueConunt: trueConunt)

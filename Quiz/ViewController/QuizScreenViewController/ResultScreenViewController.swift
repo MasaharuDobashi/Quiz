@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import RealmSwift
 
-class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
+class ResultScreenViewController: UIViewController {
     
-    // MARK: QuizScreenViewDelagate Properties
-    var trueConunt: Int = 0
+    // MARK: Properties
+    
+    private var realm: Realm!
+    private var historyModel: HistoryModel!
+    private var trueConunt: Int = 0
     
     // MARK: Init
     
@@ -22,6 +26,8 @@ class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
     convenience init(trueConunt:Int){
         self.init(nibName: nil, bundle: nil)
         self.trueConunt = trueConunt
+        
+        addRealm(trueConunt: trueConunt)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,6 +43,54 @@ class ResultScreenViewController: UIViewController,ResultScreenViewDelegate {
         
         let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self), trueConunt:trueConunt)
         self.view.addSubview(resultScreenView)
+    }
+    
+    private func addRealm(trueConunt: Int){
+        let conunt: String = String(trueConunt)
+        historyModel = HistoryModel()
+        realm = try! Realm()
+        
+        
+        historyModel.quizTrueCount = conunt
+        historyModel.date = nowDate()
+        
+        
+        try! realm.write() {
+            realm.add(historyModel)
+        }
+    
+        if realm.objects(HistoryModel.self).count > 30 {
+            deleteRealm()
+        }
+ 
+        debugPrint(object: historyModel)
+    }
+    
+    
+    
+    private func deleteRealm(){
+        var historyModel:[HistoryModel] = [HistoryModel]()
+        for i in 0..<realm.objects(HistoryModel.self).count {
+            historyModel.append(realm.objects(HistoryModel.self)[i])
+            
+            historyModel.sort{
+                $0.date < $1.date
+            }
+        }
+        
+        debugPrint(object: historyModel.first)
+        
+        try! realm.write() {
+            realm.delete(historyModel.first!)
+        }
+ 
+    }
+    
+    func nowDate() -> String {
+        let format = DateFormatter()
+        format.dateFormat = "yyyy/MM/dd hh:mm"
+        let now = Date()
+        return format.string(from: now)
     }
     
 }

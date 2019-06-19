@@ -21,12 +21,14 @@ protocol QuizManagementViewDelegate: class {
     
     var quizModel:[QuizModel]?
     private let noneLabel:UILabel = {
-        let label:UILabel = UILabel()
-        label.bounds.size.height = 50
-        label.text = "まだクイズが作成されていません"
-        label.backgroundColor = UIColor.lightGray
-        label.clipsToBounds = true
-        label.textAlignment = .center
+        let label:UILabel = UILabel(title: "まだクイズが作成されていません",
+                                    font: UIFont.systemFont(ofSize: 18),
+                                    textColor: .black,
+                                    backgroundColor: .lightGray,
+                                    textAlignment: .center,
+                                    numberOfLines: 0
+        )
+        label.labelHeight(height: 50, cornerRadius: 8)
         
         return label
     }()
@@ -52,14 +54,7 @@ protocol QuizManagementViewDelegate: class {
         
         
         if self.quizModel?.count == 0 {
-            addSubview(noneLabel)
-            
-            noneLabel.translatesAutoresizingMaskIntoConstraints = false
-            noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
-            noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-            noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
-            noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
-            noneLabel.layer.cornerRadius = noneLabel.bounds.height / 8
+            setNoneLabel()
         }
     }
   
@@ -74,13 +69,6 @@ protocol QuizManagementViewDelegate: class {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
-        if quizModel == nil {
-            let cell:UITableViewCell = dequeueReusableCell(withIdentifier: "Cell")!
-            cell.textLabel?.text = "まだクイズが作成されていません"
-            
-            return cell
-        }
         
         if noneLabel.isDescendant(of: self) {
             noneLabel.removeFromSuperview()
@@ -118,6 +106,17 @@ protocol QuizManagementViewDelegate: class {
         return [edit, del]
     }
     
+    
+    private func setNoneLabel(){
+        addSubview(noneLabel)
+        
+        noneLabel.translatesAutoresizingMaskIntoConstraints = false
+        noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
+        noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+        noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
+    }
+    
 }
 
 
@@ -128,8 +127,20 @@ fileprivate final class QuizListCell:UITableViewCell {
     
     // MARK: Properties
     
-    let quizNoLabel:UILabel = UILabel()
-    let quizTitleLabel:UILabel = UILabel()
+    let quizNoLabel:UILabel = UILabel(title: nil,
+                                      font: UIFont.systemFont(ofSize: 18),
+                                      textColor: .black,
+                                      backgroundColor: .clear,
+                                      textAlignment: .left,
+                                      numberOfLines: 1
+    )
+    let quizTitleLabel:UILabel = UILabel(title: nil,
+                                         font: UIFont.systemFont(ofSize: 19),
+                                         textColor: .black,
+                                         backgroundColor: .clear,
+                                         textAlignment: .left,
+                                         numberOfLines: 0
+    )
     
     // MARK: Init
     

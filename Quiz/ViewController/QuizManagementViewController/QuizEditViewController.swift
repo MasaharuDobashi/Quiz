@@ -12,7 +12,7 @@ import RealmSwift
 class QuizEditViewController: UIViewController {
     
     // MARK: Properties
-    let config = Realm.Configuration(schemaVersion: 1)
+    private let config = Realm.Configuration(schemaVersion: 1)
     private var realm:Realm!
     private var quizEditView:QuizEditView?
     private var quzi_id:Int?
@@ -59,9 +59,15 @@ class QuizEditViewController: UIViewController {
             navigationItemAction()
             quizModelAppend(quiz_id: quzi_id!)
             quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
+            #if DEBUG
+            print(quizModel!)
+            #endif
         case .detail:
             quizModelAppend(quiz_id: quzi_id!)
             quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
+            #if DEBUG
+            print(quizModel!)
+            #endif
         }
 
         self.view.addSubview(quizEditView!)

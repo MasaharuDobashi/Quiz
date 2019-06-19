@@ -108,7 +108,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         case 5:
             mode == .add ? displaySwitch.isOn = true : nil
             cell.textLabel?.text = " 表示・非表示"
-            cell.addSubview(displaySwitch)
+            cell.contentView.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false
             displaySwitch.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
             displaySwitch.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
@@ -163,7 +163,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == tableView.numberOfSections ? 350 : CGFloat.leastNormalMagnitude
+        return section == tableView.numberOfSections - 1 ? 350 : CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

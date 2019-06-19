@@ -21,4 +21,14 @@ extension UIViewController {
     @objc func leftButtonAction(){
         self.dismiss(animated: true, completion: nil)
     }
+    
+    
+    
+    func debugPrint(object: Any?){
+        #if DEBUG
+        if let _object = object {
+            print(_object)
+        }
+        #endif
+    }
 }

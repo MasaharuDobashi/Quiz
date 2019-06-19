@@ -20,3 +20,7 @@ class QuizModel:Object {
 }
 
 
+class HistoryModel: Object {
+    @objc dynamic var quizTrueCount: String = ""
+    @objc dynamic var date: String = ""
+}

@@ -11,12 +11,16 @@ import UIKit
 
 protocol QuizMainViewDelegate: class {
     func quizStartButtonAction()
+    func historyButtonAction()
 }
 
 class QuizMainView: UIView {
     
     // MARK: Properties
-    var isActiveQuiz: Bool!
+    private var quizStartButton:UIButton!
+    private var historyButton: UIButton!
+    var isActiveQuiz: Bool = false
+    var isHistory: Bool = false
     
 
     weak var quizMainViewDelegate:QuizMainViewDelegate?
@@ -32,8 +36,8 @@ class QuizMainView: UIView {
     convenience init(frame: CGRect, isActiveQuiz: Bool) {
         self.init(frame:frame)
         self.isActiveQuiz = isActiveQuiz
-        viewLoad()
         
+        viewLoad()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,27 +47,76 @@ class QuizMainView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
+        quizStartButton = UIButton()
         
-        let button:UIButton = UIButton()
-        button.setButton(title: "クイズスタート",
+        quizStartButton.setButton(title: "",
                          backgroundColor: .orange,
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(buttonTapAction)
         )
-        button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
-        if isActiveQuiz == false { button.backgroundColor = .gray }
-        self.addSubview(button)
+        quizStartButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        startButtonColorChange()
+        addSubview(quizStartButton)
         
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        button.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        button.heightAnchor.constraint(equalToConstant: button.bounds.height).isActive = true
-        button.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        
+        historyButton = UIButton()
+        historyButton.setButton(title: "履歴",
+                                backgroundColor: .blue,
+                                font: quizStartButton.titleLabel!.font,
+                                target: self, action: #selector(historyButtonAction)
+        )
+        historyButton.isHidden = true
+        historyButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        addSubview(historyButton)
+        
+        
+        setConstraint()
     }
+    
+    private func setConstraint(){
+        quizStartButton.translatesAutoresizingMaskIntoConstraints = false
+        quizStartButton.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
+        quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+        quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+        
+        
+        historyButton.translatesAutoresizingMaskIntoConstraints = false
+        historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
+        historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+        historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
+    }
+    
     
     // MARK: ButtonAction
     @objc private func buttonTapAction(){
         quizMainViewDelegate?.quizStartButtonAction()
+    }
+    
+    
+    @objc private func historyButtonAction(){
+        quizMainViewDelegate?.historyButtonAction()
+    }
+    
+    // MARK: internalFunc
+    
+    func startButtonColorChange(){
+        if isActiveQuiz == false {
+            quizStartButton.setTitle("クイズを作成", for: .normal)
+            quizStartButton.backgroundColor = .gray
+        } else {
+            quizStartButton.setTitle("クイズスタート", for: .normal)
+            quizStartButton.backgroundColor = .orange
+        }
+    }
+    
+    func historyButtonColorChange(){
+        if isHistory == false {
+            historyButton.isHidden = true
+        } else {
+            historyButton.isHidden = false
+        }
     }
     
 }

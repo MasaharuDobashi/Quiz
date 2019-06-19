@@ -27,5 +27,6 @@ extension UIButton {
     func buttonHeight(multiplier: CGFloat, cornerRadius: CGFloat) {
         self.bounds.size.height = UIScreen.main.bounds.height * multiplier
         self.layer.cornerRadius = self.bounds.height / cornerRadius
+        self.clipsToBounds = true
     }
 }
