@@ -20,6 +20,7 @@ class QuizMainView: UIView {
     private var quizStartButton:UIButton!
     private var historyButton: UIButton!
     var isActiveQuiz: Bool = false
+    var isHistory: Bool = false
     
 
     weak var quizMainViewDelegate:QuizMainViewDelegate?
@@ -54,7 +55,7 @@ class QuizMainView: UIView {
                          target: self, action: #selector(buttonTapAction)
         )
         quizStartButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
-        buttonColorChange()
+        startButtonColorChange()
         addSubview(quizStartButton)
         
         
@@ -64,7 +65,7 @@ class QuizMainView: UIView {
                                 font: quizStartButton.titleLabel!.font,
                                 target: self, action: #selector(historyButtonAction)
         )
-        
+        historyButton.isHidden = true
         historyButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         addSubview(historyButton)
         
@@ -100,13 +101,21 @@ class QuizMainView: UIView {
     
     // MARK: internalFunc
     
-    func buttonColorChange(){
+    func startButtonColorChange(){
         if isActiveQuiz == false {
             quizStartButton.setTitle("クイズを作成", for: .normal)
             quizStartButton.backgroundColor = .gray
         } else {
             quizStartButton.setTitle("クイズスタート", for: .normal)
             quizStartButton.backgroundColor = .orange
+        }
+    }
+    
+    func historyButtonColorChange(){
+        if isHistory == false {
+            historyButton.isHidden = true
+        } else {
+            historyButton.isHidden = false
         }
     }
     

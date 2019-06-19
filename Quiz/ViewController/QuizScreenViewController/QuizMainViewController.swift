@@ -30,7 +30,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         super.viewWillAppear(animated)
       
         quizMainView.isActiveQuiz = realm.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView.buttonColorChange()
+        quizMainView.startButtonColorChange()
+        
+        quizMainView.isHistory = realm.objects(HistoryModel.self).count != 0 ? true : false
+        quizMainView.historyButtonColorChange()
         
     }
     
