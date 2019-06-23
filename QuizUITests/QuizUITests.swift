@@ -111,10 +111,6 @@ class QuizUITests: XCTestCase {
         app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
         
         
-        
-        app.buttons["historyButton"].tap()
-        app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
-        
     }
     
     func testQuiz3_Edit(){
@@ -165,6 +161,28 @@ class QuizUITests: XCTestCase {
         
         app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
         app.alerts.buttons["閉じる"].tap()
+        sleep(2)
     }
     
+    
+    func testQuiz4_Delete(){
+        let app = XCUIApplication()
+        app.tabBars.buttons["Most Viewed"].tap()
+        app.tables.staticTexts["問題1"].swipeLeft()
+        app.tables.buttons["削除"].tap()
+        
+        app.alerts.buttons["削除"].tap()
+        sleep(2)
+        
+    }
+    
+    func testQuiz5_History(){
+        
+        let app = XCUIApplication()
+        app.buttons["historyButton"].tap()
+        
+        sleep(5)
+        
+        app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
+    }
 }
