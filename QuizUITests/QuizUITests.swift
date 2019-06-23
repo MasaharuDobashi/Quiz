@@ -40,7 +40,7 @@ class QuizUITests: XCTestCase {
     
     
     /// クイズをx個作成
-    func testCreateQuiz(){
+    func testQuiz1_Create(){
         let app = XCUIApplication()
         app.tabBars.buttons["Most Viewed"].tap()
         
@@ -70,7 +70,7 @@ class QuizUITests: XCTestCase {
     
     
     /// クイズスタートから履歴画面まで
-    func testQuizStart(){
+    func testQuiz2_Start(){
         let app = XCUIApplication()
         
         let startButton = app.buttons["クイズスタート"]
@@ -96,15 +96,17 @@ class QuizUITests: XCTestCase {
             
             app.tabBars.buttons["Favorites"].tap()
             
-            self.testQuizStart()
+            self.testQuiz2_Start()
          
         }
+   
         
-                
+        
         while app.buttons["正解1"].exists == true {
             app.buttons["正解1"].tap()
         }
- 
+        
+        
         sleep(3)
         app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
         
@@ -113,6 +115,56 @@ class QuizUITests: XCTestCase {
         app.buttons["historyButton"].tap()
         app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
         
+    }
+    
+    func testQuiz3_Edit(){
+        let app = XCUIApplication()
+        
+        app.tabBars.buttons["Most Viewed"].tap()
+        app.tables.staticTexts["問題1"].swipeLeft()
+        app.tables.buttons["編集"].tap()
+        
+        
+        var text:String = app.textFields["title"].value as! String
+        app.textFields["title"].tap()
+        for _ in 0..<text.count{
+            app.keys["delete"].tap()
+        }
+        
+        app.typeText("自動編集テスト")
+        text = app.textFields["true"].value as! String
+        
+        app.textFields["true"].tap()
+        for _ in 0..<text.count{
+            app.keys["delete"].tap()
+        }
+        app.typeText("自動編集(正解)")
+        
+        text = app.textFields["false1"].value as! String
+        app.textFields["false1"].tap()
+        for _ in 0..<text.count{
+            app.keys["delete"].tap()
+        }
+        app.typeText("自動編集(不正解1)")
+        
+        text = app.textFields["false2"].value as! String
+        app.textFields["false2"].tap()
+        for _ in 0..<text.count{
+            app.keys["delete"].tap()
+        }
+        
+        text = app.textFields["false3"].value as! String
+        app.typeText("自動編集(不正解2)")
+        
+        app.textFields["false3"].tap()
+        for _ in 0..<text.count{
+            app.keys["delete"].tap()
+        }
+        app.typeText("自動編集(不正解3)")
+        
+        
+        app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
+        app.alerts.buttons["閉じる"].tap()
     }
     
 }

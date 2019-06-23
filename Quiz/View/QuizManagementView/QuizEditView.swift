@@ -91,9 +91,11 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         
         switch indexPath.section {
         case 0:
+            titleTextField.accessibilityIdentifier = "title"
             titleTextField.placeholder = "クイズのタイトルを入力してください。"
             setTextFieldAutoLayout(textField: titleTextField, cell: cell)
         case 1:
+            true_TextField.accessibilityIdentifier = "true"
             true_TextField.placeholder = "正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: true_TextField, cell: cell)
         case 2:
