@@ -10,6 +10,8 @@ import XCTest
 
 //@testable import Quiz
 class QuizUITests: XCTestCase {
+    
+    var alertCount:Int = 0
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -34,7 +36,6 @@ class QuizUITests: XCTestCase {
   
         
     }
-    
     
     
     
@@ -68,11 +69,50 @@ class QuizUITests: XCTestCase {
     }
     
     
+    /// クイズスタートから履歴画面まで
     func testQuizStart(){
         let app = XCUIApplication()
-//        app.tables.buttons["Favorites"].tap()
-        app.buttons["クイズスタート"].tap()
+        
+        let startButton = app.buttons["クイズスタート"]
+        XCTAssert(startButton.exists, "問題が作成されていない")
+        app.buttons["quizStartButton"].tap()
+        
+        
+        if app.alerts["利用可能なクイズが10問を超えています。"].exists == true{
+            
+            alertCount += 1
+            app.buttons["閉じる"].tap()
+            
+            app.tabBars.buttons["Most Viewed"].tap()
+            app.tables.staticTexts["問題\(String(alertCount))"].swipeLeft()
+            app.tables.buttons["編集"].tap()
+            
+            app.tables.switches["switch"].tap()
+            app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
+            app.alerts.buttons["閉じる"].tap()
+            app.tabBars.buttons["Favorites"].tap()
+            
+            
+            
+            app.tabBars.buttons["Favorites"].tap()
+            
+            self.testQuizStart()
+         
+        }
+        
+                
+        while app.buttons["正解1"].exists == true {
+            app.buttons["正解1"].tap()
+        }
+ 
+        sleep(3)
+        app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
+        
+        
+        
+        app.buttons["historyButton"].tap()
+        app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
+        
     }
-
     
 }
