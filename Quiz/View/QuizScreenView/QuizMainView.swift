@@ -48,7 +48,7 @@ class QuizMainView: UIView {
     
     private func viewLoad(){
         quizStartButton = UIButton()
-        
+        quizStartButton.accessibilityIdentifier = "quizStartButton"
         quizStartButton.setButton(title: "",
                          backgroundColor: .orange,
                          font: UIFont.boldSystemFont(ofSize: 18),
@@ -60,6 +60,7 @@ class QuizMainView: UIView {
         
         
         historyButton = UIButton()
+        historyButton.accessibilityIdentifier = "historyButton"
         historyButton.setButton(title: "履歴",
                                 backgroundColor: .blue,
                                 font: quizStartButton.titleLabel!.font,

@@ -91,21 +91,27 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         
         switch indexPath.section {
         case 0:
+            titleTextField.accessibilityIdentifier = "title"
             titleTextField.placeholder = "クイズのタイトルを入力してください。"
             setTextFieldAutoLayout(textField: titleTextField, cell: cell)
         case 1:
+            true_TextField.accessibilityIdentifier = "true"
             true_TextField.placeholder = "正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: true_TextField, cell: cell)
         case 2:
+            false1_TextField.accessibilityIdentifier = "false1"
             false1_TextField.placeholder = "不正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: false1_TextField, cell: cell)
         case 3:
+            false2_textField.accessibilityIdentifier = "false2"
             false2_textField.placeholder = "不正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: false2_textField, cell: cell)
         case 4:
+            false3_textField.accessibilityIdentifier = "false3"
             false3_textField.placeholder = "不正解の回答を入力してください。"
             setTextFieldAutoLayout(textField: false3_textField, cell: cell)
         case 5:
+            displaySwitch.accessibilityIdentifier = "switch"
             mode == .add ? displaySwitch.isOn = true : nil
             cell.textLabel?.text = " 表示・非表示"
             cell.contentView.addSubview(displaySwitch)
