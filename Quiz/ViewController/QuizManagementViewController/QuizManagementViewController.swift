@@ -24,6 +24,12 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
          realm = try! Realm(configuration: config)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
+        #if DEBUG
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
+        #endif
+        
+        
         quizModelAppend()
         quizManagementView = QuizManagementView(frame: frame_Size(self), style: .grouped, quizModel: quizModel!)
         quizManagementView?.quizManagementViewDelegate = self
@@ -62,6 +68,23 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         self.present(navigationController,animated: true, completion: nil)
     }
     
+    @objc override func leftButtonAction(){
+        
+        
+//        realm = try! Realm(configuration: config)
+        
+        AlertManager().alertAction(viewController: self, title: "データベースの削除", message: "作成した問題や履歴を全件削除します", handler1: { [weak self]  (action) in
+            try! self?.realm.write {
+                self?.realm.deleteAll()
+            }
+            //        viewWillAppear(false)
+            self?.tabBarController?.selectedIndex = 0
+            self?.viewDidAppear(false)
+            self?.viewDidLoad()
+            
+        }){ (action) in return }
+        
+    }
     
     private func deleteRealm(indexPath: IndexPath){
         let quizModel = realm.objects(QuizModel.self)[indexPath.row]

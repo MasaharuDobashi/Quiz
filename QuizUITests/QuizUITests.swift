@@ -185,4 +185,19 @@ class QuizUITests: XCTestCase {
         
         app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
     }
+    
+    
+    func testQuiz6_AllDelete(){
+        #if DEBUG
+        let app = XCUIApplication()
+        app.tabBars.buttons["Most Viewed"].tap()
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["閉じる"].tap()
+        
+        
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["削除"].tap()
+        #endif
+        
+    }
 }
