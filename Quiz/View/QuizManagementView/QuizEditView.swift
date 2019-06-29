@@ -77,7 +77,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     // MARK: TableView
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 6
+        return InputType.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,32 +88,33 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
         
+        guard let rowEditValue:RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
         
         switch indexPath.section {
-        case 0:
-            titleTextField.accessibilityIdentifier = "title"
-            titleTextField.placeholder = "クイズのタイトルを入力してください。"
+        case InputType.title.rawValue:
+            titleTextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            titleTextField.placeholder = rowEditValue.placeholder
             setTextFieldAutoLayout(textField: titleTextField, cell: cell)
-        case 1:
-            true_TextField.accessibilityIdentifier = "true"
-            true_TextField.placeholder = "正解の回答を入力してください。"
+        case InputType.correctAnswer.rawValue:
+            true_TextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            true_TextField.placeholder = rowEditValue.placeholder
             setTextFieldAutoLayout(textField: true_TextField, cell: cell)
-        case 2:
-            false1_TextField.accessibilityIdentifier = "false1"
-            false1_TextField.placeholder = "不正解の回答を入力してください。"
+        case InputType.incorrectAnswer1.rawValue:
+            false1_TextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            false1_TextField.placeholder = rowEditValue.placeholder
             setTextFieldAutoLayout(textField: false1_TextField, cell: cell)
-        case 3:
-            false2_textField.accessibilityIdentifier = "false2"
-            false2_textField.placeholder = "不正解の回答を入力してください。"
+        case InputType.incorrectAnswer2.rawValue:
+            false2_textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            false2_textField.placeholder = rowEditValue.placeholder
             setTextFieldAutoLayout(textField: false2_textField, cell: cell)
-        case 4:
-            false3_textField.accessibilityIdentifier = "false3"
-            false3_textField.placeholder = "不正解の回答を入力してください。"
+        case InputType.incorrectAnswer3.rawValue:
+            false3_textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            false3_textField.placeholder = rowEditValue.placeholder
             setTextFieldAutoLayout(textField: false3_textField, cell: cell)
-        case 5:
-            displaySwitch.accessibilityIdentifier = "switch"
+        case InputType.showHide.rawValue:
+            displaySwitch.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             mode == .add ? displaySwitch.isOn = true : nil
-            cell.textLabel?.text = " 表示・非表示"
+            cell.textLabel?.text = rowEditValue.placeholder
             cell.contentView.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false
             displaySwitch.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
@@ -131,24 +132,11 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         let headerView:UIView = UIView()
         let headerLabel:UILabel = UILabel()
         
-        switch section {
-        case 0:
-            headerLabel.text = "タイトル"
-        case 1:
-            headerLabel.text = "正解"
-        case 2:
-            headerLabel.text = "不正解1"
-        case 3:
-            headerLabel.text = "不正解2"
-        case 4:
-            headerLabel.text = "不正解3"
-        case 5:
-            headerLabel.text = "表示"
-        default:
-            break
-        }
-        headerView.addSubview(headerLabel)
+        guard let headerTitle:String = InputType(rawValue: section)?.rowEditValue.headerTitle else { return UIView() }
         
+        headerLabel.text = headerTitle
+        
+        headerView.addSubview(headerLabel)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor).isActive = true
         headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20).isActive = true
@@ -159,7 +147,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? 40 : 30
+        return section == InputType.title.rawValue ? 40 : 30
     }
     
     
@@ -169,7 +157,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == tableView.numberOfSections - 1 ? 350 : CGFloat.leastNormalMagnitude
+        return section == InputType.showHide.rawValue ? 350 : CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -195,5 +183,82 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 20).isActive = true
         textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
         textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
+    }
+}
+
+
+
+
+
+
+protocol RowEditValue {
+    var placeholder:String { get }
+    var accessibilityIdentifier: String { get }
+    var headerTitle: String { get }
+}
+
+
+extension QuizEditView {
+    enum InputType: Int, CaseIterable {
+        case title
+        case correctAnswer
+        case incorrectAnswer1
+        case incorrectAnswer2
+        case incorrectAnswer3
+        case showHide
+        
+        
+        var rowEditValue: RowEditValue {
+            switch self {
+            case .title:
+                return Title()
+            case .correctAnswer:
+                return CorrectAnswer()
+            case .incorrectAnswer1:
+                return IncorrectAnswer1()
+            case .incorrectAnswer2:
+                return IncorrectAnswer2()
+            case .incorrectAnswer3:
+                return IncorrectAnswer3()
+            case .showHide:
+                return ShowHide()
+            }
+        }
+        
+        private struct Title: RowEditValue {
+            var placeholder: String = "クイズのタイトルを入力してください。"
+            var accessibilityIdentifier: String = "title"
+            var headerTitle: String = "正解"
+        }
+        
+        private struct CorrectAnswer: RowEditValue {
+            var placeholder: String = "正解の回答を入力してください。"
+            var accessibilityIdentifier: String = "correctAnswer"
+            var headerTitle: String = "不正解1"
+        }
+        
+        private struct IncorrectAnswer1: RowEditValue {
+            var placeholder: String = "正解の回答を入力してください。"
+            var accessibilityIdentifier: String  = "incorrectAnswer1"
+            var headerTitle: String = "不正解1"
+        }
+        
+        private struct IncorrectAnswer2: RowEditValue {
+            var placeholder: String = "不正解の回答を入力してください。"
+            var accessibilityIdentifier: String  = "incorrectAnswer2"
+            var headerTitle: String = "不正解2"
+        }
+        
+        private struct IncorrectAnswer3: RowEditValue {
+            var placeholder: String = "不正解の回答を入力してください。"
+            var accessibilityIdentifier: String  = "incorrectAnswer3"
+            var headerTitle: String = "不正解3"
+        }
+        
+        private struct ShowHide: RowEditValue {
+            var placeholder: String = " 表示・非表示"
+            var accessibilityIdentifier: String = "showHide"
+            var headerTitle: String = "表示"
+        }
     }
 }

@@ -75,8 +75,8 @@ protocol QuizManagementViewDelegate: class {
         }
         
         let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        cell.setCell(quizNo: "問題\(indexPath.row + 1)", quizTitle: (quizModel?[indexPath.row].quizTitle)!, displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
-        
+        cell.setCell(
+            listValue: ListValue(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!), displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
         return cell
     }
     
@@ -145,24 +145,19 @@ fileprivate final class QuizListCell:UITableViewCell {
     // MARK: Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .value2, reuseIdentifier: reuseIdentifier)
         
+        textLabel?.font = UIFont.systemFont(ofSize: 18)
+        textLabel?.textColor = .black
+        textLabel?.backgroundColor = .clear
+        textLabel?.textAlignment = .left
+        textLabel?.numberOfLines = 1
         
-        self.contentView.addSubview(quizNoLabel)
-        self.contentView.addSubview(quizTitleLabel)
-        
-        quizNoLabel.translatesAutoresizingMaskIntoConstraints = false
-        quizNoLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        quizNoLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20).isActive = true
-        quizNoLabel.widthAnchor.constraint(equalToConstant: self.bounds.width).isActive = true
-        quizNoLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-        quizTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        quizTitleLabel.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        quizTitleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 70 + 30).isActive = true
-        quizTitleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        quizTitleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
+        detailTextLabel?.font = UIFont.systemFont(ofSize: 19)
+        detailTextLabel?.textColor = .black
+        detailTextLabel?.backgroundColor = .clear
+        detailTextLabel?.textAlignment = .left
+        detailTextLabel?.numberOfLines = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -171,9 +166,12 @@ fileprivate final class QuizListCell:UITableViewCell {
     
     // MARK: InternalFunc
     
-    func setCell(quizNo:String, quizTitle:String, displaySwitch: String){
-        quizNoLabel.text = quizNo
-        quizTitleLabel.text = quizTitle
+    
+    func setCell(listValue: ListValue, displaySwitch: String){
+        textLabel?.text = listValue.title
+        textLabel?.accessibilityIdentifier = listValue.title
+        
+        detailTextLabel?.text = listValue.value
         if displaySwitch == "1" {
             self.backgroundColor = .lightGray
         }
@@ -186,3 +184,16 @@ fileprivate final class QuizListCell:UITableViewCell {
     }
     
 }
+
+
+protocol ListProtocol {
+    var title: String { get }
+    var value: String { get }
+}
+
+struct ListValue: ListProtocol {
+    var title: String
+    var value: String
+}
+
+

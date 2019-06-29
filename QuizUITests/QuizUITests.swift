@@ -50,16 +50,16 @@ class QuizUITests: XCTestCase {
                 app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
                 app.alerts.buttons["閉じる"].tap()
             }
-        app.tables.textFields["クイズのタイトルを入力してください。"].tap()
-        app.tables.textFields["クイズのタイトルを入力してください。"].typeText("自動テスト\(String(i + 1))")
-        app.tables.textFields["正解の回答を入力してください。"].tap()
-        app.tables.textFields["正解の回答を入力してください。"].typeText("正解1")
-        app.tables.textFields["false1"].tap()
-        app.tables.textFields["false1"].typeText("不正解1")
-        app.tables.textFields["false2"].tap()
-        app.tables.textFields["false2"].typeText("不正解2")
-        app.tables.textFields["false3"].tap()
-        app.tables.textFields["false3"].typeText("不正解3")
+        app.tables.textFields["title"].tap()
+        app.tables.textFields["title"].typeText("自動テスト\(String(i + 1))")
+        app.tables.textFields["correctAnswer"].tap()
+        app.tables.textFields["correctAnswer"].typeText("正解1")
+        app.tables.textFields["incorrectAnswer1"].tap()
+        app.tables.textFields["incorrectAnswer1"].typeText("不正解1")
+        app.tables.textFields["incorrectAnswer2"].tap()
+        app.tables.textFields["incorrectAnswer2"].typeText("不正解2")
+        app.tables.textFields["incorrectAnswer3"].tap()
+        app.tables.textFields["incorrectAnswer3"].typeText("不正解3")
         app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
         app.alerts.buttons["閉じる"].tap()
         }
@@ -87,7 +87,7 @@ class QuizUITests: XCTestCase {
             app.tables.staticTexts["問題\(String(alertCount))"].swipeLeft()
             app.tables.buttons["編集"].tap()
             
-            app.tables.switches["switch"].tap()
+            app.tables.switches["showHide"].tap()
             app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
             app.alerts.buttons["閉じる"].tap()
             app.tabBars.buttons["Favorites"].tap()
@@ -115,6 +115,9 @@ class QuizUITests: XCTestCase {
     
     func testQuiz3_Edit(){
         let app = XCUIApplication()
+        let startButton = app.buttons["クイズスタート"]
+        XCTAssert(startButton.exists, "問題が作成されていない")
+        
         
         app.tabBars.buttons["Most Viewed"].tap()
         app.tables.staticTexts["問題1"].swipeLeft()
@@ -128,31 +131,31 @@ class QuizUITests: XCTestCase {
         }
         
         app.typeText("自動編集テスト")
-        text = app.textFields["true"].value as! String
+        text = app.textFields["correctAnswer"].value as! String
         
-        app.textFields["true"].tap()
+        app.textFields["correctAnswer"].tap()
         for _ in 0..<text.count{
             app.keys["delete"].tap()
         }
         app.typeText("自動編集(正解)")
         
-        text = app.textFields["false1"].value as! String
-        app.textFields["false1"].tap()
+        text = app.textFields["incorrectAnswer1"].value as! String
+        app.textFields["incorrectAnswer1"].tap()
         for _ in 0..<text.count{
             app.keys["delete"].tap()
         }
         app.typeText("自動編集(不正解1)")
         
-        text = app.textFields["false2"].value as! String
-        app.textFields["false2"].tap()
+        text = app.textFields["incorrectAnswer2"].value as! String
+        app.textFields["incorrectAnswer2"].tap()
         for _ in 0..<text.count{
             app.keys["delete"].tap()
         }
         
-        text = app.textFields["false3"].value as! String
+        text = app.textFields["incorrectAnswer3"].value as! String
         app.typeText("自動編集(不正解2)")
         
-        app.textFields["false3"].tap()
+        app.textFields["incorrectAnswer3"].tap()
         for _ in 0..<text.count{
             app.keys["delete"].tap()
         }
@@ -168,7 +171,11 @@ class QuizUITests: XCTestCase {
     func testQuiz4_Delete(){
         let app = XCUIApplication()
         app.tabBars.buttons["Most Viewed"].tap()
-        app.tables.staticTexts["問題1"].swipeLeft()
+        let quiz1 = app.tables.staticTexts["問題1"]
+        XCTAssert(quiz1.exists, "問題が作成されていない")
+        
+        
+        quiz1.swipeLeft()
         app.tables.buttons["削除"].tap()
         
         app.alerts.buttons["削除"].tap()
@@ -177,9 +184,12 @@ class QuizUITests: XCTestCase {
     }
     
     func testQuiz5_History(){
-        
         let app = XCUIApplication()
-        app.buttons["historyButton"].tap()
+        let historyButton = app.buttons["historyButton"]
+        XCTAssert(historyButton.exists, "履歴が存在しない")
+        
+        
+        historyButton.tap()
         
         sleep(5)
         

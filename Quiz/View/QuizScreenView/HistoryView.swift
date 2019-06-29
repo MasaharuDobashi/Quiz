@@ -103,8 +103,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let historyCell: HistoryCell = tableView.dequeueReusableCell(withIdentifier: "historyCell") as! HistoryCell
         
-        historyCell.setValue(date: historyModel[indexPath.row].date, count: historyModel[indexPath.row].quizTrueCount)
-        
+        historyCell.setValue(listValue: ListValue(title: historyModel[indexPath.row].date, value: historyModel[indexPath.row].quizTrueCount))
         return historyCell
     }
     
@@ -140,10 +139,9 @@ fileprivate final class HistoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setValue(date: String, count: String){
-        textLabel?.text = date
-        
-        detailTextLabel?.text = count + "問"
+    func setValue(listValue: ListValue){
+        textLabel?.text = listValue.title
+        detailTextLabel?.text = listValue.value + "問"
     }
 }
 
