@@ -132,10 +132,10 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         let headerView:UIView = UIView()
         let headerLabel:UILabel = UILabel()
         
-        guard let headerTitle:String = InputType(rawValue: section)?.rowEditValue.headerTitle else { return UIView() }
+        guard let headerTitle = InputType(rawValue: section)?.rowEditValue else { return UIView() }
         
-        headerLabel.text = headerTitle
-        
+        headerLabel.text = headerTitle.headerTitle
+        headerLabel.accessibilityIdentifier = headerTitle.accessibilityIdentifier
         headerView.addSubview(headerLabel)
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor).isActive = true
@@ -228,17 +228,17 @@ extension QuizEditView {
         private struct Title: RowEditValue {
             var placeholder: String = "クイズのタイトルを入力してください。"
             var accessibilityIdentifier: String = "title"
-            var headerTitle: String = "正解"
+            var headerTitle: String = "タイトル"
         }
         
         private struct CorrectAnswer: RowEditValue {
             var placeholder: String = "正解の回答を入力してください。"
             var accessibilityIdentifier: String = "correctAnswer"
-            var headerTitle: String = "不正解1"
+            var headerTitle: String = "正解"
         }
         
         private struct IncorrectAnswer1: RowEditValue {
-            var placeholder: String = "正解の回答を入力してください。"
+            var placeholder: String = "不正解の回答を入力してください。"
             var accessibilityIdentifier: String  = "incorrectAnswer1"
             var headerTitle: String = "不正解1"
         }
