@@ -86,7 +86,7 @@ class QuizUITests: XCTestCase {
     
     func test_EditViewUI(){
         
-        quizCreate(1)
+        
         let app = XCUIApplication()
         app.tabBars.buttons["Most Viewed"].tap()
         
@@ -134,10 +134,10 @@ class QuizUITests: XCTestCase {
         
         app.tables.textFields["incorrectAnswer3"].tap()
         app.tables.textFields["incorrectAnswer3"].typeText("不正解3")
+        app.buttons["Return"].tap()
         
         app.tables.switches["showHide"].tap()
         app.tables.switches["showHide"].tap()
-        
         
         app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
         app.alerts.buttons["閉じる"].tap()
