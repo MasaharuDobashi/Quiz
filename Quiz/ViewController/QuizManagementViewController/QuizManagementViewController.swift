@@ -81,7 +81,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
             self?.tabBarController?.selectedIndex = 0
             self?.viewDidAppear(false)
             self?.viewDidLoad()
-            
+            NotificationCenter.default.post(name: Notification.Name("allDelete"), object: nil)
         }){ (action) in return }
         
     }

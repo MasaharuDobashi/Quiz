@@ -20,7 +20,7 @@ protocol QuizManagementViewDelegate: class {
     // MARK: Properties
     
     var quizModel:[QuizModel]?
-    private let noneLabel:UILabel = {
+    private lazy var noneLabel:UILabel = {
         let label:UILabel = UILabel(title: "まだクイズが作成されていません",
                                     font: UIFont.systemFont(ofSize: 18),
                                     textColor: .black,
@@ -32,6 +32,7 @@ protocol QuizManagementViewDelegate: class {
         
         return label
     }()
+    private var isZeroQuiz: Bool!
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
@@ -54,6 +55,7 @@ protocol QuizManagementViewDelegate: class {
         
         
         if self.quizModel?.count == 0 {
+            isZeroQuiz = true
             setNoneLabel()
         }
     }
@@ -70,8 +72,9 @@ protocol QuizManagementViewDelegate: class {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if noneLabel.isDescendant(of: self) {
+        if isZeroQuiz == true {
             noneLabel.removeFromSuperview()
+            isZeroQuiz = false
         }
         
         let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell

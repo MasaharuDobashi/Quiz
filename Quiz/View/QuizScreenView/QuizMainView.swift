@@ -17,10 +17,35 @@ protocol QuizMainViewDelegate: class {
 class QuizMainView: UIView {
     
     // MARK: Properties
-    private var quizStartButton:UIButton!
-    private var historyButton: UIButton!
+    private var quizStartButton:UIButton = {
+        let button = UIButton()
+        button.accessibilityIdentifier = "quizStartButton"
+        button.setButton(title: "",
+                                  backgroundColor: .orange,
+                                  font: UIFont.boldSystemFont(ofSize: 18),
+                                  target: self, action: #selector(buttonTapAction)
+        )
+        button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        
+        return button
+    }()
+    
+    
+    private lazy var historyButton: UIButton = {
+        let button = UIButton()
+        button.accessibilityIdentifier = "historyButton"
+        button.setButton(title: "履歴",
+                                backgroundColor: .blue,
+                                font: UIFont.boldSystemFont(ofSize: 18),
+                                target: self, action: #selector(historyButtonAction)
+        )
+        button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        
+        return button
+    }()
+    
     var isActiveQuiz: Bool = false
-    var isHistory: Bool = false
+    var isHistory: Bool? = false
     
 
     weak var quizMainViewDelegate:QuizMainViewDelegate?
@@ -30,6 +55,7 @@ class QuizMainView: UIView {
     override init(frame: CGRect) {
         super.init(frame:frame)
         
+        backgroundColor = .white
         
     }
     
@@ -47,30 +73,9 @@ class QuizMainView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
-        quizStartButton = UIButton()
-        quizStartButton.accessibilityIdentifier = "quizStartButton"
-        quizStartButton.setButton(title: "",
-                         backgroundColor: .orange,
-                         font: UIFont.boldSystemFont(ofSize: 18),
-                         target: self, action: #selector(buttonTapAction)
-        )
-        quizStartButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         startButtonColorChange()
         addSubview(quizStartButton)
-        
-        
-        historyButton = UIButton()
-        historyButton.accessibilityIdentifier = "historyButton"
-        historyButton.setButton(title: "履歴",
-                                backgroundColor: .blue,
-                                font: quizStartButton.titleLabel!.font,
-                                target: self, action: #selector(historyButtonAction)
-        )
-        historyButton.isHidden = true
-        historyButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
-        addSubview(historyButton)
-        
-        
+ 
         setConstraint()
     }
     
@@ -80,13 +85,6 @@ class QuizMainView: UIView {
         quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
-        
-        
-        historyButton.translatesAutoresizingMaskIntoConstraints = false
-        historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
-        historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
-        historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
     }
     
     
@@ -113,10 +111,16 @@ class QuizMainView: UIView {
     }
     
     func historyButtonColorChange(){
-        if isHistory == false {
-            historyButton.isHidden = true
-        } else {
-            historyButton.isHidden = false
+        if isHistory == true {
+            addSubview(historyButton)
+            
+            historyButton.translatesAutoresizingMaskIntoConstraints = false
+            historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
+            historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+            historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
+        } else if isHistory == nil {
+            historyButton.removeFromSuperview()
         }
     }
     
