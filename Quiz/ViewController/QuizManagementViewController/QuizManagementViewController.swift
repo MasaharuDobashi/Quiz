@@ -14,8 +14,15 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     // MARK: Properties
     private let config = Realm.Configuration(schemaVersion: 1)
     private var realm:Realm!
-    private var quizManagementView:QuizManagementView?
     private var quizModel:[QuizModel]?
+    
+    private lazy var quizManagementView:QuizManagementView = {
+        let quizManagementView: QuizManagementView = QuizManagementView(frame: frame_Size(self), style: .grouped, quizModel: quizModel!)
+        quizManagementView.quizManagementViewDelegate = self
+        
+       return quizManagementView
+    }()
+    
     
     // MARK: Lifecycle
     
@@ -31,9 +38,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         
         
         quizModelAppend()
-        quizManagementView = QuizManagementView(frame: frame_Size(self), style: .grouped, quizModel: quizModel!)
-        quizManagementView?.quizManagementViewDelegate = self
-        self.view.addSubview(quizManagementView!)
+        view.addSubview(quizManagementView)
         
     }
     
@@ -43,10 +48,10 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         
         if quizModel!.count < realm.objects(QuizModel.self).count {
             quizModel?.append(realm.objects(QuizModel.self).last!)
-            quizManagementView?.quizModel? = self.quizModel!
+            quizManagementView.quizModel? = self.quizModel!
         }
         
-        quizManagementView?.reloadData()
+        quizManagementView.reloadData()
         
         debugPrint(object: quizModel)
     }
@@ -111,7 +116,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     func deleteAction(indexPath: IndexPath) {
         AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
             self?.deleteRealm(indexPath: indexPath)
-            self?.quizManagementView?.removeFromSuperview()
+            self?.quizManagementView.removeFromSuperview()
             
             self?.quizModel = nil
             self?.viewDidLoad()

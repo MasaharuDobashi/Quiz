@@ -12,11 +12,36 @@ fileprivate let screenWidth = UIScreen.main.bounds.width
 
 final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
-    private var lineGraphViewScrollView:UIScrollView!
-    private var totalsTable: UITableView!
-    private var boderView:LineView!
     private var historyModel: [HistoryModel]!
     private var trueCounts:[CGFloat]!
+    
+    
+    private lazy var lineGraphViewScrollView:UIScrollView = {
+        let scrollView: UIScrollView = UIScrollView()
+        scrollView.layer.borderWidth = 1
+        scrollView.contentSize = CGSize(width: 20 * trueCounts.count, height: 300)
+        return scrollView
+    }()
+    
+    
+    private lazy var totalsTable: UITableView = {
+        let tableView:UITableView = UITableView()
+        tableView.register(HistoryCell.self, forCellReuseIdentifier: "historyCell")
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        return tableView
+    }()
+    
+    
+    private lazy var lineView:LineView = {
+        let view:LineView = LineView()
+        view.getCounts(trueCount: trueCounts)
+        
+        return view
+    }()
+    
+
     
     
     
@@ -36,8 +61,6 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
             let count:Int = Int(historyModel[i].quizTrueCount)!
             trueCounts.append(CGFloat(count))
         }
-        
-        
         viewLoad()
     }
     
@@ -48,26 +71,11 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func viewLoad(){
-        lineGraphViewScrollView = UIScrollView()
         addSubview(lineGraphViewScrollView)
-        
-        boderView = LineView()
-        lineGraphViewScrollView.layer.borderWidth = 1
-        
-        boderView.getCounts(trueCount: trueCounts)
-        lineGraphViewScrollView.addSubview(boderView)
-        
-        
-        totalsTable = UITableView()
-        totalsTable.register(HistoryCell.self, forCellReuseIdentifier: "historyCell")
-        totalsTable.delegate = self
-        totalsTable.dataSource = self
+        lineGraphViewScrollView.addSubview(lineView)
         addSubview(totalsTable)
         
-        
-        lineGraphViewScrollView.contentSize = CGSize(width: 20 * trueCounts.count, height: 300)
         setConstraint()
-        
     }
     
     
@@ -79,10 +87,10 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         lineGraphViewScrollView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         
-        boderView.translatesAutoresizingMaskIntoConstraints = false
-        boderView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
-        boderView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
-        boderView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        lineView.translatesAutoresizingMaskIntoConstraints = false
+        lineView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
+        lineView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         totalsTable.translatesAutoresizingMaskIntoConstraints = false
         totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 10).isActive = true
@@ -93,7 +101,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func lineAnimetion(){
-        boderView.lineAnimetion()
+        lineView.lineAnimetion()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

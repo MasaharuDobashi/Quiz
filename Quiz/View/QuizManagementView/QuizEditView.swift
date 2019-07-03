@@ -15,12 +15,52 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     private var quizModel:[QuizModel]?
     private var mode:ModeEnum!
     
-    let titleTextField:UITextField = UITextField()
-    let true_TextField:UITextField = UITextField()
-    let false1_TextField:UITextField = UITextField()
-    let false2_textField:UITextField = UITextField()
-    let false3_textField:UITextField = UITextField()
-    let displaySwitch: UISwitch = UISwitch()
+    let titleTextField:UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        
+        return textField
+    }()
+    
+    
+    let true_TextField:UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        
+        return textField
+    }()
+    
+    
+    let false1_TextField:UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        
+        return textField
+    }()
+    
+    
+    let false2_textField:UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        
+        return textField
+    }()
+    
+    
+    let false3_textField:UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        
+        return textField
+    }()
+    
+    
+    lazy var displaySwitch: UISwitch = {
+        let switchView:UISwitch = UISwitch()
+        mode == .add ? switchView.isOn = true : nil
+        
+        return switchView
+        }()
     
     
     
@@ -94,6 +134,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         case InputType.title.rawValue:
             titleTextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             titleTextField.placeholder = rowEditValue.placeholder
+            
             setTextFieldAutoLayout(textField: titleTextField, cell: cell)
         case InputType.correctAnswer.rawValue:
             true_TextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
@@ -113,7 +154,6 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
             setTextFieldAutoLayout(textField: false3_textField, cell: cell)
         case InputType.showHide.rawValue:
             displaySwitch.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
-            mode == .add ? displaySwitch.isOn = true : nil
             cell.textLabel?.text = rowEditValue.placeholder
             cell.contentView.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false

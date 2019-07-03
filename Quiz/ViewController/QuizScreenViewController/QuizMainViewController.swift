@@ -14,15 +14,18 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     // MARK: Properties
     private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 1))
     
-    private var quizMainView:QuizMainView!
+    private lazy var quizMainView:QuizMainView = {
+        let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
+        let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
+        quizMainView.quizMainViewDelegate = self
+        
+        return quizMainView
+    }()
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
-        quizMainView.quizMainViewDelegate = self
-        
+
         #if DEBUG
         NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
         #endif
