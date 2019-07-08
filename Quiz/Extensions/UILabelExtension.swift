@@ -24,15 +24,19 @@ extension UILabel {
         self.numberOfLines = numberOfLines
     }
     
-    func labelHeight(multiplier: CGFloat, cornerRadius: CGFloat) {
+    func labelHeight(multiplier: CGFloat, cornerRadius: CGFloat? = nil) {
         self.bounds.size.height = UIScreen.main.bounds.height * multiplier
-        self.layer.cornerRadius = self.bounds.height / cornerRadius
-        self.clipsToBounds = true
+        if let _cornerRadius = cornerRadius {
+            self.layer.cornerRadius = self.bounds.height / _cornerRadius
+            self.clipsToBounds = true
+        }
     }
     
-    func labelHeight(height: CGFloat, cornerRadius: CGFloat) {
+    func labelHeight(height: CGFloat, cornerRadius: CGFloat? = nil) {
         self.bounds.size.height = height
-        self.layer.cornerRadius = self.bounds.height / cornerRadius
-        self.clipsToBounds = true
+        if let _cornerRadius = cornerRadius {
+            self.layer.cornerRadius = self.bounds.height / _cornerRadius
+            self.clipsToBounds = true
+        }
     }
 }

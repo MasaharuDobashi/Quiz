@@ -32,6 +32,7 @@
 		D0E94A1E21FF2DFF0071DB64 /* QuizEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */; };
 		D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EB043122AFE37F009DB116 /* HistoryViewController.swift */; };
 		D0EB043422AFE394009DB116 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EB043322AFE394009DB116 /* HistoryView.swift */; };
+		D0FE73F222D37B5E005E4253 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0FE73F122D37B5E005E4253 /* Constant.swift */; };
 		D423BA718A6FD7495D82582D /* Pods_Quiz.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A3013F219E014E77969A6E29 /* Pods_Quiz.framework */; };
 		DB1348EA520607911F677C5A /* Pods_QuizTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C5B8C49DA12B0B7D4C92FF6 /* Pods_QuizTests.framework */; };
 /* End PBXBuildFile section */
@@ -93,6 +94,7 @@
 		D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditViewController.swift; sourceTree = "<group>"; };
 		D0EB043122AFE37F009DB116 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		D0EB043322AFE394009DB116 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		D0FE73F122D37B5E005E4253 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				D0C6E9A92201D48D0001B4FE /* AlertManager.swift */,
+				D0FE73F122D37B5E005E4253 /* Constant.swift */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -540,6 +543,7 @@
 				D0E197DC21FDD19F0062728F /* QuizManagementView.swift in Sources */,
 				D01CEA2821F9FCDA00AF1266 /* QuizScreenView.swift in Sources */,
 				D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */,
+				D0FE73F222D37B5E005E4253 /* Constant.swift in Sources */,
 				D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */,
 				D0E82C432210091300960D7C /* Enums.swift in Sources */,
 				D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */,
