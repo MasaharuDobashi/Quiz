@@ -19,7 +19,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     private lazy var lineGraphViewScrollView:UIScrollView = {
         let scrollView: UIScrollView = UIScrollView()
         scrollView.layer.borderWidth = 1
-        scrollView.contentSize = CGSize(width: 20 * trueCounts.count, height: 300)
+        scrollView.contentSize = CGSize(width: 22 * trueCounts.count, height: 300)
         scrollView.backgroundColor = .white
         return scrollView
     }()
@@ -243,11 +243,11 @@ fileprivate final class LineGraphView: UIView {
         addSubview(firstLabel)
         
         for i in 1..<_valueCount.count {
-            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: graphHeight - _valueCount[i] * graphY))
+            path.addLine(to: CGPoint(x: 20 * CGFloat(i + 1), y: graphHeight - _valueCount[i] * graphY))
             
             let label: UILabel = {
                 let label:UILabel = valueLabel
-                label.frame = CGRect(x: 20 * CGFloat(i), y: graphHeight - _valueCount[i] * lableY - 10, width: 0, height: 0)
+                label.frame = CGRect(x: 20 * CGFloat(i + 1), y: graphHeight - _valueCount[i] * lableY - 10, width: 0, height: 0)
                 label.text = "\(Int(_valueCount[i]))"
                 label.sizeToFit()
                 
