@@ -14,16 +14,23 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     // MARK: Properties
     private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 1))
     
-    private var quizMainView:QuizMainView!
+    private lazy var quizMainView:QuizMainView = {
+        let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
+        let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
+        quizMainView.quizMainViewDelegate = self
+        
+        return quizMainView
+    }()
     
     // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
-        quizMainView.quizMainViewDelegate = self
+
+        #if DEBUG
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
+        #endif
         
-        self.view.addSubview(quizMainView)
+        view.addSubview(quizMainView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,17 +50,25 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         if quizMainView.isActiveQuiz {
             let viewController:QuizScreenViewController = QuizScreenViewController()
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController,animated: true, completion: nil)
+            present(navigationController,animated: true, completion: nil)
         } else {
             let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            self.present(navigationController,animated: true, completion: nil)}
+            present(navigationController,animated: true, completion: nil)}
     }
     
     
     func historyButtonAction() {
         let viewController:HistoryViewController = HistoryViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
+        navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    #if DEBUG
+    @objc func allDeleteFlag(notification: Notification){
+        quizMainView.isHistory = nil
+        quizMainView.historyButtonColorChange()
+    }
+    #endif
+    
 }
 
