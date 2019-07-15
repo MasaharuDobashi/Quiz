@@ -227,11 +227,11 @@ fileprivate final class LineGraphView: UIView {
         let path = UIBezierPath()
         let graphY: CGFloat = (graphHeight / 12)
         let lableY: CGFloat = (graphHeight / 11)
-        path.move(to: CGPoint(x: 10, y: graphHeight - _valueCount[0] * graphY))
+        path.move(to: CGPoint(x: 20, y: graphHeight - _valueCount[0] * graphY))
         
         let firstLabel: UILabel = {
             let label:UILabel = valueLabel
-            label.frame = CGRect(x: 10, y: graphHeight - _valueCount[0] * lableY, width: 0, height: 0)
+            label.frame = CGRect(x: 20, y: graphHeight - _valueCount[0] * lableY - 10, width: 0, height: 0)
             label.text = "\(Int(_valueCount[0]))"
             label.textColor = .black
             label.sizeToFit()
@@ -241,11 +241,11 @@ fileprivate final class LineGraphView: UIView {
         addSubview(firstLabel)
         
         for i in 1..<_valueCount.count {
-            path.addLine(to: CGPoint(x: 25 * CGFloat(i), y: graphHeight - _valueCount[i] * graphY ))
+            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: graphHeight - _valueCount[i] * graphY))
             
             let label: UILabel = {
                 let label:UILabel = valueLabel
-                label.frame = CGRect(x: 25 * CGFloat(i) - 10, y: graphHeight - _valueCount[i] * lableY - 10, width: 0, height: 0)
+                label.frame = CGRect(x: 20 * CGFloat(i), y: graphHeight - _valueCount[i] * lableY - 10, width: 0, height: 0)
                 label.text = "\(Int(_valueCount[i]))"
                 label.sizeToFit()
                 
