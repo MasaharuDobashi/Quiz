@@ -34,9 +34,14 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }()
     
     
-    private lazy var lineView:LineView = {
-        let view:LineView = LineView()
-        view.getCounts(trueCount: trueCounts)
+    private lazy var lineGraphView:LineGraphView = {
+        let view:LineGraphView = LineGraphView(graphHeight: 290, count: trueCounts)
+        view.lineWidth = 3
+        view.strokeColor = .red
+        view.duration = 1
+        view.isAnime = true
+        view.labelBackgroundColor = .white
+        view.isHideLabel = false
         
         return view
     }()
@@ -72,7 +77,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     private func viewLoad(){
         addSubview(lineGraphViewScrollView)
-        lineGraphViewScrollView.addSubview(lineView)
+        lineGraphViewScrollView.addSubview(lineGraphView)
         addSubview(totalsTable)
         
         setConstraint()
@@ -87,10 +92,10 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         lineGraphViewScrollView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         
-        lineView.translatesAutoresizingMaskIntoConstraints = false
-        lineView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
-        lineView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
-        lineView.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        lineGraphView.translatesAutoresizingMaskIntoConstraints = false
+        lineGraphView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
+        lineGraphView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
+        lineGraphView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         totalsTable.translatesAutoresizingMaskIntoConstraints = false
         totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 10).isActive = true
@@ -101,7 +106,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func lineAnimetion(){
-        lineView.lineAnimetion()
+        lineGraphView.lineAnimetion()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -164,10 +169,36 @@ fileprivate final class HistoryCell: UITableViewCell {
 
 
 
-fileprivate final class LineView: UIView {
+fileprivate final class LineGraphView: UIView {
     
-    let lineLayer:CAShapeLayer = CAShapeLayer()
-    var totals: [CGFloat]!
+    private let lineLayer:CAShapeLayer = CAShapeLayer()
+    var valueCount: [CGFloat]?
+    var isAnime: Bool = true
+    
+    var lineWidth: CGFloat = 1
+    var strokeColor: UIColor = UIColor.black
+    var fromValue: Any? = 0.0
+    var toValue: Any? = 1.0
+    var duration:  CFTimeInterval = 1
+    var graphHeight: CGFloat = 0
+    var timingFunction:CAMediaTimingFunction? = .init(name: .linear)
+    
+    var valueLabel:UILabel {
+        let label: UILabel = UILabel()
+        label.backgroundColor = labelBackgroundColor
+        label.textColor = labelTextColor
+        label.font = labelFont
+        label.textAlignment = labelTextAlignment
+        label.isHidden = isHideLabel
+        
+        return label
+    }
+    
+    var labelBackgroundColor:UIColor = .clear
+    var labelFont: UIFont?
+    var labelTextColor: UIColor?
+    var labelTextAlignment:NSTextAlignment = .right
+    var isHideLabel:Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -175,39 +206,69 @@ fileprivate final class LineView: UIView {
         backgroundColor = .clear
     }
     
+    
+    convenience init(graphHeight height: CGFloat, count: [CGFloat]){
+        self.init()
+        graphHeight = height
+        valueCount = count
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getCounts(trueCount: [CGFloat]){
-        totals = trueCount
-    }
     
     func lineAnimetion(){
-        let viewHeight: CGFloat = 290
-        
-        
+        guard let _valueCount = valueCount else {
+            debugPrint("valueCount is nil")
+            return
+        }
+        layer.addSublayer(lineLayer)
         let path = UIBezierPath()
+        let graphY: CGFloat = (graphHeight / 12)
+        let lableY: CGFloat = (graphHeight / 11)
+        path.move(to: CGPoint(x: 10, y: graphHeight - _valueCount[0] * graphY))
         
-        path.move(to: CGPoint(x: 10, y: viewHeight - totals[0] * 25))
-        for i in 1..<totals.count {
-            path.addLine(to: CGPoint(x: 20 * CGFloat(i), y: viewHeight - totals[i] * 25))
+        let firstLabel: UILabel = {
+            let label:UILabel = valueLabel
+            label.frame = CGRect(x: 10, y: graphHeight - _valueCount[0] * lableY, width: 0, height: 0)
+            label.text = "\(Int(_valueCount[0]))"
+            label.textColor = .black
+            label.sizeToFit()
+            
+            return label
+        }()
+        addSubview(firstLabel)
+        
+        for i in 1..<_valueCount.count {
+            path.addLine(to: CGPoint(x: 25 * CGFloat(i), y: graphHeight - _valueCount[i] * graphY ))
+            
+            let label: UILabel = {
+                let label:UILabel = valueLabel
+                label.frame = CGRect(x: 25 * CGFloat(i) - 10, y: graphHeight - _valueCount[i] * lableY - 10, width: 0, height: 0)
+                label.text = "\(Int(_valueCount[i]))"
+                label.sizeToFit()
+                
+                return label
+            }()
+            addSubview(label)
         }
         
-        
-        layer.addSublayer(lineLayer)
         lineLayer.path = path.cgPath
-        lineLayer.lineWidth = 3
+        lineLayer.lineWidth = lineWidth
         lineLayer.fillColor = UIColor.white.cgColor
-        lineLayer.strokeColor = UIColor.red.cgColor
+        lineLayer.strokeColor = strokeColor.cgColor
         
-        let anime = CABasicAnimation(keyPath:"strokeEnd")
-        anime.fromValue = 0.0
-        anime.toValue = 1.0
-        anime.timingFunction = CAMediaTimingFunction(name: .linear)
-        anime.duration = 1
-        anime.fillMode = .forwards
-        
-        lineLayer.add(anime, forKey: nil)
+        if isAnime == true {
+            let anime = CABasicAnimation(keyPath:"strokeEnd")
+            anime.fromValue = fromValue
+            anime.toValue = toValue
+            anime.timingFunction = timingFunction
+            anime.duration = duration
+            anime.fillMode = .forwards
+            
+            
+            lineLayer.add(anime, forKey: nil)
+        }
     }
 }
