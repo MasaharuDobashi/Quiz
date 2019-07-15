@@ -35,7 +35,7 @@ class ResultScreenView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
-        self.backgroundColor = .white
+        self.backgroundColor = Beige
         
         guard let correctString:String = trueConunt else {
             return

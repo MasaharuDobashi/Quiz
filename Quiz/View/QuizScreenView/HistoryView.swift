@@ -20,6 +20,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         let scrollView: UIScrollView = UIScrollView()
         scrollView.layer.borderWidth = 1
         scrollView.contentSize = CGSize(width: 20 * trueCounts.count, height: 300)
+        scrollView.backgroundColor = .white
         return scrollView
     }()
     
@@ -42,6 +43,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         view.isAnime = true
         view.labelBackgroundColor = .white
         view.isHideLabel = false
+        view.backgroundColor = .white
         
         return view
     }()
@@ -53,7 +55,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
+        backgroundColor = Beige
 
     }
     
