@@ -9,13 +9,20 @@
 import UIKit
 import RealmSwift
 
-class ResultScreenViewController: UIViewController {
+final class ResultScreenViewController: UIViewController {
     
     // MARK: Properties
     
     private var realm: Realm!
     private var historyModel: HistoryModel!
     private var trueConunt: Int = 0
+    
+    
+    private lazy var resultScreenView:ResultScreenView = {
+        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self), trueConunt:trueConunt)
+        
+        return resultScreenView
+    }()
     
     // MARK: Init
     
@@ -41,8 +48,7 @@ class ResultScreenViewController: UIViewController {
         
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         
-        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self), trueConunt:trueConunt)
-        self.view.addSubview(resultScreenView)
+        view.addSubview(resultScreenView)
     }
     
     private func addRealm(trueConunt: Int){
@@ -66,6 +72,11 @@ class ResultScreenViewController: UIViewController {
         debugPrint(object: historyModel)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        resultScreenView.animation()
+    }
     
     
     private func deleteRealm(){
