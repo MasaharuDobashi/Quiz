@@ -8,10 +8,11 @@
 
 import UIKit
 
-fileprivate let screenWidth = UIScreen.main.bounds.width
+
 
 final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
+    private let screenWidth = UIScreen.main.bounds.width
     private var historyModel: [HistoryModel]!
     private var trueCounts:[CGFloat]!
     
@@ -174,17 +175,35 @@ fileprivate final class HistoryCell: UITableViewCell {
 fileprivate final class LineGraphView: UIView {
     
     private let lineLayer:CAShapeLayer = CAShapeLayer()
+    /// グラフに表示する値を格納する配列
     var valueCount: [CGFloat]?
+    
+    /// アニメーションの表示の有無 デフォルト:true
     var isAnime: Bool = true
     
+    /// 線の太さ
     var lineWidth: CGFloat = 1
+    
+    /// 線の色
     var strokeColor: UIColor = UIColor.black
+    
+    /// 初期位置
     var fromValue: Any? = 0.0
+    
+    /// アニメーションの終了時の位置
     var toValue: Any? = 1.0
+    
+    /// アニメーションの速度
     var duration:  CFTimeInterval = 1
+    
+    /// グラフを表示するViewの高さ
     var graphHeight: CGFloat = 0
+    
+    /// デフォルト:.linear
     var timingFunction:CAMediaTimingFunction? = .init(name: .linear)
     
+    
+    /// 値を表示する
     var valueLabel:UILabel {
         let label: UILabel = UILabel()
         label.backgroundColor = labelBackgroundColor
@@ -199,7 +218,11 @@ fileprivate final class LineGraphView: UIView {
     var labelBackgroundColor:UIColor = .clear
     var labelFont: UIFont?
     var labelTextColor: UIColor?
+
+    /// デフォルト:.right
     var labelTextAlignment:NSTextAlignment = .right
+    
+    /// ラベルの非表示 デフォルト:false
     var isHideLabel:Bool = false
     
     override init(frame: CGRect) {
@@ -220,6 +243,9 @@ fileprivate final class LineGraphView: UIView {
     }
     
     
+    /// 棒グラフの描画
+    /// isAnimeがtrueならアニメーションを流す
+    /// falseなら描画のみ
     func lineAnimetion(){
         guard let _valueCount = valueCount else {
             debugPrint("valueCount is nil")
@@ -231,6 +257,7 @@ fileprivate final class LineGraphView: UIView {
         let lableY: CGFloat = (graphHeight / 11)
         path.move(to: CGPoint(x: 20, y: graphHeight - _valueCount[0] * graphY))
         
+        /* 一つ目の値を表示するラベルを生成 */
         let firstLabel: UILabel = {
             let label:UILabel = valueLabel
             label.frame = CGRect(x: 20, y: graphHeight - _valueCount[0] * lableY - 10, width: 0, height: 0)
