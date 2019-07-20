@@ -23,6 +23,8 @@
 		D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D08EBA6621F9FA5300B63F02 /* Assets.xcassets */; };
 		D08EBA7521F9FA5300B63F02 /* QuizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7421F9FA5300B63F02 /* QuizTests.swift */; };
 		D08EBA8021F9FA5300B63F02 /* QuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA7F21F9FA5300B63F02 /* QuizUITests.swift */; };
+		D094D1E522E3128100545D35 /* LineGraphView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D094D1E222E3108600545D35 /* LineGraphView.framework */; };
+		D094D1E622E3128100545D35 /* LineGraphView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D094D1E222E3108600545D35 /* LineGraphView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D0C6E9AA2201D48D0001B4FE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C6E9A92201D48D0001B4FE /* AlertManager.swift */; };
 		D0E197D721FD8A340062728F /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */; };
 		D0E197DA21FDD1620062728F /* QuizManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D921FDD1610062728F /* QuizManagementViewController.swift */; };
@@ -52,7 +54,42 @@
 			remoteGlobalIDString = D08EBA5B21F9FA5100B63F02;
 			remoteInfo = Quiz;
 		};
+		D094D1E122E3108600545D35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D05414FA22E0B2A200946B3F;
+			remoteInfo = LineGraphView;
+		};
+		D094D1E322E3108600545D35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D054150322E0B2A200946B3F;
+			remoteInfo = LineGraphViewTests;
+		};
+		D094D1E722E3128100545D35 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D05414F922E0B2A200946B3F;
+			remoteInfo = LineGraphView;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D094D1E922E3128100545D35 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D094D1E622E3128100545D35 /* LineGraphView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		08ECC78016916AC7D5909939 /* Pods-QuizUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuizUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuizUITests/Pods-QuizUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -85,6 +122,15 @@
 		D08EBA7B21F9FA5300B63F02 /* QuizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuizUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D08EBA7F21F9FA5300B63F02 /* QuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUITests.swift; sourceTree = "<group>"; };
 		D08EBA8121F9FA5300B63F02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D094D1D222E3108600545D35 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		D094D1D422E3108600545D35 /* LineGraphViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphViewTests.swift; sourceTree = "<group>"; };
+		D094D1D522E3108600545D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D094D1D622E3108600545D35 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D094D1D722E3108600545D35 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = LineGraphView.xcodeproj; sourceTree = "<group>"; };
+		D094D1DC22E3108600545D35 /* LineGraphView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineGraphView.h; sourceTree = "<group>"; };
+		D094D1DD22E3108600545D35 /* LineGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphView.swift; sourceTree = "<group>"; };
+		D094D1DE22E3108600545D35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0C6E9A92201D48D0001B4FE /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		D0E197D921FDD1610062728F /* QuizManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizManagementViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +148,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D094D1E522E3128100545D35 /* LineGraphView.framework in Frameworks */,
 				D423BA718A6FD7495D82582D /* Pods_Quiz.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,6 +175,7 @@
 		B42301DD5AE5D59D090B042A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D094D1D122E3108600545D35 /* LineGraphView-master */,
 				A3013F219E014E77969A6E29 /* Pods_Quiz.framework */,
 				7C5B8C49DA12B0B7D4C92FF6 /* Pods_QuizTests.framework */,
 				95DBF156FA50A61DC5BE9505 /* Pods_QuizUITests.framework */,
@@ -272,6 +320,48 @@
 			path = QuizUITests;
 			sourceTree = "<group>";
 		};
+		D094D1D122E3108600545D35 /* LineGraphView-master */ = {
+			isa = PBXGroup;
+			children = (
+				D094D1D222E3108600545D35 /* LICENSE */,
+				D094D1D322E3108600545D35 /* LineGraphViewTests */,
+				D094D1D622E3108600545D35 /* README.md */,
+				D094D1D722E3108600545D35 /* .gitignore */,
+				D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */,
+				D094D1DB22E3108600545D35 /* LineGraphView */,
+			);
+			name = "LineGraphView-master";
+			path = "../ライブラリ/LineGraphView-master";
+			sourceTree = "<group>";
+		};
+		D094D1D322E3108600545D35 /* LineGraphViewTests */ = {
+			isa = PBXGroup;
+			children = (
+				D094D1D422E3108600545D35 /* LineGraphViewTests.swift */,
+				D094D1D522E3108600545D35 /* Info.plist */,
+			);
+			path = LineGraphViewTests;
+			sourceTree = "<group>";
+		};
+		D094D1D922E3108600545D35 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D094D1E222E3108600545D35 /* LineGraphView.framework */,
+				D094D1E422E3108600545D35 /* LineGraphViewTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D094D1DB22E3108600545D35 /* LineGraphView */ = {
+			isa = PBXGroup;
+			children = (
+				D094D1DC22E3108600545D35 /* LineGraphView.h */,
+				D094D1DD22E3108600545D35 /* LineGraphView.swift */,
+				D094D1DE22E3108600545D35 /* Info.plist */,
+			);
+			path = LineGraphView;
+			sourceTree = "<group>";
+		};
 		D0E197D821FD8B480062728F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,10 +401,12 @@
 				D08EBA5921F9FA5100B63F02 /* Frameworks */,
 				D08EBA5A21F9FA5100B63F02 /* Resources */,
 				AF8B6F9CBB362D5FF7F4030F /* [CP] Embed Pods Frameworks */,
+				D094D1E922E3128100545D35 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D094D1E822E3128100545D35 /* PBXTargetDependency */,
 			);
 			name = Quiz;
 			productName = Quiz;
@@ -396,6 +488,12 @@
 			mainGroup = D08EBA5321F9FA5100B63F02;
 			productRefGroup = D08EBA5D21F9FA5200B63F02 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D094D1D922E3108600545D35 /* Products */;
+					ProjectRef = D094D1D822E3108600545D35 /* LineGraphView.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D08EBA5B21F9FA5100B63F02 /* Quiz */,
@@ -404,6 +502,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D094D1E222E3108600545D35 /* LineGraphView.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LineGraphView.framework;
+			remoteRef = D094D1E122E3108600545D35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D094D1E422E3108600545D35 /* LineGraphViewTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = LineGraphViewTests.xctest;
+			remoteRef = D094D1E322E3108600545D35 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D08EBA5A21F9FA5100B63F02 /* Resources */ = {
@@ -582,6 +697,11 @@
 			target = D08EBA5B21F9FA5100B63F02 /* Quiz */;
 			targetProxy = D08EBA7C21F9FA5300B63F02 /* PBXContainerItemProxy */;
 		};
+		D094D1E822E3128100545D35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LineGraphView;
+			targetProxy = D094D1E722E3128100545D35 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -705,6 +825,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B212375E38DDB05CACE3970 /* Pods-Quiz.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RPFL7EXKD;
@@ -724,6 +845,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C4F748B74DA03903E708401A /* Pods-Quiz.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RPFL7EXKD;
