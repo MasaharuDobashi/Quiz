@@ -54,6 +54,19 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D094D1E922E3128100545D35 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		08ECC78016916AC7D5909939 /* Pods-QuizUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuizUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuizUITests/Pods-QuizUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		289131B7A5132FBB876FAD00 /* Pods-QuizUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuizUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-QuizUITests/Pods-QuizUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -311,6 +324,7 @@
 				D08EBA5921F9FA5100B63F02 /* Frameworks */,
 				D08EBA5A21F9FA5100B63F02 /* Resources */,
 				AF8B6F9CBB362D5FF7F4030F /* [CP] Embed Pods Frameworks */,
+				D094D1E922E3128100545D35 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -484,7 +498,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Quiz/Pods-Quiz-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Quiz/Pods-Quiz-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/LineGraphView/LineGraphView.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 			);
@@ -492,12 +507,13 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/LineGraphView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Quiz/Pods-Quiz-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Quiz/Pods-Quiz-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		B48529A99B20777C0DB7FEF8 /* [CP] Check Pods Manifest.lock */ = {
@@ -705,6 +721,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2B212375E38DDB05CACE3970 /* Pods-Quiz.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RPFL7EXKD;
@@ -724,6 +741,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C4F748B74DA03903E708401A /* Pods-Quiz.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7RPFL7EXKD;
