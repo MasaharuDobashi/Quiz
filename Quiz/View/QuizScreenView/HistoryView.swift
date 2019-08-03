@@ -15,16 +15,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     private let screenWidth = UIScreen.main.bounds.width
     private var historyModel: [HistoryModel]!
-    private var trueCounts:[CGFloat]!
-    
-    
-    private lazy var lineGraphViewScrollView:UIScrollView = {
-        let scrollView: UIScrollView = UIScrollView()
-        scrollView.layer.borderWidth = 1
-        scrollView.contentSize = CGSize(width: 22 * trueCounts.count, height: 300)
-        scrollView.backgroundColor = .white
-        return scrollView
-    }()
+    private var trueCounts:[Int]!
     
     
     private lazy var totalsTable: UITableView = {
@@ -38,14 +29,15 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private lazy var lineGraphView:LineGraphView = {
-        let view:LineGraphView = LineGraphView(graphHeight: 290, count: trueCounts)
-        view.lineWidth = 3
-        view.strokeColor = .red
+        let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts)
+        view.strokeWidth = 3
+        view.strokeColor = Rubyred
         view.duration = 1
         view.isAnime = true
         view.labelBackgroundColor = .white
         view.isHideLabel = false
         view.backgroundColor = .white
+        view.ruledLine(lineWidth: screenWidth * 0.9)
         
         return view
     }()
@@ -64,11 +56,11 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     convenience init(frame: CGRect, historyModel model: [HistoryModel]) {
         self.init(frame: frame)
         historyModel = model
-        trueCounts = [CGFloat]()
+        trueCounts = [Int]()
         
         for i in 0..<historyModel.count {
             let count:Int = Int(historyModel[i].quizTrueCount)!
-            trueCounts.append(CGFloat(count))
+            trueCounts.append(Int(count))
         }
         viewLoad()
     }
@@ -80,8 +72,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func viewLoad(){
-        addSubview(lineGraphViewScrollView)
-        lineGraphViewScrollView.addSubview(lineGraphView)
+        addSubview(lineGraphView)
         addSubview(totalsTable)
         
         setConstraint()
@@ -89,20 +80,14 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private func setConstraint(){
-        lineGraphViewScrollView.translatesAutoresizingMaskIntoConstraints = false
-        lineGraphViewScrollView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-        lineGraphViewScrollView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        lineGraphViewScrollView.widthAnchor.constraint(equalToConstant: screenWidth * 0.9).isActive = true
-        lineGraphViewScrollView.heightAnchor.constraint(equalToConstant: 300).isActive = true
-        
-        
         lineGraphView.translatesAutoresizingMaskIntoConstraints = false
-        lineGraphView.topAnchor.constraint(equalTo: lineGraphViewScrollView.topAnchor, constant: 0).isActive = true
-        lineGraphView.leadingAnchor.constraint(equalTo: lineGraphViewScrollView.leadingAnchor).isActive = true
+        lineGraphView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        lineGraphView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        lineGraphView.widthAnchor.constraint(equalToConstant: screenWidth * 0.9).isActive = true
         lineGraphView.heightAnchor.constraint(equalToConstant: 300).isActive = true
         
         totalsTable.translatesAutoresizingMaskIntoConstraints = false
-        totalsTable.topAnchor.constraint(equalTo: lineGraphViewScrollView.bottomAnchor, constant: 10).isActive = true
+        totalsTable.topAnchor.constraint(equalTo: lineGraphView.bottomAnchor, constant: 10).isActive = true
         totalsTable.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         totalsTable.widthAnchor.constraint(equalTo: widthAnchor).isActive = true
         totalsTable.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
@@ -110,7 +95,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     func lineAnimetion(){
-        lineGraphView.lineAnimetion()
+        lineGraphView.setLineGraph()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
