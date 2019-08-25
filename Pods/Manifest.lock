@@ -1,5 +1,5 @@
 PODS:
-  - LineGraphView (1.0.1)
+  - LineGraphView (1.0.3)
   - Realm (3.13.1):
     - Realm/Headers (= 3.13.1)
   - Realm/Headers (3.13.1)
@@ -17,10 +17,10 @@ SPEC REPOS:
     - RealmSwift
 
 SPEC CHECKSUMS:
-  LineGraphView: 2e2a6367699180528dc4770424eb286b448a70db
+  LineGraphView: 0e781187bcf3cd41a231a34bd5692f3f0dfef471
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
 
 PODFILE CHECKSUM: be48b773556c9d5713d11f3094a2a3bfa6b324ad
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.5
