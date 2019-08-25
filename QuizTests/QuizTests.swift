@@ -2,12 +2,11 @@
 //  QuizTests.swift
 //  QuizTests
 //
-//  Created by 土橋正晴 on 2019/01/24.
+//  Created by 土橋正晴 on 2019/08/25.
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
 import XCTest
-@testable import Quiz
 
 class QuizTests: XCTestCase {
 
