@@ -18,6 +18,8 @@ class QuizEditViewController: UIViewController {
     private var mode: ModeEnum = ModeEnum.add
     private var quizModel: [QuizModel]!
     
+    let key:ParameterKey = ParameterKey()
+    
     
     private lazy var quizEditView:QuizEditView = {
         
@@ -44,7 +46,7 @@ class QuizEditViewController: UIViewController {
         
     }()
     
-  
+    
     
     // MARK: Init
     
@@ -78,7 +80,7 @@ class QuizEditViewController: UIViewController {
         super.viewDidLoad()
         realm = try! Realm(configuration: config)
         
-
+        
         view.addSubview(quizEditView)
         
     }
@@ -90,42 +92,28 @@ class QuizEditViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
-
+    
     
     @objc private func rightButtonAction(){
-        if quizEditView.titleTextField.text?.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: "クイズのタイトルが未入力です。", handler: {_ -> Void in})
-            return
-        }
-     
-        if quizEditView.titleTextField.text?.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: "正解が未入力です。", handler: {_ -> Void in})
-            return
-        }
+        let parameters: [String:Any] = quizEditView.getParameters()
+        if validate(parameters: parameters) == false { return }
         
-        if quizEditView.false1_TextField.text?.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: "不正解1が未入力です。", handler: {_ -> Void in})
-            return
-        }
-        
-        if quizEditView.false2_textField.text?.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: "不正解2が未入力です。", handler: {_ -> Void in})
-            return
-        }
-        
-        if quizEditView.false3_textField.text?.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: "不正解3が未入力です。", handler: {_ -> Void in})
-            return
-        }
-        
+        realmAction(parameters: parameters)
+    }
+    
+    
+    
+    // MARK: Realm Func
+    
+    private func realmAction(parameters: [String: Any]){
         
         if mode == .add {
-            addRealm()
+            addRealm(parameters)
             AlertManager().alertAction(viewController: self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
         } else if mode == .edit {
-            updateRealm()
+            updateRealm(parameters)
             AlertManager().alertAction(viewController: self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
@@ -133,31 +121,47 @@ class QuizEditViewController: UIViewController {
     }
     
     
-    // MARK: Realm Func
-    private func addRealm(){
+    /// Realmに新規追加
+    private func addRealm(_ parameters: [String: Any]){
         let quizModel = QuizModel()
-        quizModel.id = String(realm.objects(QuizModel.self).count)
-        quizModel.quizTitle = (quizEditView.titleTextField.text)!
-        quizModel.trueAnswer = (quizEditView.true_TextField.text)!
-        quizModel.falseAnswer1 = (quizEditView.false1_TextField.text)!
-        quizModel.falseAnswer2 = (quizEditView.false2_textField.text)!
-        quizModel.falseAnswer3 = (quizEditView.false3_textField.text)!
-        quizModel.displayFlag = quizEditView.displaySwitch.isOn == true ? "0" : "1"
+        let title:String = parameters[key.title] as! String
+        let correctAnswer:String =  parameters[key.correctAnswer] as! String
+        let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
+        let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
+        let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        let showHide: String = parameters[key.showHide] as! String
         
+        
+        quizModel.id = String(realm.objects(QuizModel.self).count)
+        quizModel.quizTitle = title
+        quizModel.trueAnswer = correctAnswer
+        quizModel.falseAnswer1 = incorrectAnswer1
+        quizModel.falseAnswer2 = incorrectAnswer2
+        quizModel.falseAnswer3 = incorrectAnswer3
+        quizModel.displayFlag = showHide
         
         try! realm.write() {
             realm.add(quizModel)
         }
     }
     
-    private func updateRealm(){
+    
+    /// アップデート
+    private func updateRealm(_ parameters: [String:Any]){
+        let title:String = parameters[key.title] as! String
+        let correctAnswer:String =  parameters[key.correctAnswer] as! String
+        let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
+        let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
+        let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        let showHide: String = parameters[key.showHide] as! String
+        
         try! realm.write() {
-            realm.objects(QuizModel.self)[quzi_id!].quizTitle = (quizEditView.titleTextField.text)!
-            realm.objects(QuizModel.self)[quzi_id!].trueAnswer = (quizEditView.true_TextField.text)!
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = (quizEditView.false1_TextField.text)!
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = (quizEditView.false2_textField.text)!
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = (quizEditView.false3_textField.text)!
-            realm.objects(QuizModel.self)[quzi_id!].displayFlag = quizEditView.displaySwitch.isOn == true ? "0" : "1"
+            realm.objects(QuizModel.self)[quzi_id!].quizTitle = title
+            realm.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
+            realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
+            realm.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
         }
     }
     
@@ -169,4 +173,49 @@ class QuizEditViewController: UIViewController {
         
         quizModel.append(realm.objects(QuizModel.self)[quiz_id])
     }
+    
+    
+    
+    /// 各項目のバリデーションを実施
+    func validate(parameters:[String:Any]) -> Bool {
+        
+        
+        if emptyValidate(title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
+            return false
+        }
+        
+        if emptyValidate(title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
+            return false
+        }
+        if emptyValidate(title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
+            return false
+        }
+        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
+            return false
+        }
+        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
+            return false
+        }
+        
+        return true
+    }
+    
+    
+    
+    /// 文字数が0以上かどうかバリデーションチェック
+    ///
+    /// - Parameters:
+    ///   - title: チェックするテキスト
+    ///   - message: エラー時のアラートメッセージ
+    /// - Returns: バリデーションの結果
+    func emptyValidate(title: String, message: String) -> Bool {
+        if title.count == 0 {
+            AlertManager().alertAction(viewController: self, title: nil, message: message, handler: {_ -> Void in})
+            return false
+        }
+        return true
+    }
+    
+    
 }
+

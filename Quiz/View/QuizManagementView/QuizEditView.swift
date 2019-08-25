@@ -15,7 +15,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     private var quizModel:[QuizModel]?
     private var mode:ModeEnum!
     
-    let titleTextField:UITextField = {
+    private let titleTextField:UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
         
@@ -23,7 +23,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }()
     
     
-    let true_TextField:UITextField = {
+    private let true_TextField:UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
         
@@ -31,7 +31,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }()
     
     
-    let false1_TextField:UITextField = {
+    private let false1_TextField:UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
         
@@ -39,7 +39,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }()
     
     
-    let false2_textField:UITextField = {
+    private let false2_textField:UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
         
@@ -47,7 +47,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }()
     
     
-    let false3_textField:UITextField = {
+    private let false3_textField:UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
         
@@ -55,7 +55,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }()
     
     
-    lazy var displaySwitch: UISwitch = {
+    private lazy var displaySwitch: UISwitch = {
         let switchView:UISwitch = UISwitch()
         mode == .add ? switchView.isOn = true : nil
         
@@ -224,6 +224,21 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
         textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
     }
+    
+    
+    func getParameters() -> [String: Any] {
+        let key:ParameterKey = ParameterKey()
+        let parameters: [String: Any] = [key.title: titleTextField.text ?? "",
+                                        key.correctAnswer: true_TextField.text ?? "",
+                                        key.incorrectAnswer1: false1_TextField.text ?? "",
+                                        key.incorrectAnswer2: false2_textField.text ?? "",
+                                        key.incorrectAnswer3: false3_textField.text ?? "",
+                                        key.showHide: displaySwitch.isOn == true ? "0" : "1"
+                                        ]
+        
+        
+        return parameters
+    }
 }
 
 
@@ -301,4 +316,14 @@ extension QuizEditView {
             var headerTitle: String = "表示"
         }
     }
+}
+
+
+struct ParameterKey {
+    let title: String = "title"
+    let correctAnswer: String = "correctAnswer"
+    let incorrectAnswer1: String = "incorrectAnswer1"
+    let incorrectAnswer2: String = "incorrectAnswer2"
+    let incorrectAnswer3: String = "incorrectAnswer3"
+    let showHide: String = "showHide"
 }
