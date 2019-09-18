@@ -29,13 +29,12 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     
     private lazy var lineGraphView:LineGraphView = {
-        let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts)
-        view.strokeWidth = 3
-        view.strokeColor = Rubyred
-        view.duration = 1
-        view.isAnime = true
-        view.labelBackgroundColor = .white
-        view.isHideLabel = false
+        let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts,
+                                               lineOptions: .init(strokeWidth: 3,
+                                                                  strokeColor: Rubyred),
+                                               lineAnimationOptions: .init(isAnime: true, duration: 1)
+        )
+        
         view.backgroundColor = .white
         view.ruledLine(lineWidth: screenWidth * 0.9)
         

@@ -243,29 +243,44 @@ class QuizUITests: XCTestCase {
         app.tables.staticTexts["問題1"].swipeLeft()
         app.tables.buttons["削除"].tap()
         app.alerts.buttons["削除"].tap()
-        sleep(2)
+        
         
     }
     
     
     func testHistory(){
-        quizCreate(1)
+        quizCreate(10)
         let app = XCUIApplication()
-        let startButton = app.buttons["クイズスタート"]
-        startButton.tap()
-        while app.buttons["正解1"].exists == true {
-            app.buttons["正解1"].tap()
+        
+        for _ in 0...10 {
+            
+            let startButton = app.buttons["クイズスタート"]
+            startButton.tap()
+            
+            
+            while app.buttons["正解1"].exists == true {
+                if app.waitForExistence(timeout: 1.0) == true {
+                    app.buttons["正解1"].tap()
+                }
+            }
+            
+            if app.waitForExistence(timeout: 2.0) == true {
+                app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
+            }
+            
+            
         }
-        app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
+        
         let historyButton = app.buttons["historyButton"]
         XCTAssert(historyButton.exists, "履歴が存在しない")
         
         
         historyButton.tap()
         
-        sleep(5)
+        if app.waitForExistence(timeout: 5.0) == true {
         
-        app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
+            app.navigationBars["Quiz.HistoryView"].buttons["Back"].tap()
+        }
     }
     
 }
