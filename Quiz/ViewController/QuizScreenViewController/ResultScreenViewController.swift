@@ -49,6 +49,12 @@ final class ResultScreenViewController: UIViewController {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         
         view.addSubview(resultScreenView)
+        
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.post(name: Notification.Name("historyUpdate"), object: nil)
+        }
+        
     }
     
     private func addRealm(trueConunt: Int){

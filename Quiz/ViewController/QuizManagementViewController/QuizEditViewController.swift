@@ -118,6 +118,11 @@ class QuizEditViewController: UIViewController {
                 self?.leftButtonAction()
             })
         }
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.post(name: Notification.Name("quizUpdate"), object: nil)
+        }
+        
     }
     
     

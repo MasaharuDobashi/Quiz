@@ -30,6 +30,13 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
         #endif
         
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(coleViewWillApper(notification:)), name: NSNotification.Name(rawValue: "historyUpdate"), object: nil)
+        }
+        
+        
+        
         view.addSubview(quizMainView)
     }
     
@@ -69,6 +76,11 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         quizMainView.historyButtonColorChange()
     }
     #endif
+    
+    @objc @available(iOS 13.0, *)
+    func coleViewWillApper(notification: Notification) {
+        self.viewWillAppear(true)
+    }
     
 }
 

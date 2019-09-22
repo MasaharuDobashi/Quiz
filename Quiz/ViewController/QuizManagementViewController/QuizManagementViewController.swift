@@ -37,6 +37,11 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         #endif
         
         
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(coleViewWillApper(notification:)), name: NSNotification.Name(rawValue: "quizUpdate"), object: nil)
+        }
+        
+        
         quizModelAppend()
         view.addSubview(quizManagementView)
         
@@ -123,6 +128,12 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
             
             }, handler2: {_ -> Void in})
         
+    }
+    
+    
+    @objc @available(iOS 13.0, *)
+    func coleViewWillApper(notification: Notification) {
+        self.viewWillAppear(true)
     }
 
 }
