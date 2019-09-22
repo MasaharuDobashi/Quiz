@@ -16,7 +16,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     private lazy var quizMainView:QuizMainView = {
         let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
-        let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self), isActiveQuiz: isActiveQuiz)
+        let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.quizMainViewDelegate = self
         
         return quizMainView
@@ -26,16 +26,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        #if DEBUG
-        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
-        #endif
-        
-        
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector: #selector(coleViewWillApper(notification:)), name: NSNotification.Name(rawValue: "historyUpdate"), object: nil)
-        }
-        
-        
+        setNotificationCenter()
         
         view.addSubview(quizMainView)
     }
@@ -53,6 +44,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     
     // MARK: QuizMainViewDelegate
+    
+    
+    /// クイズがあればクイズをスタートする、なければクイズの作成モーダルを表示する
     func quizStartButtonAction() {
         if quizMainView.isActiveQuiz {
             let viewController:QuizScreenViewController = QuizScreenViewController()
@@ -65,9 +59,28 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     }
     
     
+    
+    /// 履歴画面を開く
     func historyButtonAction() {
         let viewController:HistoryViewController = HistoryViewController()
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    
+    
+    
+    /// addObserverをセットする
+    func setNotificationCenter() {
+        #if DEBUG
+        // 削除ボタンをナビゲーションバーにセットする
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
+        #endif
+        
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: HistoryUpdate), object: nil)
+        }
+        
     }
     
     #if DEBUG
@@ -77,8 +90,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     }
     #endif
     
+    /// ResultScreenViewControllerのモーダルが閉じたらViewWillAppearを呼ぶ
     @objc @available(iOS 13.0, *)
-    func coleViewWillApper(notification: Notification) {
+    func callViewWillAppear(notification: Notification) {
         self.viewWillAppear(true)
     }
     

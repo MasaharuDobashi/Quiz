@@ -52,7 +52,7 @@ final class ResultScreenViewController: UIViewController {
         
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name("historyUpdate"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(HistoryUpdate), object: nil)
         }
         
     }

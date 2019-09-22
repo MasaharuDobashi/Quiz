@@ -11,10 +11,19 @@ import RealmSwift
 
 final class HistoryViewController: UIViewController {
     
-    private var historyView: HistoryView!
+    // MARK: Properties
+    
+    private lazy var historyView: HistoryView = {
+        let historyView: HistoryView = HistoryView(frame: CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height)), historyModel: historyModel)
+        
+        return historyView
+    }()
+    
     private var realm: Realm!
     private var historyModel: [HistoryModel]!
     
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,10 +38,9 @@ final class HistoryViewController: UIViewController {
                 $0.date < $1.date
             }
         }
-        historyView = HistoryView(frame: frame_Size(self), historyModel: historyModel)
+        
         view.addSubview(historyView)
-        
-        
+    
     }
 
     

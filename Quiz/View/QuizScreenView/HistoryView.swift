@@ -13,6 +13,8 @@ import LineGraphView
 
 final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
+    // MARK: Properties
+    
     private let screenWidth = UIScreen.main.bounds.width
     private var historyModel: [HistoryModel]!
     private var trueCounts:[Int]!
@@ -43,7 +45,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
 
     
-    
+    // MARK: init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -68,7 +70,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    // MARK: ViewLoad
     
     private func viewLoad(){
         addSubview(lineGraphView)
@@ -78,6 +80,8 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    
+    /// 制約を付ける
     private func setConstraint(){
         lineGraphView.translatesAutoresizingMaskIntoConstraints = false
         lineGraphView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
@@ -93,9 +97,14 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    
+    /// lineGraphViewのアニメーションを呼ぶ
     func lineAnimetion(){
         lineGraphView.setLineGraph()
     }
+    
+    
+    // MARK: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyModel.count
@@ -123,11 +132,11 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
 
 
 
-
-
+// MARK: - HistoryCell
 
 fileprivate final class HistoryCell: UITableViewCell {
     
+    // MARK: Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
@@ -140,6 +149,9 @@ fileprivate final class HistoryCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    /// セルのテキストをセットする
+    /// - Parameter listValue: title: 日付, value: 正解数
     func setValue(listValue: ListValue){
         textLabel?.text = listValue.title
         detailTextLabel?.text = listValue.value + "問"

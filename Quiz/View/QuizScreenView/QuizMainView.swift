@@ -56,13 +56,6 @@ class QuizMainView: UIView {
         super.init(frame:frame)
         
         backgroundColor = Beige
-        
-    }
-    
-    convenience init(frame: CGRect, isActiveQuiz: Bool) {
-        self.init(frame:frame)
-        self.isActiveQuiz = isActiveQuiz
-        
         viewLoad()
     }
     

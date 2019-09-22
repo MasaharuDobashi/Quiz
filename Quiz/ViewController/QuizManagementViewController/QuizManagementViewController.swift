@@ -31,14 +31,11 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
          realm = try! Realm(configuration: config)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
-        #if DEBUG
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
-        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
-        #endif
+        setleftBarButtonItem()
         
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector: #selector(coleViewWillApper(notification:)), name: NSNotification.Name(rawValue: "quizUpdate"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
         }
         
         
@@ -62,6 +59,8 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     }
     
     // MARK: Private Func
+    
+    /// 配列にRealmで保存したデータを追加する
     private func quizModelAppend(){
         quizModel = [QuizModel]()
         
@@ -71,6 +70,10 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         }
     }
     
+    
+    
+    // MARK: Navigation Action
+    /// クイズを作成するモーダルを表示
     @objc private func rightButtonAction(){
         
         let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
@@ -78,16 +81,16 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         self.present(navigationController,animated: true, completion: nil)
     }
     
+    
+    
+    /// デバッグ用でデータベースを削除する
     @objc override func leftButtonAction(){
-        
-        
-//        realm = try! Realm(configuration: config)
         
         AlertManager().alertAction(viewController: self, title: "データベースの削除", message: "作成した問題や履歴を全件削除します", handler1: { [weak self]  (action) in
             try! self?.realm.write {
                 self?.realm.deleteAll()
             }
-            //        viewWillAppear(false)
+            
             self?.tabBarController?.selectedIndex = 0
             self?.viewDidAppear(false)
             self?.viewDidLoad()
@@ -96,6 +99,26 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         
     }
     
+    
+    // MARK: QuizManagementViewDelegate Func
+    
+    
+    /// 指定したクイズの詳細を開く
+     func detailAction(indexPath: IndexPath) {
+         let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
+         self.navigationController?.pushViewController(viewController, animated: true)
+     }
+         
+     
+    /// 指定したクイズの編集画面を開く
+    func editAction(indexPath: IndexPath) {
+        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.edit)
+        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+        self.present(navigationController,animated: true, completion: nil)
+    }
+    
+    
+    /// 指定したクイズを削除する
     private func deleteRealm(indexPath: IndexPath){
         let quizModel = realm.objects(QuizModel.self)[indexPath.row]
         
@@ -105,19 +128,9 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         }
     }
     
-    // MARK: QuizManagementViewDelegate Func
     
-    func detailAction(indexPath: IndexPath) {
-        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
-        self.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func editAction(indexPath: IndexPath) {
-        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.edit)
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
-    }
-    
+ 
+    /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
         AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
             self?.deleteRealm(indexPath: indexPath)
@@ -131,8 +144,22 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     }
     
     
+    
+    // MARK: Other func 
+    
+    /// Debug時にデータベースのデータを削除用のボタンをセット
+    func setleftBarButtonItem() {
+        #if DEBUG
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
+        #endif
+    }
+    
+    
+    
+    /// Quizの作成、編集した後にテーブル更新の為にviewWillAppearを呼ぶ
     @objc @available(iOS 13.0, *)
-    func coleViewWillApper(notification: Notification) {
+    func callViewWillAppear(notification: Notification) {
         self.viewWillAppear(true)
     }
 

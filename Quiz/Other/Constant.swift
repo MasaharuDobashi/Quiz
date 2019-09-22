@@ -17,3 +17,13 @@ let Geranium:UIColor = UIColor.rgba(red: 218, green: 61, blue: 92, alpha: 1)
 let Rubyred:UIColor = UIColor.rgba(red: 207, green: 53, blue: 93, alpha: 1)
 let Beige: UIColor = UIColor.rgba(red: 245, green: 245, blue: 220, alpha: 1)
 let Rose:UIColor = UIColor.rgba(red: 244, green: 80, blue: 109, alpha: 1)
+
+
+
+// MARK: - STRINGS
+
+/// QuizManagementViewControllerの更新
+let QuizUpdate: String = "quizUpdate"
+
+/// QuizMainViewControllerの更新
+let HistoryUpdate: String = "historyUpdate"

@@ -42,19 +42,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         super.viewWillAppear(animated)
         
         
-        if quizModel.count == 0 {
-            self.view.backgroundColor = .white
-            AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
-                self.leftButtonAction()
-            })
-            return
-        } else if quizModel.count > 10 {
-            self.view.backgroundColor = .white
-            AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
-                self.leftButtonAction()
-            })
-        }
-        
+        isQuizActive()
         debugPrint(object: quizModel[quizNum])
         
         quizScreenView?.quizModel = quizModel[quizNum]
@@ -72,6 +60,25 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             if realm.objects(QuizModel.self)[i].displayFlag != "1" {
                 quizModel?.append(realm.objects(QuizModel.self)[i])
             }
+        }
+        
+    }
+    
+    
+    /// <#Description#>
+    func isQuizActive() {
+        if quizModel.count == 0 {
+            self.view.backgroundColor = .white
+            AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
+                self.leftButtonAction()
+            })
+            return
+        } else if quizModel.count > 10 {
+            self.view.backgroundColor = .white
+            AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+                self.leftButtonAction()
+            })
+            return
         }
         
     }
