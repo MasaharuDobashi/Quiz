@@ -8,6 +8,7 @@
 
 import UIKit
 
+// MARK: - QuizManagementViewDelegate
 
 protocol QuizManagementViewDelegate: class {
     func editAction(indexPath:IndexPath)
@@ -15,25 +16,21 @@ protocol QuizManagementViewDelegate: class {
     func detailAction(indexPath:IndexPath)
 }
 
- class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
+// MARK: - QuizManagementView
+
+
+/// Realmで登録したクイズの確認、編集、削除を行うためのテーブルビュー
+final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: Properties
     
+    /// クイズのリストを格納するモデル
     var quizModel:[QuizModel]?
-    private lazy var noneLabel:UILabel = {
-        let label:UILabel = UILabel(title: "まだクイズが作成されていません",
-                                    font: UIFont.systemFont(ofSize: 18),
-                                    textColor: .black,
-                                    backgroundColor: .lightGray,
-                                    textAlignment: .center,
-                                    numberOfLines: 0
-        )
-        label.labelHeight(height: 50, cornerRadius: 8)
-        
-        return label
-    }()
     
+    /// QuizManagementViewのデリゲート
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
+    
+    
     
     // MARK: Init
     
@@ -42,6 +39,10 @@ protocol QuizManagementViewDelegate: class {
     }
     
     
+    /// クイズのリストを格納モデルを追加したInit
+    /// - Parameter frame: フレーム
+    /// - Parameter style: テーブルのスタイル
+    /// - Parameter quizModel: クイズのリストを格納するモデル
     convenience init(frame: CGRect, style: UITableView.Style, quizModel: [QuizModel]) {
         self.init(frame: frame, style: style)
         
@@ -58,8 +59,12 @@ protocol QuizManagementViewDelegate: class {
         fatalError("init(coder:) has not been implemented")
     }
 
-    //MARK: UITableView
+    //MARK: UITableViewDelegate, UITableViewDataSource
     
+    /// 一つのセクションに表示する行数を設定
+    ///
+    /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示するため１を返す
+    /// - quizModelの件数を返す
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if quizModel!.count == 0 {
             return 1
@@ -67,18 +72,25 @@ protocol QuizManagementViewDelegate: class {
         return quizModel!.count
     }
     
+    
+    /// 表示するセルを設定する
+    ///
+    /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示する
+    /// - クイズのタイトルを表示する
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if quizModel!.count == 0 {
+            /// "まだクイズが作成されていません"と表示する"
             let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "cell")
             cell.textLabel?.text = "まだクイズが作成されていません"
             cell.selectionStyle = .none
             return cell
         }
         
-        let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        cell.setCell(
+        /// モデルに格納されたクイズのタイトルを表示する
+        let quizCell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
+        quizCell.setCellValue(
             listValue: ListValue(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!), displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
-        return cell
+        return quizCell
     }
     
     
@@ -104,7 +116,10 @@ protocol QuizManagementViewDelegate: class {
     
     
     
+    /// スワイプしたセルに「編集」「削除」の項目を表示する
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        /// 編集
         let edit = UITableViewRowAction(style: .normal, title: "編集") { [weak self]
             (action, indexPath) in
             
@@ -114,6 +129,7 @@ protocol QuizManagementViewDelegate: class {
         edit.backgroundColor = UIColor.orange
         
         
+        /// 削除
         let del = UITableViewRowAction(style: .destructive, title: "削除") { [weak self]
          (action, indexPath) in
             
@@ -140,10 +156,12 @@ protocol QuizManagementViewDelegate: class {
 
 // MARK: - QuizListCell
 
+/// QuizManagementViewのテーブルに表示するセル
 fileprivate final class QuizListCell:UITableViewCell {
     
     // MARK: Properties
     
+    /// クイズの問題ナンバーを表示する
     let quizNoLabel:UILabel = UILabel(title: nil,
                                       font: UIFont.systemFont(ofSize: 18),
                                       textColor: .black,
@@ -151,6 +169,8 @@ fileprivate final class QuizListCell:UITableViewCell {
                                       textAlignment: .left,
                                       numberOfLines: 1
     )
+    
+    /// クイズのタイトルを表示する
     let quizTitleLabel:UILabel = UILabel(title: nil,
                                          font: UIFont.systemFont(ofSize: 19),
                                          textColor: .black,
@@ -181,10 +201,10 @@ fileprivate final class QuizListCell:UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: InternalFunc
+    // MARK: SetCellValue
     
     
-    func setCell(listValue: ListValue, displaySwitch: String){
+    func setCellValue(listValue: ListValue, displaySwitch: String){
         textLabel?.text = listValue.title
         textLabel?.accessibilityIdentifier = listValue.title
         
@@ -194,6 +214,8 @@ fileprivate final class QuizListCell:UITableViewCell {
         }
     }
     
+    
+    /// セルを再利用するときはセルの背景色を白に戻す
     override func prepareForReuse() {
         super.prepareForReuse()
         
@@ -201,6 +223,9 @@ fileprivate final class QuizListCell:UITableViewCell {
     }
     
 }
+
+
+
 
 
 protocol ListProtocol {

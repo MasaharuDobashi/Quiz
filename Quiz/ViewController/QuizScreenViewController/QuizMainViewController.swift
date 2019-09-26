@@ -12,7 +12,7 @@ import RealmSwift
 class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     // MARK: Properties
-    private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: 1))
+    private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
     
     private lazy var quizMainView:QuizMainView = {
         let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false

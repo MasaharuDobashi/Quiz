@@ -9,6 +9,12 @@
 import UIKit
 
 
+// MARK: - RealmConfig
+
+/// Realmのスキームバージョン
+let realmConfig: UInt64 = 1
+
+
 // MARK: - COLORS
 
 let Morganite:UIColor = UIColor.rgba(red: 205, green: 192, blue: 199, alpha: 1)

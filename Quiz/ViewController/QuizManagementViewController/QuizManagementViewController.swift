@@ -9,13 +9,23 @@
 import UIKit
 import RealmSwift
 
-class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
+
+/// Realmで登録したクイズの確認、編集、削除を行うためのViewController
+final class QuizManagementViewController: UIViewController, QuizManagementViewDelegate {
     
     // MARK: Properties
-    private let config = Realm.Configuration(schemaVersion: 1)
+    
+    /// Realmのスキームバージョンを設定
+    private let config = Realm.Configuration(schemaVersion: realmConfig)
+    
+    /// Realmのインスタンス
     private var realm:Realm!
+    
+    /// クイズのリストを格納する
     private var quizModel:[QuizModel]?
     
+    
+    /// クイズを表示するテーブルビューのカスタムクラス
     private lazy var quizManagementView:QuizManagementView = {
         let quizManagementView: QuizManagementView = QuizManagementView(frame: frame_Size(self), style: .grouped, quizModel: quizModel!)
         quizManagementView.quizManagementViewDelegate = self
@@ -34,6 +44,9 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
         setleftBarButtonItem()
         
         
+        
+        /// iOS13のモーダルを開きクイズを新規作成、編集をしてモーダルを閉じた時に
+        /// viewWillAppearを呼び出す処理をセットする
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
         }
@@ -47,7 +60,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
+        /// 新規作成をしてクイズ数が増えていたら追加する
         if quizModel!.count < realm.objects(QuizModel.self).count {
             quizModel?.append(realm.objects(QuizModel.self).last!)
             quizManagementView.quizModel? = self.quizModel!
@@ -74,6 +87,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     
     
     // MARK: Navigation Action
+    
     /// クイズを作成するモーダルを表示
     @objc private func rightButtonAction(){
         
