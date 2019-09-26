@@ -32,7 +32,6 @@ protocol QuizManagementViewDelegate: class {
         
         return label
     }()
-    private var isZeroQuiz: Bool!
     
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
@@ -52,12 +51,7 @@ protocol QuizManagementViewDelegate: class {
         self.dataSource = self
         self.separatorInset = .zero
         self.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
-        
-        
-        if self.quizModel?.count == 0 {
-            isZeroQuiz = true
-            setNoneLabel()
-        }
+
     }
   
     required init?(coder aDecoder: NSCoder) {
@@ -67,14 +61,18 @@ protocol QuizManagementViewDelegate: class {
     //MARK: UITableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if quizModel!.count == 0 {
+            return 1
+        }
         return quizModel!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if isZeroQuiz == true {
-            noneLabel.removeFromSuperview()
-            isZeroQuiz = false
+        if quizModel!.count == 0 {
+            let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+            cell.textLabel?.text = "まだクイズが作成されていません"
+            cell.selectionStyle = .none
+            return cell
         }
         
         let cell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
@@ -84,10 +82,27 @@ protocol QuizManagementViewDelegate: class {
     }
     
     
+    
+    /// 選択したクイズの詳細に遷移
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         quizManagementViewDelegate?.detailAction(indexPath: indexPath)
     }
+    
+    
+    
+    /// クイズが0件の時はセルをえ選択させない
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if quizModel!.count == 0 {
+            return nil
+        }
+        
+        return indexPath
+    }
+    
+    
+    
+    
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let edit = UITableViewRowAction(style: .normal, title: "編集") { [weak self]
@@ -110,16 +125,15 @@ protocol QuizManagementViewDelegate: class {
     }
     
     
-    private func setNoneLabel(){
-        addSubview(noneLabel)
-        
-        noneLabel.translatesAutoresizingMaskIntoConstraints = false
-        noneLabel.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
-        noneLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        noneLabel.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
-        noneLabel.heightAnchor.constraint(equalToConstant: noneLabel.bounds.height).isActive = true
+    /// クイズが0件の時はセルのスワイプをしない
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if quizModel?.count == 0 {
+            return false
+        }
+        return true
     }
     
+
 }
 
 

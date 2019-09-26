@@ -53,6 +53,7 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
             quizManagementView.quizModel? = self.quizModel!
         }
         
+        
         quizManagementView.reloadData()
         
         debugPrint(object: quizModel)
@@ -91,9 +92,12 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
                 self?.realm.deleteAll()
             }
             
+            self?.quizModel?.removeAll()
+            self?.quizModelAppend()
+            self?.quizManagementView.quizModel = self?.quizModel
+            self?.quizManagementView.reloadData()
             self?.tabBarController?.selectedIndex = 0
-            self?.viewDidAppear(false)
-            self?.viewDidLoad()
+            
             NotificationCenter.default.post(name: Notification.Name("allDelete"), object: nil)
         }){ (action) in return }
         
@@ -120,11 +124,11 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     
     /// 指定したクイズを削除する
     private func deleteRealm(indexPath: IndexPath){
-        let quizModel = realm.objects(QuizModel.self)[indexPath.row]
+        let rquizModel = realm.objects(QuizModel.self)[indexPath.row]
         
         
         try! realm.write() {
-            realm.delete(quizModel)
+            realm.delete(rquizModel)
         }
     }
     
@@ -134,12 +138,14 @@ class QuizManagementViewController: UIViewController, QuizManagementViewDelegate
     func deleteAction(indexPath: IndexPath) {
         AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
             self?.deleteRealm(indexPath: indexPath)
-            self?.quizManagementView.removeFromSuperview()
             
-            self?.quizModel = nil
-            self?.viewDidLoad()
             
+                self?.quizModel?.removeAll()
+                self?.quizModelAppend()
+                self?.quizManagementView.quizModel = self?.quizModel
+                self?.quizManagementView.reloadData()
             }, handler2: {_ -> Void in})
+        
         
     }
     
