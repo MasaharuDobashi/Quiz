@@ -9,6 +9,8 @@
 import UIKit
 
 
+// MARK: - QuizScreenViewDelagate
+
 protocol QuizScreenViewDelagate:class {
     func buttonTapAction()
     func trueConut()
@@ -16,14 +18,27 @@ protocol QuizScreenViewDelagate:class {
     var trueConunt:Int {get}
 }
 
+
+
+
+// MARK: - QuizScreenView
+
 class QuizScreenView: UIView {
     
     // MARK: Properties
     
-    var quizModel:QuizModel!
-    weak var quizScreenViewDelagate:QuizScreenViewDelagate?
     
+    /// クイズを格納する配列
+    var quizModel:QuizModel!
+    
+    /// デリゲート
+    weak var delagate:QuizScreenViewDelagate?
+    
+    
+    /// クイズの回答をするボタンを格納する配列
     private var buttons:[UIButton]!
+    
+    /// クイズのタイトルを表示するラベル
     private var quizScreenLabel:UILabel!
     
     
@@ -33,6 +48,11 @@ class QuizScreenView: UIView {
         super.init(frame:frame)
     }
     
+    
+    
+    /// クイズの配列を格納するInit
+    /// - Parameter frame: 本ビューのサイズ
+    /// - Parameter model: クイズを格納する配列
     convenience init(frame:CGRect,  quizModel model:QuizModel){
         self.init(frame: frame)
         quizModel = model
@@ -45,11 +65,13 @@ class QuizScreenView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
+    
     // MARK: ViewLoad
     
     private func viewLoad(){
 
-        
          quizScreenLabel = UILabel(title: quizModel.quizTitle,
                                               font: UIFont.boldSystemFont(ofSize: 20),
                                               textColor: .white,
@@ -67,14 +89,24 @@ class QuizScreenView: UIView {
         quizScreenLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
         quizScreenLabel.heightAnchor.constraint(equalToConstant: quizScreenLabel.bounds.height).isActive = true
         
-        
+        /// 回答1
         let button1:UIButton = UIButton()
+        
+        /// 回答2
         let button2:UIButton = UIButton()
+        
+        /// 回答3
         let button3:UIButton = UIButton()
+        
+        /// 回答4
         let button4:UIButton = UIButton()
 
+        
         buttons = [button1,button2,button3,button4]
         quizChange()
+        
+        
+        /// 各回答ボタンに制約を付ける
         
         button1.translatesAutoresizingMaskIntoConstraints = false
         button1.topAnchor.constraint(equalTo: centerYAnchor, constant: 50).isActive = true
@@ -104,17 +136,25 @@ class QuizScreenView: UIView {
         
     }
     
+    
+    
+    
     // MARK: ButtonAction
     
     @objc private func buttonTapAction(sender:UIButton){
         if sender.titleLabel!.text == quizModel.trueAnswer {
-            quizScreenViewDelagate?.trueConut()
+            delagate?.trueConut()
         }
-        quizScreenViewDelagate?.buttonTapAction()
+        delagate?.buttonTapAction()
     }
+    
+    
+    
     
     // MARK: internalFunc
     
+    
+    /// クイズのタイトルラベルとボタンに回答をセットする
     func quizChange(){
         quizScreenLabel.text = quizModel.quizTitle
         
@@ -126,12 +166,11 @@ class QuizScreenView: UIView {
         ]
         
         var numbers = [0,1,2,3]
-        let colors:[UIColor] = [Geranium, Geranium, Geranium, Geranium]
         
         for i in 0..<buttons.count {
             let num:Int = Int(arc4random_uniform(UInt32(numbers.count)))
             buttons[i].setButton(title: stringArray[num],
-                                 backgroundColor: colors[i],
+                                 backgroundColor: Geranium,
                                  font: UIFont.boldSystemFont(ofSize: 18),
                                  target: self,
                                  action: #selector(buttonTapAction)

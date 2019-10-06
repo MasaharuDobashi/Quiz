@@ -13,30 +13,44 @@ import RealmSwift
 class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     
     // MARK: Properties
-    private var quizScreenView:QuizScreenView?
+    
+    private lazy var quizScreenView:QuizScreenView = {
+        let view: QuizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[quizNum])
+        view.delagate = self
+        return view
+    }()
+    
+    /// realmのインスタンス
     private let realm:Realm = try! Realm()
+    
+    /// クイズを格納する配列
     private var quizModel:[QuizModel]!
+    
     
     // MARK: QuizScreenViewDelagate Properties
      var quizNum: Int = 0
      var trueConunt: Int = 0
     
     // MARK: Lifecycle
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         
-        
-        
         quizModelAppend()
+        
+        /// クイズが0件だったらquizScreenViewをaddSubViewしない
         if quizModel.count == 0 {return}
+        
+        /// クイズ11件以上だったらquizScreenViewをaddSubViewしない
         if quizModel.count > 10 {return}
         
-        quizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[quizNum])
-        quizScreenView?.quizScreenViewDelagate = self
-        self.view.addSubview(quizScreenView!)
+        view.addSubview(quizScreenView)
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -45,13 +59,15 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         isQuizActive()
         debugPrint(object: quizModel[quizNum])
         
-        quizScreenView?.quizModel = quizModel[quizNum]
-        quizScreenView?.quizChange()
+        quizScreenView.quizModel = quizModel[quizNum]
+        quizScreenView.quizChange()
     }
     
     
     // MARK: Private Func
     
+    
+    /// 表示するクイズを配列に格納する
     private func quizModelAppend(){
         quizModel = [QuizModel]()
         
@@ -65,7 +81,9 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }
     
     
-    /// <#Description#>
+    /// クイズを開始できるかチェックする
+    ///
+    /// 0件から10件以内かどうかを確認する
     func isQuizActive() {
         if quizModel.count == 0 {
             self.view.backgroundColor = .white
@@ -83,7 +101,15 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         
     }
     
+    
+    
     // MARK: QuizScreenViewDelagate Func
+    
+    
+    /// 回答を選択した時のアクション
+    ///
+    /// 次の問題があれば画面を更新し次の問題を表示
+    /// 問題がなければリザルト画面を表示する
     func buttonTapAction() {
         quizNum += 1
         if  quizNum < quizModel.count {
@@ -94,6 +120,9 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         }
     }
     
+    
+    
+    /// クイズを正解したら1プラスする
     func trueConut(){
          trueConunt += 1
     }

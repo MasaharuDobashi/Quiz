@@ -9,21 +9,33 @@
 import UIKit
 
 
+// MARK: - QuizMainViewDelegate
+
+
 protocol QuizMainViewDelegate: class {
     func quizStartButtonAction()
     func historyButtonAction()
 }
 
-class QuizMainView: UIView {
+
+// MARK: - QuizMainView
+
+final class QuizMainView: UIView {
     
     // MARK: Properties
+    
+    
+    /// クイズスタートボタン
+    ///
+    /// - クイズがなければクイズ作成モーダルを表示する
+    /// - クイズを開始する
     private var quizStartButton:UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "quizStartButton"
         button.setButton(title: "",
                                   backgroundColor: Geranium,
                                   font: UIFont.boldSystemFont(ofSize: 18),
-                                  target: self, action: #selector(buttonTapAction)
+                                  target: self, action: #selector(quizStartButtonTapAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         
@@ -31,6 +43,7 @@ class QuizMainView: UIView {
     }()
     
     
+    /// 履歴ボタン
     private lazy var historyButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "historyButton"
@@ -44,11 +57,23 @@ class QuizMainView: UIView {
         return button
     }()
     
+    /// クイズがあるかないかのフラグ
+    ///
+    /// - true: クイズがあればquizStartButtonをクイズスタートにする
+    /// - false: クイズがなければquizStartButtonをクイズ作成ボタンにする
     var isActiveQuiz: Bool = false
+    
+    
+    /// 履歴があるかないかのフラグ
+    ///
+    /// true:  historyButtonを表示する
+    /// nil:  historyButtonを非表示にする
     var isHistory: Bool? = false
     
-
-    weak var quizMainViewDelegate:QuizMainViewDelegate?
+    /// デリゲート
+    weak var delegate:QuizMainViewDelegate?
+    
+    
     
     // MARK: Init
     
@@ -63,6 +88,8 @@ class QuizMainView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
     // MARK: ViewLoad
     
     private func viewLoad(){
@@ -72,6 +99,9 @@ class QuizMainView: UIView {
         setConstraint()
     }
     
+    
+    
+    /// quizStartButtontに制約を付ける
     private func setConstraint(){
         quizStartButton.translatesAutoresizingMaskIntoConstraints = false
         quizStartButton.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
@@ -82,17 +112,23 @@ class QuizMainView: UIView {
     
     
     // MARK: ButtonAction
-    @objc private func buttonTapAction(){
-        quizMainViewDelegate?.quizStartButtonAction()
+    
+    /// クイズスタートボタンのタップアクション
+    @objc private func quizStartButtonTapAction(){
+        delegate?.quizStartButtonAction()
     }
     
-    
+    /// 履歴ボタンのタップアクション
     @objc private func historyButtonAction(){
-        quizMainViewDelegate?.historyButtonAction()
+        delegate?.historyButtonAction()
     }
+    
+    
     
     // MARK: internalFunc
     
+    
+    /// クイズスタートボタンの色を変える
     func startButtonColorChange(){
         if isActiveQuiz == false {
             quizStartButton.setTitle("クイズを作成", for: .normal)
@@ -103,6 +139,11 @@ class QuizMainView: UIView {
         }
     }
     
+    
+    /// 履歴ボタンをaddSubViewする
+    ///
+    /// isHistory == true: 履歴ボタンをaddSubViewする
+    /// isHistory == false: 履歴ボタンをremoveFromSuperviewする
     func historyButtonColorChange(){
         if isHistory == true {
             addSubview(historyButton)
@@ -112,7 +153,7 @@ class QuizMainView: UIView {
             historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
             historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
-        } else if isHistory == nil {
+        } else if isHistory == false {
             historyButton.removeFromSuperview()
         }
     }

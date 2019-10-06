@@ -112,7 +112,7 @@ final class QuizManagementViewController: UIViewController, QuizManagementViewDe
             self?.quizManagementView.reloadData()
             self?.tabBarController?.selectedIndex = 0
             
-            NotificationCenter.default.post(name: Notification.Name("allDelete"), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(AllDelete), object: nil)
         }){ (action) in return }
         
     }

@@ -9,20 +9,32 @@
 import UIKit
 import RealmSwift
 
+
+// MARK: - QuizMainViewController
+
+
 class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     // MARK: Properties
+    
+    /// Realmのスキームバージョンを設定
     private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
     
+    
+    /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
         let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
-        quizMainView.quizMainViewDelegate = self
+        quizMainView.delegate = self
         
         return quizMainView
     }()
     
+    
+    
     // MARK: Lifecycle
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,6 +42,8 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         
         view.addSubview(quizMainView)
     }
+    
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -72,23 +86,31 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     /// addObserverをセットする
     func setNotificationCenter() {
         #if DEBUG
-        // 削除ボタンをナビゲーションバーにセットする
-        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: "allDelete"), object: nil)
+        /// QuizManagementViewControllerでallDeleteがpostされたら履歴ボタンを更新する
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: AllDelete), object: nil)
         #endif
         
         
         if #available(iOS 13.0, *) {
+            /// iOS13以降のモーダルを閉じた時にHistoryUpdateがpostされたらViewWillAppearを呼ぶ
             NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: HistoryUpdate), object: nil)
         }
         
     }
     
+    
+    
+    // MARK: Notification Action
+    
     #if DEBUG
+    /// 履歴ボタンを非表示する
     @objc func allDeleteFlag(notification: Notification){
-        quizMainView.isHistory = nil
+        quizMainView.isHistory = false
         quizMainView.historyButtonColorChange()
     }
     #endif
+    
+    
     
     /// ResultScreenViewControllerのモーダルが閉じたらViewWillAppearを呼ぶ
     @objc @available(iOS 13.0, *)
