@@ -37,7 +37,8 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
                                                lineAnimationOptions: .init(isAnime: true, duration: 1)
         )
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.changeAppearnceColor(light: .white, dark: .darkGray)
+        view.valueLabelOption?.labelBackgroundColor = UIColor.changeAppearnceColor(light: .white, dark: .darkGray)
         view.ruledLine(lineWidth: screenWidth * 0.9)
         
         return view

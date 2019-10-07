@@ -127,6 +127,7 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
+        cell.backgroundColor = cellWhite
         
         guard let rowEditValue:RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
         

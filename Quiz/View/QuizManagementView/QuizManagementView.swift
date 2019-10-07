@@ -184,14 +184,15 @@ fileprivate final class QuizListCell:UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
         
+        backgroundColor = cellWhite
         textLabel?.font = UIFont.systemFont(ofSize: 18)
-        textLabel?.textColor = .black
         textLabel?.backgroundColor = .clear
         textLabel?.textAlignment = .left
         textLabel?.numberOfLines = 1
+        textLabel?.textColor = detailTextLabel?.textColor
+        
         
         detailTextLabel?.font = UIFont.systemFont(ofSize: 19)
-        detailTextLabel?.textColor = .black
         detailTextLabel?.backgroundColor = .clear
         detailTextLabel?.textAlignment = .left
         detailTextLabel?.numberOfLines = 1
@@ -219,7 +220,7 @@ fileprivate final class QuizListCell:UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        self.backgroundColor = .white
+        backgroundColor = cellWhite
     }
     
 }
