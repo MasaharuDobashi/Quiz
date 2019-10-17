@@ -120,9 +120,11 @@ class QuizEditViewController: UIViewController {
         }
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
         }
         
+        
+        NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
     }
     
     

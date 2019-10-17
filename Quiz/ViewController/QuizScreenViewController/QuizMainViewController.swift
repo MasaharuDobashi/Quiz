@@ -110,6 +110,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     @objc func allDeleteFlag(notification: Notification){
         quizMainView.isHistory = false
         quizMainView.historyButtonColorChange()
+        viewWillAppear(false)
     }
     #endif
     

@@ -37,3 +37,6 @@ let HistoryUpdate: String = "historyUpdate"
 
 /// データベース内のデータ全削除
 let AllDelete: String = "allDelete"
+
+/// iOS13以降でモーダルを閉じた時にViewWillAppearを呼ぶ
+let ViewUpdate: String = "viewUpdate"
