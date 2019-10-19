@@ -61,14 +61,22 @@ final class QuizMainView: UIView {
     ///
     /// - true: クイズがあればquizStartButtonをクイズスタートにする
     /// - false: クイズがなければquizStartButtonをクイズ作成ボタンにする
-    var isActiveQuiz: Bool = false
+    var isActiveQuiz: Bool = false {
+        didSet {
+            startButtonColorChange()
+        }
+    }
     
     
     /// 履歴があるかないかのフラグ
     ///
     /// true:  historyButtonを表示する
     /// nil:  historyButtonを非表示にする
-    var isHistory: Bool? = false
+    var isHistory: Bool? = false {
+        didSet {
+            historyButtonColorChange()
+        }
+    }
     
     /// デリゲート
     weak var delegate:QuizMainViewDelegate?
@@ -93,9 +101,7 @@ final class QuizMainView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
-        startButtonColorChange()
         addSubview(quizStartButton)
- 
         setConstraint()
     }
     

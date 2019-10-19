@@ -49,10 +49,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         super.viewWillAppear(animated)
       
         quizMainView.isActiveQuiz = realm.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView.startButtonColorChange()
-        
         quizMainView.isHistory = realm.objects(HistoryModel.self).count != 0 ? true : false
-        quizMainView.historyButtonColorChange()
         
     }
     
@@ -94,10 +91,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         if #available(iOS 13.0, *) {
             /// iOS13以降のモーダルを閉じた時にHistoryUpdateがpostされたらViewWillAppearを呼ぶ
             NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: HistoryUpdate), object: nil)
-            
-            /// iOS13以降のモーダルを閉じた時にHistoryUpdateがpostされたらViewWillAppearを呼ぶ
-            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
         }
+        /// クイズが更新された時にQuizUpdateがpostされたらViewWillAppearを呼ぶ
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
         
     }
     
@@ -116,9 +112,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     
     
-    /// ResultScreenViewControllerのモーダルが閉じたらViewWillAppearを呼ぶ
-    @objc @available(iOS 13.0, *)
-    func callViewWillAppear(notification: Notification) {
+    
+    /// postViewWillAppearを呼ぶ
+    /// - Parameter notification: HistoryUpdate、QuizUpdateがpostされた時
+    @objc func callViewWillAppear(notification: Notification) {
         self.viewWillAppear(true)
     }
     
