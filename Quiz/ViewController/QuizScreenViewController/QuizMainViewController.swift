@@ -88,13 +88,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         #endif
         
         
-        if #available(iOS 13.0, *) {
-            /// iOS13以降のモーダルを閉じた時にHistoryUpdateがpostされたらViewWillAppearを呼ぶ
-            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: HistoryUpdate), object: nil)
-        }
-        /// クイズが更新された時にQuizUpdateがpostされたらViewWillAppearを呼ぶ
+        /// ViewUpdate、QuizUpdateがpostされたらViewWillAppearを呼ぶ
         NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: ViewUpdate), object: nil)
     }
     
     
@@ -114,7 +110,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     
     /// postViewWillAppearを呼ぶ
-    /// - Parameter notification: HistoryUpdate、QuizUpdateがpostされた時
+    /// - Parameter notification: ViewUpdate、QuizUpdateがpostされた時
     @objc func callViewWillAppear(notification: Notification) {
         self.viewWillAppear(true)
     }

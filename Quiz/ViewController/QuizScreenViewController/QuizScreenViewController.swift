@@ -26,10 +26,11 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     /// クイズを格納する配列
     private var quizModel:[QuizModel]!
     
+    /// 何問目かを格納
+    var quizNum: Int = 0
     
-    // MARK: QuizScreenViewDelagate Properties
-     var quizNum: Int = 0
-     var trueConunt: Int = 0
+    /// 正解数を格納
+    var trueConunt: Int = 0
     
     // MARK: Lifecycle
     
