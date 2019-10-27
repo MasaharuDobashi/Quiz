@@ -84,8 +84,10 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
         
         /// モデルに格納されたクイズのタイトルを表示する
         let quizCell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        quizCell.setCellValue(
-            listValue: ListValue(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!), displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
+        quizCell.setCellValue(listValue: .init(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!),
+                              displaySwitch: (quizModel?[indexPath.row].displayFlag)!
+        )
+        
         return quizCell
     }
     
@@ -220,19 +222,4 @@ fileprivate final class QuizListCell:UITableViewCell {
     }
     
 }
-
-
-
-
-
-protocol ListProtocol {
-    var title: String { get }
-    var value: String { get }
-}
-
-struct ListValue: ListProtocol {
-    var title: String
-    var value: String
-}
-
 
