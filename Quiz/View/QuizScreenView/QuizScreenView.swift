@@ -14,8 +14,6 @@ import UIKit
 protocol QuizScreenViewDelagate:class {
     func buttonTapAction()
     func trueConut()
-    var quizNum:Int {get}
-    var trueConunt:Int {get}
 }
 
 
@@ -39,7 +37,18 @@ class QuizScreenView: UIView {
     private var buttons:[UIButton]!
     
     /// クイズのタイトルを表示するラベル
-    private var quizScreenLabel:UILabel!
+    private lazy var quizScreenLabel:UILabel = {
+        let label: UILabel = UILabel(title: quizModel.quizTitle,
+                                              font: UIFont.boldSystemFont(ofSize: 20),
+                                              textColor: .white,
+                                              backgroundColor: Rose,
+                                              textAlignment: .center,
+                                              numberOfLines: 0
+        )
+        label.labelHeight(multiplier: 0.4)
+        
+        return label
+    }()
     
     
     // MARK: Init
@@ -71,15 +80,6 @@ class QuizScreenView: UIView {
     // MARK: ViewLoad
     
     private func viewLoad(){
-
-         quizScreenLabel = UILabel(title: quizModel.quizTitle,
-                                              font: UIFont.boldSystemFont(ofSize: 20),
-                                              textColor: .white,
-                                              backgroundColor: Rose,
-                                              textAlignment: .center,
-                                              numberOfLines: 0
-        )
-        quizScreenLabel.labelHeight(multiplier: 0.4)
         addSubview(quizScreenLabel)
         
         

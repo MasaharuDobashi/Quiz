@@ -32,8 +32,8 @@ let cellWhite: UIColor = UIColor.changeAppearnceColor(light: .white, dark: .rgba
 /// QuizManagementViewControllerの更新
 let QuizUpdate: String = "quizUpdate"
 
-/// QuizMainViewControllerの更新
-let HistoryUpdate: String = "historyUpdate"
-
 /// データベース内のデータ全削除
 let AllDelete: String = "allDelete"
+
+/// iOS13以降でモーダルを閉じた時にViewWillAppearを呼ぶ
+let ViewUpdate: String = "viewUpdate"

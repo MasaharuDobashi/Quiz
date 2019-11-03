@@ -9,14 +9,21 @@
 import UIKit
 import RealmSwift
 
-class QuizEditViewController: UIViewController {
+final class QuizEditViewController: UIViewController {
     
     // MARK: Properties
+    
     private let config = Realm.Configuration(schemaVersion: 1)
     private var realm:Realm!
+    
+    /// クイズのID
     private var quzi_id:Int?
+    
+    /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
-    private var quizModel: [QuizModel]!
+    
+    /// クイズを格納
+    private var quizModel: QuizModel!
     
     let key:ParameterKey = ParameterKey()
     
@@ -85,7 +92,8 @@ class QuizEditViewController: UIViewController {
         
     }
     
-    // MARK: - Private func
+    
+    
     // MARK: NavigationItem Func
     
     private func navigationItemAction(){
@@ -120,9 +128,11 @@ class QuizEditViewController: UIViewController {
         }
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
         }
         
+        
+        NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
     }
     
     
@@ -174,9 +184,8 @@ class QuizEditViewController: UIViewController {
     // MARK: Other
     
     private func quizModelAppend(quiz_id:Int){
-        quizModel = [QuizModel]()
-        
-        quizModel.append(realm.objects(QuizModel.self)[quiz_id])
+        quizModel = QuizModel()
+        quizModel = realm.objects(QuizModel.self)[quiz_id]
     }
     
     

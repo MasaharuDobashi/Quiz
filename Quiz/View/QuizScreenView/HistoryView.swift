@@ -34,7 +34,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts,
                                                lineOptions: .init(strokeWidth: 3,
                                                                   strokeColor: Rubyred),
-                                               lineAnimationOptions: .init(isAnime: true, duration: 1)
+                                               lineAnimationOptions: .init(isAnime: true, duration: Double(trueCounts.count) / 10)
         )
         
         view.backgroundColor = UIColor.changeAppearnceColor(light: .white, dark: .darkGray)

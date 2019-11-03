@@ -27,6 +27,13 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
     /// クイズのリストを格納するモデル
     var quizModel:[QuizModel]?
     
+    
+    var quizCount: Int = 0 {
+        didSet {
+            reloadData()
+        }
+    }
+    
     /// QuizManagementViewのデリゲート
     weak var quizManagementViewDelegate:QuizManagementViewDelegate?
     
@@ -36,25 +43,14 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
-    }
-    
-    
-    /// クイズのリストを格納モデルを追加したInit
-    /// - Parameter frame: フレーム
-    /// - Parameter style: テーブルのスタイル
-    /// - Parameter quizModel: クイズのリストを格納するモデル
-    convenience init(frame: CGRect, style: UITableView.Style, quizModel: [QuizModel]) {
-        self.init(frame: frame, style: style)
-        
-        self.quizModel = quizModel
         
         self.delegate = self
         self.dataSource = self
         self.separatorInset = .zero
         self.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
-
     }
-  
+    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -66,10 +62,10 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
     /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示するため１を返す
     /// - quizModelの件数を返す
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if quizModel!.count == 0 {
+        if quizCount == 0 {
             return 1
         }
-        return quizModel!.count
+        return quizCount
     }
     
     
@@ -78,7 +74,7 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
     /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示する
     /// - クイズのタイトルを表示する
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if quizModel!.count == 0 {
+        if quizCount == 0 {
             /// "まだクイズが作成されていません"と表示する"
             let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "cell")
             cell.textLabel?.text = "まだクイズが作成されていません"
@@ -88,8 +84,10 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
         
         /// モデルに格納されたクイズのタイトルを表示する
         let quizCell:QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        quizCell.setCellValue(
-            listValue: ListValue(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!), displaySwitch: (quizModel?[indexPath.row].displayFlag)!)
+        quizCell.setCellValue(listValue: .init(title: "問題\(indexPath.row + 1)", value: (quizModel?[indexPath.row].quizTitle)!),
+                              displaySwitch: (quizModel?[indexPath.row].displayFlag)!
+        )
+        
         return quizCell
     }
     
@@ -105,7 +103,7 @@ final class QuizManagementView: UITableView, UITableViewDelegate, UITableViewDat
     
     /// クイズが0件の時はセルをえ選択させない
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if quizModel!.count == 0 {
+        if quizCount == 0 {
             return nil
         }
         
@@ -224,19 +222,4 @@ fileprivate final class QuizListCell:UITableViewCell {
     }
     
 }
-
-
-
-
-
-protocol ListProtocol {
-    var title: String { get }
-    var value: String { get }
-}
-
-struct ListValue: ListProtocol {
-    var title: String
-    var value: String
-}
-
 

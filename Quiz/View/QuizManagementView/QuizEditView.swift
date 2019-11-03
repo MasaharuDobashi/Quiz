@@ -8,59 +8,39 @@
 
 import UIKit
 
-class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     // MARK: Properties
     
-    private var quizModel:[QuizModel]?
-    private var mode:ModeEnum!
+    /// クイズを格納する
+    private var quizModel: QuizModel?
     
-    private let titleTextField:UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        
-        return textField
-    }()
+    /// 新規追加、編集、詳細の判別
+    private var mode: ModeEnum!
     
+    /// タイトル入力テキストフィールド
+    private lazy var titleTextField: UITextField = UITextField()
     
-    private let true_TextField:UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        
-        return textField
-    }()
+    /// 正解入力テキストフィールド
+    private lazy var true_TextField: UITextField = UITextField()
     
+    /// 不正解1入力テキストフィールド
+    private lazy var false1_TextField: UITextField = UITextField()
     
-    private let false1_TextField:UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        
-        return textField
-    }()
+    /// 不正解2入力テキストフィールド
+    private lazy var false2_textField: UITextField = UITextField()
+    
+    /// 不正解3入力テキストフィールド
+    private lazy var false3_textField: UITextField = UITextField()
     
     
-    private let false2_textField:UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        
-        return textField
-    }()
-    
-    
-    private let false3_textField:UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        
-        return textField
-    }()
-    
-    
+    /// 表示・非表示選択スイッチ
     private lazy var displaySwitch: UISwitch = {
         let switchView:UISwitch = UISwitch()
         mode == .add ? switchView.isOn = true : nil
         
         return switchView
-        }()
+    }()
     
     
     
@@ -68,9 +48,10 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
-        
         self.delegate = self
         self.dataSource = self
+        self.allowsSelection = false
+        rowHeight = 50
     }
     
     /// add Init
@@ -81,19 +62,19 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     
     
     /// edit,detail Init
-    convenience init(frame: CGRect, style: UITableView.Style, quizModel: [QuizModel]?, mode:ModeEnum) {
+    convenience init(frame: CGRect, style: UITableView.Style, quizModel: QuizModel?, mode:ModeEnum) {
         self.init(frame: frame, style: style)
         self.quizModel = quizModel
         self.mode = mode
         
         
         if mode != .add {
-            titleTextField.text = quizModel![0].quizTitle
-            true_TextField.text = quizModel![0].trueAnswer
-            false1_TextField.text = quizModel![0].falseAnswer1
-            false2_textField.text = quizModel![0].falseAnswer2
-            false3_textField.text = quizModel![0].falseAnswer3
-            displaySwitch.isOn = quizModel![0].displayFlag == "0" ? true : false
+            titleTextField.text = quizModel?.quizTitle
+            true_TextField.text = quizModel?.trueAnswer
+            false1_TextField.text = quizModel?.falseAnswer1
+            false2_textField.text = quizModel?.falseAnswer2
+            false3_textField.text = quizModel?.falseAnswer3
+            displaySwitch.isOn = quizModel?.displayFlag == "0" ? true : false
             
             
             if mode == .detail {
@@ -114,7 +95,10 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
 
-    // MARK: TableView
+    
+    
+    
+    // MARK: UITableViewDelegate, UITableViewDataSource
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return InputType.allCases.count
@@ -123,6 +107,11 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
+    
+    
+    
+    // MARK: Cell
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
@@ -135,31 +124,37 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         case InputType.title.rawValue:
             titleTextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             titleTextField.placeholder = rowEditValue.placeholder
+            setTextFieldConstraint(textField: titleTextField, cell: cell)
             
-            setTextFieldAutoLayout(textField: titleTextField, cell: cell)
         case InputType.correctAnswer.rawValue:
             true_TextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             true_TextField.placeholder = rowEditValue.placeholder
-            setTextFieldAutoLayout(textField: true_TextField, cell: cell)
+            setTextFieldConstraint(textField: true_TextField, cell: cell)
+            
         case InputType.incorrectAnswer1.rawValue:
             false1_TextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             false1_TextField.placeholder = rowEditValue.placeholder
-            setTextFieldAutoLayout(textField: false1_TextField, cell: cell)
+            setTextFieldConstraint(textField: false1_TextField, cell: cell)
+            
         case InputType.incorrectAnswer2.rawValue:
             false2_textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             false2_textField.placeholder = rowEditValue.placeholder
-            setTextFieldAutoLayout(textField: false2_textField, cell: cell)
+            setTextFieldConstraint(textField: false2_textField, cell: cell)
+            
         case InputType.incorrectAnswer3.rawValue:
             false3_textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             false3_textField.placeholder = rowEditValue.placeholder
-            setTextFieldAutoLayout(textField: false3_textField, cell: cell)
+            setTextFieldConstraint(textField: false3_textField, cell: cell)
+            
         case InputType.showHide.rawValue:
             displaySwitch.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textLabel?.text = rowEditValue.placeholder
-            cell.contentView.addSubview(displaySwitch)
+            
+            cell.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false
             displaySwitch.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
             displaySwitch.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
+            
         default:
             break
         }
@@ -168,6 +163,9 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
         return cell
     }
     
+    
+    
+    // MARK: Header
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView:UIView = UIView()
@@ -192,10 +190,8 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     
-    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        return nil
-    }
     
+    // MARK: Footer
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return section == InputType.showHide.rawValue ? 350 : CGFloat.leastNormalMagnitude
@@ -213,11 +209,16 @@ class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UIT
     }
     
     
+    
+    
+    
     // MARK: Other
     
-    private func setTextFieldAutoLayout(textField: UITextField, cell:UITableViewCell){
+    private func setTextFieldConstraint(textField: UITextField, cell:UITableViewCell){
+        
         textField.delegate = self
-        cell.contentView.addSubview(textField)
+        textField.textAlignment = .left
+        cell.addSubview(textField)
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true
@@ -282,21 +283,21 @@ extension QuizEditView {
         }
         
         private struct Title: RowEditValue {
-            var placeholder: String = "クイズのタイトルを入力してください。"
-            var accessibilityIdentifier: String = "title"
-            var headerTitle: String = "タイトル"
+            let placeholder: String = "クイズのタイトルを入力してください。"
+            let accessibilityIdentifier: String = "title"
+            let headerTitle: String = "タイトル"
         }
         
         private struct CorrectAnswer: RowEditValue {
-            var placeholder: String = "正解の回答を入力してください。"
-            var accessibilityIdentifier: String = "correctAnswer"
-            var headerTitle: String = "正解"
+            let placeholder: String = "正解の回答を入力してください。"
+            let accessibilityIdentifier: String = "correctAnswer"
+            let headerTitle: String = "正解"
         }
         
         private struct IncorrectAnswer1: RowEditValue {
-            var placeholder: String = "不正解の回答を入力してください。"
-            var accessibilityIdentifier: String  = "incorrectAnswer1"
-            var headerTitle: String = "不正解1"
+            let placeholder: String = "不正解の回答を入力してください。"
+            let accessibilityIdentifier: String  = "incorrectAnswer1"
+            let headerTitle: String = "不正解1"
         }
         
         private struct IncorrectAnswer2: RowEditValue {
@@ -306,15 +307,15 @@ extension QuizEditView {
         }
         
         private struct IncorrectAnswer3: RowEditValue {
-            var placeholder: String = "不正解の回答を入力してください。"
-            var accessibilityIdentifier: String  = "incorrectAnswer3"
-            var headerTitle: String = "不正解3"
+            let placeholder: String = "不正解の回答を入力してください。"
+            let accessibilityIdentifier: String  = "incorrectAnswer3"
+            let headerTitle: String = "不正解3"
         }
         
         private struct ShowHide: RowEditValue {
-            var placeholder: String = " 表示・非表示"
-            var accessibilityIdentifier: String = "showHide"
-            var headerTitle: String = "表示"
+            let placeholder: String = " 表示・非表示"
+            let accessibilityIdentifier: String = "showHide"
+            let headerTitle: String = "表示"
         }
     }
 }

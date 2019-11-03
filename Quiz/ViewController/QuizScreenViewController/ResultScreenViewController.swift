@@ -14,21 +14,30 @@ final class ResultScreenViewController: UIViewController {
     // MARK: Properties
     
     private var realm: Realm!
+    
+    /// 履歴を格納する
     private var historyModel: HistoryModel!
+    
+    /// 正解数
     private var trueConunt: Int = 0
     
     
     private lazy var resultScreenView:ResultScreenView = {
-        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self), trueConunt:trueConunt)
+        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self))
+        resultScreenView.correctString = String(self.trueConunt)
         
         return resultScreenView
     }()
+    
+    
+    
     
     // MARK: Init
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
+    
     
     convenience init(trueConunt:Int){
         self.init(nibName: nil, bundle: nil)
@@ -52,10 +61,19 @@ final class ResultScreenViewController: UIViewController {
         
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(HistoryUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
         }
         
     }
+    
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        resultScreenView.animation()
+    }
+    
     
     private func addRealm(trueConunt: Int){
         let conunt: String = String(trueConunt)
@@ -78,11 +96,8 @@ final class ResultScreenViewController: UIViewController {
         debugPrint(object: historyModel)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        resultScreenView.animation()
-    }
+    
+    
     
     
     private func deleteRealm(){
@@ -103,6 +118,9 @@ final class ResultScreenViewController: UIViewController {
  
     }
     
+    
+    
+    /// 時間を整形
     func nowDate() -> String {
         let format = DateFormatter()
         format.dateFormat = "yyyy/MM/dd hh:mm"
