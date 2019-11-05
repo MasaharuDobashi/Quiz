@@ -10,13 +10,20 @@ import Foundation
 import RealmSwift
 
 class QuizModel:Object {
-    @objc dynamic var id:String = ""
-    @objc dynamic var quizTitle:String = ""
-    @objc dynamic var trueAnswer:String = ""
-    @objc dynamic var falseAnswer1:String = ""
-    @objc dynamic var falseAnswer2:String = ""
-    @objc dynamic var falseAnswer3:String = ""
-    @objc dynamic var displayFlag:String = ""
+    @objc dynamic var id: String = ""
+    @objc dynamic var quizTitle: String = ""
+    @objc dynamic var trueAnswer: String = ""
+    @objc dynamic var falseAnswer1: String = ""
+    @objc dynamic var falseAnswer2: String = ""
+    @objc dynamic var falseAnswer3: String = ""
+    @objc dynamic var displayFlag: String = ""
+    @objc dynamic var quizTypeModel: QuizTypeModel?
+}
+
+class QuizTypeModel: Object {
+    @objc dynamic var id: String = ""
+    @objc dynamic var quizTypeTitle: String = ""
+    
 }
 
 

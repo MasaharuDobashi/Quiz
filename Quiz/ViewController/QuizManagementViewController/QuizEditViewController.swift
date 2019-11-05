@@ -24,6 +24,11 @@ final class QuizEditViewController: UIViewController {
     
     /// クイズを格納
     private var quizModel: QuizModel!
+    private var quizTypeModel: [QuizTypeModel]! {
+        didSet {
+            quizEditView.quizTypeModel = quizTypeModel
+        }
+    }
     
     let key:ParameterKey = ParameterKey()
     
@@ -86,9 +91,13 @@ final class QuizEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         realm = try! Realm(configuration: config)
-        
+        quizTypeModel = [QuizTypeModel]()
+        for model in realm.objects(QuizTypeModel.self) {
+            quizTypeModel.append(model)
+        }
         
         view.addSubview(quizEditView)
+        
         
     }
     
@@ -144,6 +153,7 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        let quizType: QuizTypeModel = parameters[key.quizType] as! QuizTypeModel
         let showHide: String = parameters[key.showHide] as! String
         
         
@@ -153,6 +163,7 @@ final class QuizEditViewController: UIViewController {
         quizModel.falseAnswer1 = incorrectAnswer1
         quizModel.falseAnswer2 = incorrectAnswer2
         quizModel.falseAnswer3 = incorrectAnswer3
+        quizModel.quizTypeModel = quizType
         quizModel.displayFlag = showHide
         
         try! realm.write() {
@@ -168,6 +179,7 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        let quizModel: QuizTypeModel = parameters[key.quizType] as! QuizTypeModel
         let showHide: String = parameters[key.showHide] as! String
         
         try! realm.write() {
@@ -176,6 +188,7 @@ final class QuizEditViewController: UIViewController {
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
+            realm.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizModel
             realm.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
         }
     }
