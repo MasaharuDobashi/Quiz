@@ -174,6 +174,7 @@ class QuizUITests: XCTestCase {
         
         while app.buttons["正解1"].exists == true {
             app.buttons["正解1"].tap()
+            sleep(1)
         }
         app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
     }
@@ -259,9 +260,8 @@ class QuizUITests: XCTestCase {
             
             
             while app.buttons["正解1"].exists == true {
-                if app.waitForExistence(timeout: 1.0) == true {
-                    app.buttons["正解1"].tap()
-                }
+                app.buttons["正解1"].tap()
+                sleep(1)
             }
             
             if app.waitForExistence(timeout: 2.0) == true {

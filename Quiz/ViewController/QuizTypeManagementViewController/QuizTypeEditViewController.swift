@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 import RealmSwift
 
+
+/// クイズの種類のVC
 final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
@@ -20,35 +22,65 @@ final class QuizTypeEditViewController: UIViewController {
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
     
-    var typeid: Int?
+    /// クイズの種類のID
+    private var typeid: String?
     
+    private(set) var filter: QuizTypeModel?
+    /// クイズの種類のビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
-        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self))
+        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), mode: self.mode)
         
+        if self.mode != .add {
+            view.typeTextField.text = filter?.quizTypeTitle
+        } else if self.mode == .detail {
+            view.typeTextField.isEnabled = false
+        }
         return view
     }()
     
+    
+    
+    // MARK: Init
+    
+    convenience init(typeid: String?, mode: ModeEnum){
+        self.init()
+        self.mode = mode
+        
+        realm = try? Realm()
+        
+        if let _typeid = typeid {
+            filter = self.realm.objects(QuizTypeModel.self).filter("id == '\(String(describing: _typeid))'").first!
+        }
+    }
+    
+    
+    
+    // MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         realm = try! Realm(configuration: config)
         
         view.backgroundColor = cellWhite
-        navigationItemAction()
+        
+        if mode != .detail {
+            navigationItemAction()
+        }
+        
         view.addSubview(quizTypeEditView)
     }
     
     
     
     
+    // MARK: NavigationItem Func
     
-    private func navigationItemAction(){
+    override func navigationItemAction() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
     
-    @objc private func rightButtonAction(){
-
+    override func rightButtonAction(){
         realmAction()
     }
     
@@ -96,7 +128,7 @@ final class QuizTypeEditViewController: UIViewController {
     /// アップデート
     private func updateRealm(){
         try! realm.write() {
-            realm.objects(QuizTypeModel.self)[0].quizTypeTitle = quizTypeEditView.typeTextField.text!
+            filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!   
         }
     }
 }

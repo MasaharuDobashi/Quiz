@@ -105,13 +105,13 @@ final class QuizEditViewController: UIViewController {
     
     // MARK: NavigationItem Func
     
-    private func navigationItemAction(){
+    override func navigationItemAction() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
     
     
-    @objc private func rightButtonAction(){
+    override func rightButtonAction(){
         let parameters: [String:Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
         
@@ -153,7 +153,15 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
-        let quizType: QuizTypeModel = parameters[key.quizType] as! QuizTypeModel
+        // TODO:
+        let quizid: String? = quizEditView.typeid
+        var quizType: QuizTypeModel?
+        if quizid != nil {
+            quizType = realm.objects(QuizTypeModel.self)[Int(quizid!)!]
+        } else {
+            quizType = nil
+        }
+        
         let showHide: String = parameters[key.showHide] as! String
         
         
@@ -179,7 +187,14 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
-        let quizModel: QuizTypeModel = parameters[key.quizType] as! QuizTypeModel
+        // TODO:
+        let quizid: String? = quizEditView.typeid
+        var quizType: QuizTypeModel?
+        if quizid != nil {
+            quizType = realm.objects(QuizTypeModel.self)[Int(quizid!)!]
+        } else {
+            quizType = nil
+        }
         let showHide: String = parameters[key.showHide] as! String
         
         try! realm.write() {
@@ -188,7 +203,7 @@ final class QuizEditViewController: UIViewController {
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
             realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
-            realm.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizModel
+            realm.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizType
             realm.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
         }
     }

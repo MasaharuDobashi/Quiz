@@ -11,7 +11,6 @@ import UIKit
 final class QuizTypeEditView: UIView {
     
     
-    
     private var typeLabel: UILabel = {
         let label: UILabel = UILabel(title: "クイズの種類")
         label.sizeToFit()
@@ -19,7 +18,9 @@ final class QuizTypeEditView: UIView {
         return label
     }()
     
-    let typeTextField: UITextField = {
+    
+    
+    lazy var typeTextField: UITextField = {
         let textField: UITextField = UITextField()
         textField.placeholder = "クイズの種類を入力してください"
         
@@ -33,6 +34,19 @@ final class QuizTypeEditView: UIView {
         
         viewLoad()
     }
+    
+    
+    
+    
+    /// edit,detail Init
+    convenience init(frame: CGRect, mode:ModeEnum) {
+        self.init(frame: frame)
+        
+        if mode == .detail {
+            typeTextField.isEnabled = false
+        }
+    }
+    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

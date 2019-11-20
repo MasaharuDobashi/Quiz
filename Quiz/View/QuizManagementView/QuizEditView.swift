@@ -18,6 +18,9 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     /// クイズタイプを格納する
     var quizTypeModel: [QuizTypeModel]?
     
+    /// クイズの種類のIDを格納する
+    var typeid: String?
+    
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum!
     
@@ -287,6 +290,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         quizTypeTextField.text = quizTypeModel?[row].quizTypeTitle
+        typeid = (quizTypeModel?[row].id)!
     }
     
     
@@ -316,6 +320,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
                                         key.incorrectAnswer1: false1_TextField.text ?? "",
                                         key.incorrectAnswer2: false2_textField.text ?? "",
                                         key.incorrectAnswer3: false3_textField.text ?? "",
+                                        key.quizType: typeid ?? "",
                                         key.showHide: displaySwitch.isOn == true ? "0" : "1"
                                         ]
         

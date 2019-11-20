@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 
 extension UIViewController {
@@ -18,9 +19,21 @@ extension UIViewController {
     }
     
     
+    
+    
+    @objc func navigationItemAction() {
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+    }
+    
+    
+    
     @objc func leftButtonAction(){
         self.dismiss(animated: true, completion: nil)
     }
+    
+    
+    @objc func rightButtonAction() {}
     
     
     
