@@ -25,7 +25,8 @@ final class QuizTypeEditViewController: UIViewController {
     /// クイズの種類のID
     private var typeid: String?
     
-    private(set) var filter: QuizTypeModel?
+    private var filter: QuizTypeModel?
+    
     /// クイズの種類のビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
         let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), mode: self.mode)

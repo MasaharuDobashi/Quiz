@@ -17,22 +17,98 @@ final class QuizListCell: UITableViewCell {
     // MARK: Properties
     
     /// クイズの問題ナンバーを表示する
-    let quizNoLabel:UILabel = UILabel(title: nil,
+    private let quizNoLabel: UILabel = UILabel(title: nil,
                                       font: UIFont.systemFont(ofSize: 18),
-                                      textColor: .black,
+                                      textColor: nil,
                                       backgroundColor: .clear,
                                       textAlignment: .left,
                                       numberOfLines: 1
     )
     
     /// クイズのタイトルを表示する
-    let quizTitleLabel:UILabel = UILabel(title: nil,
+    private let quizTitleLabel: UILabel = UILabel(title: nil,
                                          font: UIFont.systemFont(ofSize: 19),
-                                         textColor: .black,
+                                         textColor: nil,
                                          backgroundColor: .clear,
                                          textAlignment: .left,
                                          numberOfLines: 0
     )
+    
+    
+    
+    private let quizTypeLable: UILabel = {
+        let label: UILabel = UILabel(title: nil,
+                                            font: UIFont.systemFont(ofSize: 19),
+                                            textColor: nil,
+                                            backgroundColor: .clear,
+                                            textAlignment: .left,
+                                            numberOfLines: 0
+        )
+        label.isHidden = true
+        
+        return label
+    }()
+    
+    
+    /// No
+    var quizNoText: String {
+        get {
+            quizNoLabel.sizeToFit()
+            return quizNoLabel.text!
+        }
+        
+        set(str) {
+            quizNoLabel.text = str
+        }
+    }
+    
+    
+    /// クイズのタイトル
+    var quizTitleText: String {
+        get {
+            quizTitleLabel.sizeToFit()
+            return quizTitleLabel.text!
+        }
+        
+        set(str) {
+            quizTitleLabel.text = str
+        }
+        
+    }
+    
+    /// 問題の種類
+    var quizTypeText: String? {
+        get {
+            quizTypeLable.sizeToFit()
+            return quizTypeLable.text!
+        }
+        
+        set(str) {
+            if str != nil {
+                quizTypeLable.text = str
+                quizTypeLable.isHidden = false
+            } else {
+                quizTypeLable.text = ""
+            }
+        }
+        
+    }
+    
+    
+    /// 表示・非表示のフラグでセルの色を変更
+    var displaySwitch: String? {
+        didSet {
+            if displaySwitch == "1" {
+                self.backgroundColor = .lightGray
+            } else {
+                self.backgroundColor = cellWhite
+            }
+        }
+        
+    }
+    
+    
+    
     
     // MARK: Init
     
@@ -40,36 +116,46 @@ final class QuizListCell: UITableViewCell {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
         
         backgroundColor = cellWhite
-        textLabel?.font = UIFont.systemFont(ofSize: 18)
-        textLabel?.backgroundColor = .clear
-        textLabel?.textAlignment = .left
-        textLabel?.numberOfLines = 1
-        textLabel?.textColor = detailTextLabel?.textColor
         
-        
-        detailTextLabel?.font = UIFont.systemFont(ofSize: 19)
-        detailTextLabel?.backgroundColor = .clear
-        detailTextLabel?.textAlignment = .left
-        detailTextLabel?.numberOfLines = 1
+        setConstraint()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
-    // MARK: SetCellValue
     
     
-    func setCellValue(listValue: ListValue, displaySwitch: String){
-        textLabel?.text = listValue.title
-        textLabel?.accessibilityIdentifier = listValue.title
+    // MARK: Constraint
+    
+    /// 制約をセットする
+    private func setConstraint() {
         
-        detailTextLabel?.text = listValue.value
-        if displaySwitch == "1" {
-            self.backgroundColor = .lightGray
-        }
+        addSubview(quizNoLabel)
+        quizNoLabel.translatesAutoresizingMaskIntoConstraints = false
+        quizNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        quizNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+        quizNoLabel.trailingAnchor.constraint(equalTo: centerXAnchor, constant: 0).isActive = true
+        
+        addSubview(quizTitleLabel)
+        quizTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        quizTitleLabel.topAnchor.constraint(equalTo: quizNoLabel.topAnchor).isActive = true
+        quizTitleLabel.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 5).isActive = true
+        quizTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
+        
+        addSubview(quizTypeLable)
+        quizTypeLable.translatesAutoresizingMaskIntoConstraints = false
+        quizTypeLable.topAnchor.constraint(equalTo: quizTitleLabel.bottomAnchor, constant: 5).isActive = true
+        quizTypeLable.leadingAnchor.constraint(equalTo: quizTitleLabel.leadingAnchor).isActive = true
+        quizTypeLable.trailingAnchor.constraint(equalTo: quizTitleLabel.trailingAnchor).isActive = true
+        quizTypeLable.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
     }
     
+    
+    
+    
+    // MARK: Reuse
     
     /// セルを再利用するときはセルの背景色を白に戻す
     override func prepareForReuse() {

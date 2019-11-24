@@ -13,8 +13,7 @@ class QuizTypeManagementView: UITableView {
     
     // MARK: Properties
     
-    /// デリゲート
-    weak var viewDelegate: ManagementViewDelegate?
+    
     
     /// クイズのす種類の配列
     var quizTypeModel: [QuizTypeModel]? {
