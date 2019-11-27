@@ -17,7 +17,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     var config = Realm.Configuration(schemaVersion: realmConfig)
     
-    var realm:Realm!
+    var realm: Realm?
     
     
     var quizTypeModel: [QuizTypeModel]? {
@@ -32,7 +32,14 @@ final class QuizTypeManagementViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        realm = try! Realm(configuration: config)
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -61,9 +68,9 @@ final class QuizTypeManagementViewController: UITableViewController {
     func modelAppend() {
         quizTypeModel = [QuizTypeModel]()
         
-        let quizTypeModelCount:Int = realm.objects(QuizTypeModel.self).count
+        let quizTypeModelCount:Int = (realm?.objects(QuizTypeModel.self).count)!
         for i in 0..<quizTypeModelCount {
-            quizTypeModel?.append(realm.objects(QuizTypeModel.self)[i])
+            quizTypeModel?.append((realm?.objects(QuizTypeModel.self)[i])!)
         }
     }
     
@@ -111,12 +118,18 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     
     
     func deleteAction(indexPath: IndexPath) {
-        let rquizModel = realm.objects(QuizTypeModel.self)[indexPath.row]
+        guard let rquizModel = realm?.objects(QuizTypeModel.self)[indexPath.row] else { return }
         
-        try! realm.write() {
-            realm.delete(rquizModel)
+        do {
+            try realm?.write() {
+                realm?.delete(rquizModel)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
-        
         
         NotificationCenter.default.post(name: Notification.Name(quizTypeUpdate), object: nil)
     }

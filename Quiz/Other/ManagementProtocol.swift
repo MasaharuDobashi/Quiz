@@ -13,7 +13,7 @@ import UIKit
 protocol ManagementProtocol {
     
     /// Realmのインスタンス
-    var realm: Realm! { get }
+    var realm: Realm? { get }
     
     /// Realmのスキームバージョンを設定
     var config:Realm.Configuration { get }

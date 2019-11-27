@@ -14,7 +14,7 @@ final class QuizEditViewController: UIViewController {
     // MARK: Properties
     
     private let config = Realm.Configuration(schemaVersion: 1)
-    private var realm:Realm!
+    private var realm:Realm?
     
     /// クイズのID
     private var quzi_id:Int?
@@ -90,9 +90,18 @@ final class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        realm = try! Realm(configuration: config)
+        
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
+        
         quizTypeModel = [QuizTypeModel]()
-        for model in realm.objects(QuizTypeModel.self) {
+        for model in (realm?.objects(QuizTypeModel.self))! {
             quizTypeModel.append(model)
         }
         
@@ -157,7 +166,7 @@ final class QuizEditViewController: UIViewController {
         let quizid: String? = quizEditView.typeid
         var quizType: QuizTypeModel?
         if quizid != nil {
-            quizType = realm.objects(QuizTypeModel.self)[Int(quizid!)!]
+            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
         } else {
             quizType = nil
         }
@@ -165,7 +174,9 @@ final class QuizEditViewController: UIViewController {
         let showHide: String = parameters[key.showHide] as! String
         
         
-        quizModel.id = String(realm.objects(QuizModel.self).count)
+        guard let id:Int = realm?.objects(QuizModel.self).count else { return }
+        
+        quizModel.id = String(id)
         quizModel.quizTitle = title
         quizModel.trueAnswer = correctAnswer
         quizModel.falseAnswer1 = incorrectAnswer1
@@ -174,9 +185,20 @@ final class QuizEditViewController: UIViewController {
         quizModel.quizTypeModel = quizType
         quizModel.displayFlag = showHide
         
-        try! realm.write() {
-            realm.add(quizModel)
+        
+        
+        do {
+            try realm?.write() {
+                realm?.add(quizModel)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
+        
     }
     
     
@@ -191,21 +213,31 @@ final class QuizEditViewController: UIViewController {
         let quizid: String? = quizEditView.typeid
         var quizType: QuizTypeModel?
         if quizid != nil {
-            quizType = realm.objects(QuizTypeModel.self)[Int(quizid!)!]
+            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
         } else {
             quizType = nil
         }
         let showHide: String = parameters[key.showHide] as! String
         
-        try! realm.write() {
-            realm.objects(QuizModel.self)[quzi_id!].quizTitle = title
-            realm.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
-            realm.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizType
-            realm.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
+        
+        
+        do {
+            try realm?.write() {
+                realm?.objects(QuizModel.self)[quzi_id!].quizTitle = title
+                realm?.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
+                realm?.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizType
+                realm?.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
     }
     
     
@@ -213,7 +245,7 @@ final class QuizEditViewController: UIViewController {
     
     private func quizModelAppend(quiz_id:Int){
         quizModel = QuizModel()
-        quizModel = realm.objects(QuizModel.self)[quiz_id]
+        quizModel = realm?.objects(QuizModel.self)[quiz_id]
     }
     
     

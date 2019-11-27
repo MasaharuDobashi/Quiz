@@ -18,12 +18,12 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     // MARK: Properties
     
     /// Realmのスキームバージョンを設定
-    private let realm:Realm = try! Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+    private var realm:Realm?
     
     
     /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
-        let isActiveQuiz: Bool = realm.objects(QuizModel.self).count != 0 ? true : false
+        let isActiveQuiz: Bool = realm?.objects(QuizModel.self).count != 0 ? true : false
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.delegate = self
         
@@ -37,7 +37,16 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
+        
         setNotificationCenter()
         
         view.addSubview(quizMainView)
@@ -48,8 +57,8 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
       
-        quizMainView.isActiveQuiz = realm.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView.isHistory = realm.objects(HistoryModel.self).count != 0 ? true : false
+        quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
+        quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
         
     }
     

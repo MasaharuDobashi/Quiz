@@ -16,7 +16,7 @@ final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
     
-    private var realm:Realm!
+    private var realm: Realm?
     private let config = Realm.Configuration(schemaVersion: 1)
     
     /// 新規追加、編集、詳細の判別
@@ -47,10 +47,18 @@ final class QuizTypeEditViewController: UIViewController {
         self.init()
         self.mode = mode
         
-        realm = try? Realm()
+        do {
+              realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+          } catch {
+              AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                  return
+              })
+              return
+          }
+          
         
         if let _typeid = typeid {
-            filter = self.realm.objects(QuizTypeModel.self).filter("id == '\(String(describing: _typeid))'").first!
+            filter = self.realm?.objects(QuizTypeModel.self).filter("id == '\(String(describing: _typeid))'").first!
         }
     }
     
@@ -117,19 +125,38 @@ final class QuizTypeEditViewController: UIViewController {
         let quizTypeModel = QuizTypeModel()
         realm = try! Realm(configuration: config)
         
-        quizTypeModel.id = String(realm.objects(QuizTypeModel.self).count)
+        guard let id: Int = realm?.objects(QuizTypeModel.self).count else { return }
+        
+        quizTypeModel.id = String(id)
         quizTypeModel.quizTypeTitle = quizTypeEditView.typeTextField.text!
         
-        try! realm.write() {
-            realm.add(quizTypeModel)
+        do {
+            try realm?.write() {
+                realm?.add(quizTypeModel)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
     }
     
     
     /// アップデート
     private func updateRealm(){
-        try! realm.write() {
-            filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!   
+        
+        do {
+            try realm?.write() {
+                filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
     }
 }

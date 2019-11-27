@@ -21,7 +21,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }()
     
     /// realmのインスタンス
-    private let realm:Realm = try! Realm()
+    private var realm:Realm?
     
     /// クイズを格納する配列
     private var quizModel:[QuizModel]!
@@ -39,6 +39,15 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         super.viewDidLoad()
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
         
         quizModelAppend()
         
@@ -72,10 +81,10 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     private func quizModelAppend(){
         quizModel = [QuizModel]()
         
-        let quizModelCount:Int = realm.objects(QuizModel.self).count
+        let quizModelCount:Int = (realm?.objects(QuizModel.self).count)!
         for i in 0..<quizModelCount {
-            if realm.objects(QuizModel.self)[i].displayFlag != "1" {
-                quizModel?.append(realm.objects(QuizModel.self)[i])
+            if realm?.objects(QuizModel.self)[i].displayFlag != "1" {
+                quizModel?.append((realm?.objects(QuizModel.self)[i])!)
             }
         }
         
