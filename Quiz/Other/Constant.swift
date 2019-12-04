@@ -12,7 +12,7 @@ import UIKit
 // MARK: - RealmConfig
 
 /// Realmのスキームバージョン
-let realmConfig: UInt64 = 2
+let realmConfig: UInt64 = 3
 
 
 // MARK: - COLORS

@@ -23,7 +23,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
-        let isActiveQuiz: Bool = realm?.objects(QuizModel.self).count != 0 ? true : false
+//        let isActiveQuiz: Bool = realm?.objects(QuizModel.self).count != 0 ? true : false
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.delegate = self
         
@@ -58,6 +58,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         super.viewWillAppear(animated)
       
         quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
+        quizMainView.isQuizType = realm?.objects(QuizTypeModel.self).count != 0 ? true : false
         quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
         
     }
@@ -78,7 +79,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
             present(navigationController,animated: true, completion: nil)}
     }
     
-    
+    func quizTypeButtonAction() {
+        let viewController:QuizTypeSelectTableViewController = QuizTypeSelectTableViewController()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
     
     /// 履歴画面を開く
     func historyButtonAction() {

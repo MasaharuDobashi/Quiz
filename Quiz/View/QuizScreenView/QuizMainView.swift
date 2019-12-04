@@ -15,6 +15,7 @@ import UIKit
 protocol QuizMainViewDelegate: class {
     func quizStartButtonAction()
     func historyButtonAction()
+    func quizTypeButtonAction()
 }
 
 
@@ -57,6 +58,25 @@ final class QuizMainView: UIView {
         return button
     }()
     
+    
+    /// クイズの種類
+    let quizTypeButton: UIButton = {
+        let button = UIButton()
+        button.accessibilityIdentifier = "typeButton"
+        button.setButton(title: "クイズの選択",
+                         backgroundColor: Rose,
+                         font: UIFont.boldSystemFont(ofSize: 18),
+                         target: self, action: #selector(quizTypeButtonAction)
+        )
+        button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        
+        return button
+    }()
+    
+    
+    
+    
+    
     /// クイズがあるかないかのフラグ
     ///
     /// - true: クイズがあればquizStartButtonをクイズスタートにする
@@ -72,9 +92,17 @@ final class QuizMainView: UIView {
     ///
     /// true:  historyButtonを表示する
     /// nil:  historyButtonを非表示にする
-    var isHistory: Bool? = false {
+    var isHistory: Bool = false {
         didSet {
             historyButtonColorChange()
+        }
+    }
+    
+    
+    
+    var isQuizType: Bool = false {
+        didSet {
+            typeButtonColorChange()
         }
     }
     
@@ -130,6 +158,10 @@ final class QuizMainView: UIView {
     }
     
     
+    @objc private func quizTypeButtonAction() {
+        delegate?.quizTypeButtonAction()
+    }
+    
     
     // MARK: internalFunc
     
@@ -155,12 +187,38 @@ final class QuizMainView: UIView {
             addSubview(historyButton)
             
             historyButton.translatesAutoresizingMaskIntoConstraints = false
-            historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
+            
+            if isQuizType == false {
+                historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
+            } else {
+                historyButton.removeConstraint(historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15))
+                historyButton.topAnchor.constraint(equalTo: quizTypeButton.bottomAnchor, constant: 15).isActive = true
+            }
+            
             historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
             historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
         } else if isHistory == false {
             historyButton.removeFromSuperview()
+        }
+    }
+    
+    
+    /// quizTypeButtonをaddSubViewする
+    ///
+    /// isQuizType == true: クイズの選択ボタンをaddSubViewする
+    /// isQuizType == false: クイズの選択をremoveFromSuperviewする
+    func typeButtonColorChange(){
+        if isQuizType == true {
+            addSubview(quizTypeButton)
+            
+            quizTypeButton.translatesAutoresizingMaskIntoConstraints = false
+            quizTypeButton.topAnchor.constraint(equalTo: quizStartButton.bottomAnchor, constant: 15).isActive = true
+            quizTypeButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+            quizTypeButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+            quizTypeButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
+        } else if isQuizType == false {
+            quizTypeButton.removeFromSuperview()
         }
     }
     

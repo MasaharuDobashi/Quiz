@@ -24,6 +24,9 @@ class QuizTypeModel: Object {
     @objc dynamic var id: String = ""
     @objc dynamic var quizTypeTitle: String = ""
     
+    
+    @objc dynamic var isSelect: String = ""
+    
 }
 
 
