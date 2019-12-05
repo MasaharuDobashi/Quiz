@@ -130,6 +130,7 @@ final class QuizMainView: UIView {
     
     private func viewLoad(){
         addSubview(quizStartButton)
+        addSubview(quizTypeButton)
         setConstraint()
     }
     
@@ -142,6 +143,13 @@ final class QuizMainView: UIView {
         quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
+        
+        
+        quizTypeButton.translatesAutoresizingMaskIntoConstraints = false
+        quizTypeButton.topAnchor.constraint(equalTo: quizStartButton.bottomAnchor, constant: 15).isActive = true
+        quizTypeButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        quizTypeButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
+        quizTypeButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
     }
     
     
@@ -187,14 +195,7 @@ final class QuizMainView: UIView {
             addSubview(historyButton)
             
             historyButton.translatesAutoresizingMaskIntoConstraints = false
-            
-            if isQuizType == false {
-                historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15).isActive = true
-            } else {
-                historyButton.removeConstraint(historyButton.topAnchor.constraint(equalTo: centerYAnchor, constant: 15))
-                historyButton.topAnchor.constraint(equalTo: quizTypeButton.bottomAnchor, constant: 15).isActive = true
-            }
-            
+            historyButton.topAnchor.constraint(equalTo: quizTypeButton.bottomAnchor, constant: 15).isActive = true
             historyButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
             historyButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
             historyButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
@@ -210,15 +211,11 @@ final class QuizMainView: UIView {
     /// isQuizType == false: クイズの選択をremoveFromSuperviewする
     func typeButtonColorChange(){
         if isQuizType == true {
-            addSubview(quizTypeButton)
-            
-            quizTypeButton.translatesAutoresizingMaskIntoConstraints = false
-            quizTypeButton.topAnchor.constraint(equalTo: quizStartButton.bottomAnchor, constant: 15).isActive = true
-            quizTypeButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-            quizTypeButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
-            quizTypeButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
-        } else if isQuizType == false {
-            quizTypeButton.removeFromSuperview()
+            quizTypeButton.setTitle("クイズの選択", for: .normal)
+            quizTypeButton.backgroundColor = Dawnpink
+        } else {
+            quizTypeButton.setTitle("クイズの種類を作成", for: .normal)
+            quizTypeButton.backgroundColor = Geranium
         }
     }
     

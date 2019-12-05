@@ -13,32 +13,123 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     // MARK: Properties
     
+    /// Realmのインスタンス
     private var realm:Realm?
     
+    /// クイズの種類を格納
     private var quizTypeModel: [QuizTypeModel]?
 
-    
+    /// 選択されたクイズの種類を格納
     var checkID: QuizTypeModel?
+    
+    
+    // MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
-        
         setUpModel()
         
         setUpTableView()
-        
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     
+    
+    
+    
+    /// 選択したクイズを登録
+    override func rightButtonAction() {
+        AlertManager().alertAction(viewController: self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
+            
+            /// チャックマークのついたセルのIDを格納
+            guard let id: String = self?.checkID?.id else { return }
+            
+            /// チェックマークのついたIDと同じIDのクイズタイプを格納
+            guard let filter: QuizTypeModel = (self?.realm?.objects(QuizTypeModel.self).filter("id == '\(id)'").first) else { return }
+            
+            /// isSelectが"1"になっていたクイズタイプを格納
+            let afilter: QuizTypeModel? = (self?.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first)
+            
+            do {
+                try self?.realm?.write() {
+                    filter.isSelect = "1"
+                    afilter?.isSelect = "0"
+                }
+                self?.navigationController?.popViewController(animated: true)
+                
+            } catch {
+                AlertManager().alertAction(viewController: self!, title: nil, message: "エラーが発生しました", handler: { _ in
+                    return
+                })
+                return
+            }}
+            
+        )
+    }
+    
+    
+    
+    
+    /// tableViewをセットする
+    fileprivate func setUpTableView() {
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorInset = .zero
+        tableView.allowsMultipleSelection = false
+    }
+
+    
+    
+    
+    /// quizTypeModelに格納する
+    fileprivate func setUpModel() {
+         do {
+             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+         } catch {
+             AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                 return
+             })
+             return
+         }
+         
+         quizTypeModel = [QuizTypeModel]()
+         
+         for type in (realm?.objects(QuizTypeModel.self))! {
+             quizTypeModel?.append(type)
+         }
+        
+        if let filter = (self.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first) {
+            checkID = filter
+        }
+        
+     }
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+
+
+/// UITableViewDelegate, UITableViewDataSourceを拡張
+extension QuizTypeSelectTableViewController {
     
     
     
@@ -91,69 +182,13 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     }
     
     
-    
-    /// quizTypeModelに格納する
-    fileprivate func setUpModel() {
-         do {
-             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-         } catch {
-             AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
-                 return
-             })
-             return
-         }
-         
-         quizTypeModel = [QuizTypeModel]()
-         
-         for type in (realm?.objects(QuizTypeModel.self))! {
-             quizTypeModel?.append(type)
-         }
-        
-        if let filter = (self.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first) {
-            checkID = filter
-        }
-     }
-    
-    
-    /// tableViewをセットする
-    fileprivate func setUpTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorInset = .zero
-        tableView.allowsMultipleSelection = false
-    }
-    
-    
-    
-    
-    /// 選択したクイズを登録
-    override func rightButtonAction() {
-        AlertManager().alertAction(viewController: self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
-            
-            /// チャックマークのついたセルのIDを格納
-            guard let id: String = self?.checkID?.id else { return }
-            
-            /// チェックマークのついたIDと同じIDのクイズタイプを格納
-            guard let filter: QuizTypeModel = (self?.realm?.objects(QuizTypeModel.self).filter("id == '\(id)'").first) else { return }
-            
-            /// isSelectが"1"になっていたクイズタイプを格納
-            let afilter: QuizTypeModel? = (self?.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first)
-            
-            do {
-                try self?.realm?.write() {
-                    filter.isSelect = "1"
-                    afilter?.isSelect = "0"
-                }
-                self?.navigationController?.popViewController(animated: true)
-                
-            } catch {
-                AlertManager().alertAction(viewController: self!, title: nil, message: "エラーが発生しました", handler: { _ in
-                    return
-                })
-                return
-            }}
-            
-        )
-    }
-    
 }
+
+
+
+
+
+
+
+
+

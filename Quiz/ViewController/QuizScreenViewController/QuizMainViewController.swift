@@ -76,12 +76,23 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         } else {
             let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
             let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)}
+            present(navigationController,animated: true, completion: nil)
+            
+        }
     }
     
+    
+    /// クイズの種類があれば選択画面に遷移する、なければクイズの種類を作成モーダルを表示する
     func quizTypeButtonAction() {
-        let viewController:QuizTypeSelectTableViewController = QuizTypeSelectTableViewController()
-        self.navigationController?.pushViewController(viewController, animated: true)
+        if quizMainView.isQuizType {
+            let viewController:QuizTypeSelectTableViewController = QuizTypeSelectTableViewController()
+            self.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: nil, mode: .add)
+            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
+            present(navigationController,animated: true, completion: nil)
+            
+        }
     }
     
     /// 履歴画面を開く
