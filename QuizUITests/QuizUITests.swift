@@ -8,6 +8,28 @@
 
 import XCTest
 
+
+
+class ShortcutManager: XCTestCase {
+    
+    class func quizDelete(){
+        #if DEBUG
+        let app = XCUIApplication()
+        app.tabBars.buttons["Most Viewed"].tap()
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["閉じる"].tap()
+        
+        
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["削除"].tap()
+        #endif
+        
+    }
+
+    
+    
+}
+
 //@testable import Quiz
 class QuizUITests: XCTestCase {
     
@@ -27,17 +49,11 @@ class QuizUITests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        quizDelete()
+        ShortcutManager.quizDelete()
         
     }
 
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
-  
-        
-    }
+
     
     
     
@@ -68,20 +84,6 @@ class QuizUITests: XCTestCase {
         
     }
     
-    
-    func quizDelete(){
-        #if DEBUG
-        let app = XCUIApplication()
-        app.tabBars.buttons["Most Viewed"].tap()
-        app.navigationBars.buttons["allDelete"].tap()
-        app.alerts.buttons["閉じる"].tap()
-        
-        
-        app.navigationBars.buttons["allDelete"].tap()
-        app.alerts.buttons["削除"].tap()
-        #endif
-        
-    }
     
     
     func test_EditViewUI(){
@@ -283,4 +285,8 @@ class QuizUITests: XCTestCase {
         }
     }
     
+    
+    
+    
 }
+
