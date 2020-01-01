@@ -19,6 +19,9 @@ protocol QuizTypeTestsProtocol {
     
     /// クイズの種類の削除
     func test_quizTypeDelete()
+    
+    /// クイズの種類作成後にクイズをスタート
+    func test_quizStart()
 }
 
 class QuizTypeTests: XCTestCase, QuizTypeTestsProtocol {
@@ -134,7 +137,43 @@ class QuizTypeTests: XCTestCase, QuizTypeTestsProtocol {
     }
     
     
-    
+    func test_quizStart() {
+        let app = XCUIApplication()
+        
+        let title = "自動テストタイプ"
+        
+        app.tabBars.buttons.element(boundBy: 2).tap()
+        sleep(1)
+        app.navigationBars.buttons["Add"].tap()
+        sleep(3)
+        
+        app.textFields.firstMatch.tap()
+        app.typeText(title)
+        
+        app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
+        app.alerts.buttons["閉じる"].tap()
+        
+        sleep(2)
+        app.tabBars.buttons.firstMatch.tap()
+        
+        ShortcutManager.quizCreate(1)
+        
+        sleep(3)
+        app.buttons["typeButton"].tap()
+        
+        XCTAssert(app.tables.cells.element(boundBy: 0).staticTexts[title].exists, "クイズの種類が追加されていない")
+        app.tables.cells.element(boundBy: 0).tap()
+        app.navigationBars.buttons["Add"].tap()
+        app.alerts.buttons["閉じる"].tap()
+        
+        sleep(1)
+        app.buttons["quizStartButton"].tap()
+        app.buttons["正解1"].tap()
+        sleep(3)
+        app.navigationBars.buttons.firstMatch.tap()
+        sleep(3)
+        
+    }
     
     
 }
