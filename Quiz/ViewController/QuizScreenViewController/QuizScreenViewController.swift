@@ -21,7 +21,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }()
     
     /// realmのインスタンス
-    private let realm:Realm = try! Realm()
+    private var realm:Realm?
     
     /// クイズを格納する配列
     private var quizModel:[QuizModel]!
@@ -32,6 +32,12 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     /// 正解数を格納
     var trueConunt: Int = 0
     
+    /// クイズの選択があるかのフラグ
+    var quizSelect: QuizSelect?
+    
+
+
+    
     // MARK: Lifecycle
     
     
@@ -39,6 +45,17 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         super.viewDidLoad()
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
+        
+        
         
         quizModelAppend()
         
@@ -57,7 +74,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         super.viewWillAppear(animated)
         
         
-        isQuizActive()
+        if !isQuizActive() { return }
         debugPrint(object: quizModel[quizNum])
         
         quizScreenView.quizModel = quizModel[quizNum]
@@ -72,12 +89,30 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     private func quizModelAppend(){
         quizModel = [QuizModel]()
         
-        let quizModelCount:Int = realm.objects(QuizModel.self).count
-        for i in 0..<quizModelCount {
-            if realm.objects(QuizModel.self)[i].displayFlag != "1" {
-                quizModel?.append(realm.objects(QuizModel.self)[i])
+        let quizModelCount:Int = (realm?.objects(QuizModel.self).count)!
+        
+        if realm?.objects(QuizTypeModel.self).count == 0 || realm?.objects(QuizTypeModel.self).count == nil {
+            for i in 0..<quizModelCount {
+                if realm?.objects(QuizModel.self)[i].displayFlag != "1" {
+                    quizModel?.append((realm?.objects(QuizModel.self)[i])!)
+                }
             }
+            quizSelect = QuizSelect(rawValue: "0")
+        } else {
+            for i in 0..<quizModelCount {
+                if realm?.objects(QuizModel.self)[i].displayFlag != "1" && realm?.objects(QuizModel.self)[i].quizTypeModel?.isSelect == "1" {
+                    quizModel?.append((realm?.objects(QuizModel.self)[i])!)
+                    
+                    quizSelect = QuizSelect(rawValue: "1")
+                } else {
+                    quizSelect = QuizSelect(rawValue: "2")
+                }
+            }
+            
         }
+        
+        
+        
         
     }
     
@@ -85,20 +120,35 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     /// クイズを開始できるかチェックする
     ///
     /// 0件から10件以内かどうかを確認する
-    func isQuizActive() {
+    func isQuizActive() -> Bool {
         if quizModel.count == 0 {
             self.view.backgroundColor = .white
-            AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
-                self.leftButtonAction()
-            })
-            return
+            
+            switch quizSelect {
+            case .zero, .select:
+                AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
+                    self.leftButtonAction()
+                })
+                return false
+            case .notSelect:
+                AlertManager().alertAction(viewController: self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
+                    self.leftButtonAction()
+                })
+                return false
+            case .none:
+                return false
+            }
+            
+            
         } else if quizModel.count > 10 {
             self.view.backgroundColor = .white
             AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
                 self.leftButtonAction()
             })
-            return
+            return false
         }
+        
+        return true
         
     }
     
@@ -127,5 +177,20 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     func trueConut(){
          trueConunt += 1
     }
+ 
+    
+    
+    enum QuizSelect: String {
+        
+        /// quizTypeの登録なし
+        case zero = "0"
+        
+        /// quizTypeの登録あり、quizTypeを選択済み
+        case select = "1"
+        
+        /// quizTypeの登録あり、quizTypeを未選択
+        case notSelect = "2"
+    }
+ 
     
 }

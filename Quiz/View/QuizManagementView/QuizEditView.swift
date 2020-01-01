@@ -8,12 +8,18 @@
 
 import UIKit
 
-final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: Properties
     
     /// クイズを格納する
     private var quizModel: QuizModel?
+    
+    /// クイズタイプを格納する
+    var quizTypeModel: [QuizTypeModel]?
+    
+    /// クイズの種類のIDを格納する
+    var typeid: String?
     
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum!
@@ -33,6 +39,21 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     /// 不正解3入力テキストフィールド
     private lazy var false3_textField: UITextField = UITextField()
     
+    /// クイズのタイプ選択
+    private lazy var quizTypeTextField: UITextField = {
+        let textField: UITextField = UITextField()
+        textField.inputView = quizTypePicker
+        
+        return textField
+    }()
+    
+    
+    lazy var quizTypePicker: UIPickerView = {
+        let picker: UIPickerView = UIPickerView()
+        picker.delegate = self
+        
+        return picker
+    }()
     
     /// 表示・非表示選択スイッチ
     private lazy var displaySwitch: UISwitch = {
@@ -51,7 +72,6 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
         self.delegate = self
         self.dataSource = self
         self.allowsSelection = false
-        rowHeight = 50
     }
     
     /// add Init
@@ -74,6 +94,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
             false1_TextField.text = quizModel?.falseAnswer1
             false2_textField.text = quizModel?.falseAnswer2
             false3_textField.text = quizModel?.falseAnswer3
+            quizTypeTextField.text = quizModel?.quizTypeModel?.quizTypeTitle
             displaySwitch.isOn = quizModel?.displayFlag == "0" ? true : false
             
             
@@ -83,19 +104,32 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
                 false1_TextField.isEnabled = false
                 false2_textField.isEnabled = false
                 false3_textField.isEnabled = false
+                quizTypeTextField.isEnabled = false
                 displaySwitch.isEnabled = false
             }
         }
         
     }
     
-  
+    let toolBar: UIToolbar = {
+        let toolBar: UIToolbar = UIToolbar()
+        let toolButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(toolBarButtonTapAction))
+        let spaceToolButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.bounds.size = CGSize(width: UIScreen.main.bounds.width, height: 50)
+        toolBar.items = [spaceToolButton, spaceToolButton, toolButton]
+        
+        return toolBar
+    }()
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
 
-    
+    @objc func toolBarButtonTapAction(_: UIBarButtonItem) {
+        endEditing(true)
+    }
     
     
     // MARK: UITableViewDelegate, UITableViewDataSource
@@ -146,6 +180,13 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
             false3_textField.placeholder = rowEditValue.placeholder
             setTextFieldConstraint(textField: false3_textField, cell: cell)
             
+        case InputType.quizType.rawValue:
+            if quizTypeModel?.count == 0 { return UITableViewCell() }
+            
+            quizTypeTextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            quizTypeTextField.placeholder = rowEditValue.placeholder
+            setTextFieldConstraint(textField: quizTypeTextField, cell: cell)
+            
         case InputType.showHide.rawValue:
             displaySwitch.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textLabel?.text = rowEditValue.placeholder
@@ -164,6 +205,14 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     }
     
     
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if InputType.quizType.rawValue == indexPath.section {
+            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+        }
+        
+        return 50
+    }
     
     // MARK: Header
     
@@ -185,7 +234,11 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
         return headerView
     }
     
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if InputType.quizType.rawValue == section {
+            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+        }
         return section == InputType.title.rawValue ? 40 : 30
     }
     
@@ -194,7 +247,12 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     // MARK: Footer
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return section == InputType.showHide.rawValue ? 350 : CGFloat.leastNormalMagnitude
+        
+        if InputType.quizType.rawValue == section {
+            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+        }
+        
+        return section == InputType.showHide.rawValue ? 400 : CGFloat.leastNormalMagnitude
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -212,10 +270,37 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     
     
+    // MARK: UIPickerViewDelegate, UIPickerViewDataSource
+    
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return quizTypeModel!.count
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return quizTypeModel?[row].quizTypeTitle
+    }
+    
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        quizTypeTextField.text = quizTypeModel?[row].quizTypeTitle
+        typeid = (quizTypeModel?[row].id)!
+    }
+    
+    
+    
+    
+    
     // MARK: Other
     
-    private func setTextFieldConstraint(textField: UITextField, cell:UITableViewCell){
-        
+    private func setTextFieldConstraint(textField: UITextField, cell:UITableViewCell) {
+        textField.inputAccessoryView = toolBar
         textField.delegate = self
         textField.textAlignment = .left
         cell.addSubview(textField)
@@ -235,6 +320,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
                                         key.incorrectAnswer1: false1_TextField.text ?? "",
                                         key.incorrectAnswer2: false2_textField.text ?? "",
                                         key.incorrectAnswer3: false3_textField.text ?? "",
+                                        key.quizType: typeid ?? "",
                                         key.showHide: displaySwitch.isOn == true ? "0" : "1"
                                         ]
         
@@ -262,6 +348,7 @@ extension QuizEditView {
         case incorrectAnswer1
         case incorrectAnswer2
         case incorrectAnswer3
+        case quizType
         case showHide
         
         
@@ -277,6 +364,8 @@ extension QuizEditView {
                 return IncorrectAnswer2()
             case .incorrectAnswer3:
                 return IncorrectAnswer3()
+            case .quizType:
+                return QuizType()
             case .showHide:
                 return ShowHide()
             }
@@ -312,6 +401,12 @@ extension QuizEditView {
             let headerTitle: String = "不正解3"
         }
         
+        private struct QuizType: RowEditValue {
+            let placeholder: String = " クイズの種類を選択してください"
+            let accessibilityIdentifier: String = "quizType"
+            let headerTitle: String = "クイズの種類"
+        }
+        
         private struct ShowHide: RowEditValue {
             let placeholder: String = " 表示・非表示"
             let accessibilityIdentifier: String = "showHide"
@@ -327,5 +422,6 @@ struct ParameterKey {
     let incorrectAnswer1: String = "incorrectAnswer1"
     let incorrectAnswer2: String = "incorrectAnswer2"
     let incorrectAnswer3: String = "incorrectAnswer3"
+    let quizType: String = "quizType"
     let showHide: String = "showHide"
 }

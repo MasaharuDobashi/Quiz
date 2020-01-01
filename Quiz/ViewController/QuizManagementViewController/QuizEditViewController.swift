@@ -14,7 +14,7 @@ final class QuizEditViewController: UIViewController {
     // MARK: Properties
     
     private let config = Realm.Configuration(schemaVersion: 1)
-    private var realm:Realm!
+    private var realm:Realm?
     
     /// クイズのID
     private var quzi_id:Int?
@@ -24,6 +24,11 @@ final class QuizEditViewController: UIViewController {
     
     /// クイズを格納
     private var quizModel: QuizModel!
+    private var quizTypeModel: [QuizTypeModel]! {
+        didSet {
+            quizEditView.quizTypeModel = quizTypeModel
+        }
+    }
     
     let key:ParameterKey = ParameterKey()
     
@@ -85,10 +90,23 @@ final class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        realm = try! Realm(configuration: config)
         
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
+        
+        quizTypeModel = [QuizTypeModel]()
+        for model in (realm?.objects(QuizTypeModel.self))! {
+            quizTypeModel.append(model)
+        }
         
         view.addSubview(quizEditView)
+        
         
     }
     
@@ -96,13 +114,13 @@ final class QuizEditViewController: UIViewController {
     
     // MARK: NavigationItem Func
     
-    private func navigationItemAction(){
+    override func navigationItemAction() {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
     
     
-    @objc private func rightButtonAction(){
+    override func rightButtonAction(){
         let parameters: [String:Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
         
@@ -144,20 +162,43 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        // TODO:
+        let quizid: String? = quizEditView.typeid
+        var quizType: QuizTypeModel?
+        if quizid != nil {
+            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
+        } else {
+            quizType = nil
+        }
+        
         let showHide: String = parameters[key.showHide] as! String
         
         
-        quizModel.id = String(realm.objects(QuizModel.self).count)
+        guard let id:Int = realm?.objects(QuizModel.self).count else { return }
+        
+        quizModel.id = String(id)
         quizModel.quizTitle = title
         quizModel.trueAnswer = correctAnswer
         quizModel.falseAnswer1 = incorrectAnswer1
         quizModel.falseAnswer2 = incorrectAnswer2
         quizModel.falseAnswer3 = incorrectAnswer3
+        quizModel.quizTypeModel = quizType
         quizModel.displayFlag = showHide
         
-        try! realm.write() {
-            realm.add(quizModel)
+        
+        
+        do {
+            try realm?.write() {
+                realm?.add(quizModel)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
+        
     }
     
     
@@ -168,16 +209,35 @@ final class QuizEditViewController: UIViewController {
         let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
         let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
         let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
+        // TODO:
+        let quizid: String? = quizEditView.typeid
+        var quizType: QuizTypeModel?
+        if quizid != nil {
+            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
+        } else {
+            quizType = nil
+        }
         let showHide: String = parameters[key.showHide] as! String
         
-        try! realm.write() {
-            realm.objects(QuizModel.self)[quzi_id!].quizTitle = title
-            realm.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
-            realm.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
-            realm.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
+        
+        
+        do {
+            try realm?.write() {
+                realm?.objects(QuizModel.self)[quzi_id!].quizTitle = title
+                realm?.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
+                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
+                realm?.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizType
+                realm?.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
+        
     }
     
     
@@ -185,7 +245,7 @@ final class QuizEditViewController: UIViewController {
     
     private func quizModelAppend(quiz_id:Int){
         quizModel = QuizModel()
-        quizModel = realm.objects(QuizModel.self)[quiz_id]
+        quizModel = realm?.objects(QuizModel.self)[quiz_id]
     }
     
     

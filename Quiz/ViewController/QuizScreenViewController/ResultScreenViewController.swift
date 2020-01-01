@@ -13,7 +13,7 @@ final class ResultScreenViewController: UIViewController {
     
     // MARK: Properties
     
-    private var realm: Realm!
+    private var realm: Realm?
     
     /// 履歴を格納する
     private var historyModel: HistoryModel!
@@ -78,21 +78,28 @@ final class ResultScreenViewController: UIViewController {
     private func addRealm(trueConunt: Int){
         let conunt: String = String(trueConunt)
         historyModel = HistoryModel()
-        realm = try! Realm()
         
         
         historyModel.quizTrueCount = conunt
         historyModel.date = nowDate()
         
         
-        try! realm.write() {
-            realm.add(historyModel)
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+            try realm?.write() {
+                realm?.add(historyModel)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
-    
-        if realm.objects(HistoryModel.self).count > 30 {
+        
+        if (realm?.objects(HistoryModel.self).count)! > 30 {
             deleteRealm()
         }
- 
+        
         debugPrint(object: historyModel)
     }
     
@@ -102,8 +109,8 @@ final class ResultScreenViewController: UIViewController {
     
     private func deleteRealm(){
         var historyModel:[HistoryModel] = [HistoryModel]()
-        for i in 0..<realm.objects(HistoryModel.self).count {
-            historyModel.append(realm.objects(HistoryModel.self)[i])
+        for i in 0..<(realm?.objects(HistoryModel.self).count)! {
+            historyModel.append((realm?.objects(HistoryModel.self)[i])!)
             
             historyModel.sort{
                 $0.date < $1.date
@@ -112,10 +119,19 @@ final class ResultScreenViewController: UIViewController {
         
         debugPrint(object: historyModel.first)
         
-        try! realm.write() {
-            realm.delete(historyModel.first!)
+        
+        do {
+            try realm?.write() {
+                realm?.delete(historyModel.first!)
+            }
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
         }
- 
+        
+        
     }
     
     

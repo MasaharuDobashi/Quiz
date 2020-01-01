@@ -8,6 +8,70 @@
 
 import XCTest
 
+
+
+class ShortcutManager: XCTestCase {
+    
+    class func quizDelete(){
+        #if DEBUG
+        let app = XCUIApplication()
+        app.tabBars.buttons["Most Viewed"].tap()
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["閉じる"].tap()
+        
+        
+        app.navigationBars.buttons["allDelete"].tap()
+        app.alerts.buttons["削除"].tap()
+        #endif
+        
+    }
+    
+    
+    
+    
+    /// クイズをx個作成
+    class func quizCreate(_ editCount:Int) {
+        let app = XCUIApplication()
+        app.tabBars.buttons["Most Viewed"].tap()
+        
+        for i in 0..<editCount {
+            app.navigationBars["Quiz.QuizManagementView"].buttons["Add"].tap()
+            
+            
+            app.tables.textFields["title"].tap()
+            app.tables.textFields["title"].typeText("自動テスト\(String(i + 1))")
+            app.tables.textFields["correctAnswer"].tap()
+            app.tables.textFields["correctAnswer"].typeText("正解1")
+            app.tables.textFields["incorrectAnswer1"].tap()
+            app.tables.textFields["incorrectAnswer1"].typeText("不正解1")
+            app.tables.textFields["incorrectAnswer2"].tap()
+            app.tables.textFields["incorrectAnswer2"].typeText("不正解2")
+            app.tables.textFields["incorrectAnswer3"].tap()
+            app.tables.textFields["incorrectAnswer3"].typeText("不正解3")
+            
+            
+            
+            
+            app.toolbars.buttons.firstMatch.tap()
+            app.swipeUp()
+            if app.staticTexts["クイズの種類"].exists {
+                app.textFields["quizType"].tap()
+                app.pickers.firstMatch.swipeDown()
+                app.toolbars.buttons.firstMatch.tap()
+            }
+            
+            app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
+            app.alerts.buttons["閉じる"].tap()
+        }
+        
+        app.tabBars.buttons["Favorites"].tap()
+        
+    }
+
+    
+    
+}
+
 //@testable import Quiz
 class QuizUITests: XCTestCase {
     
@@ -27,61 +91,15 @@ class QuizUITests: XCTestCase {
 
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
-        quizDelete()
+        ShortcutManager.quizDelete()
         
     }
 
-    func testExample() {
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        
-  
-        
-    }
+
     
     
+
     
-    /// クイズをx個作成
-    func quizCreate(_ editCount:Int){
-        let app = XCUIApplication()
-        app.tabBars.buttons["Most Viewed"].tap()
-        
-        for i in 0..<editCount {
-            app.navigationBars["Quiz.QuizManagementView"].buttons["Add"].tap()
-            
-            
-            app.tables.textFields["title"].tap()
-            app.tables.textFields["title"].typeText("自動テスト\(String(i + 1))")
-            app.tables.textFields["correctAnswer"].tap()
-            app.tables.textFields["correctAnswer"].typeText("正解1")
-            app.tables.textFields["incorrectAnswer1"].tap()
-            app.tables.textFields["incorrectAnswer1"].typeText("不正解1")
-            app.tables.textFields["incorrectAnswer2"].tap()
-            app.tables.textFields["incorrectAnswer2"].typeText("不正解2")
-            app.tables.textFields["incorrectAnswer3"].tap()
-            app.tables.textFields["incorrectAnswer3"].typeText("不正解3")
-            app.navigationBars.containing(.button, identifier: "Stop").buttons["Add"].tap()
-            app.alerts.buttons["閉じる"].tap()
-        }
-        
-        app.tabBars.buttons["Favorites"].tap()
-        
-    }
-    
-    
-    func quizDelete(){
-        #if DEBUG
-        let app = XCUIApplication()
-        app.tabBars.buttons["Most Viewed"].tap()
-        app.navigationBars.buttons["allDelete"].tap()
-        app.alerts.buttons["閉じる"].tap()
-        
-        
-        app.navigationBars.buttons["allDelete"].tap()
-        app.alerts.buttons["削除"].tap()
-        #endif
-        
-    }
     
     
     func test_EditViewUI(){
@@ -150,7 +168,7 @@ class QuizUITests: XCTestCase {
     func testQuizStart(){
         let app = XCUIApplication()
         
-        quizCreate(10)
+            ShortcutManager.quizCreate(10)
         let startButton = app.buttons["クイズスタート"]
         XCTAssert(startButton.exists, "問題が作成されていない")
         app.buttons["quizStartButton"].tap()
@@ -174,12 +192,13 @@ class QuizUITests: XCTestCase {
         
         while app.buttons["正解1"].exists == true {
             app.buttons["正解1"].tap()
+            sleep(1)
         }
         app.navigationBars["Quiz.ResultScreenView"].buttons["Stop"].tap()
     }
     
     func testQuizEdit(){
-        quizCreate(1)
+        ShortcutManager.quizCreate(1)
         let app = XCUIApplication()
         
         
@@ -234,7 +253,7 @@ class QuizUITests: XCTestCase {
     
     
     func testQuizDelete(){
-        quizCreate(1)
+        ShortcutManager.quizCreate(1)
         let app = XCUIApplication()
         app.tabBars.buttons["Most Viewed"].tap()
         
@@ -249,7 +268,7 @@ class QuizUITests: XCTestCase {
     
     
     func testHistory(){
-        quizCreate(10)
+        ShortcutManager.quizCreate(10)
         let app = XCUIApplication()
         
         for _ in 0...10 {
@@ -259,9 +278,8 @@ class QuizUITests: XCTestCase {
             
             
             while app.buttons["正解1"].exists == true {
-                if app.waitForExistence(timeout: 1.0) == true {
-                    app.buttons["正解1"].tap()
-                }
+                app.buttons["正解1"].tap()
+                sleep(1)
             }
             
             if app.waitForExistence(timeout: 2.0) == true {
@@ -283,4 +301,8 @@ class QuizUITests: XCTestCase {
         }
     }
     
+    
+    
+    
 }
+

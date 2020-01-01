@@ -19,7 +19,7 @@ final class HistoryViewController: UIViewController {
         return historyView
     }()
     
-    private var realm: Realm!
+    private var realm: Realm?
     private var historyModel: [HistoryModel]!
     
     
@@ -29,12 +29,20 @@ final class HistoryViewController: UIViewController {
         super.viewDidLoad()
         
         navigationController?.navigationBar.backgroundColor = cellWhite
-
-        historyModel = [HistoryModel]()
-        realm = try! Realm()
         
-        for i in 0..<realm.objects(HistoryModel.self).count {
-            historyModel.append(realm.objects(HistoryModel.self)[i])
+        historyModel = [HistoryModel]()
+        do {
+            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
+            
+        } catch {
+            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+                return
+            })
+            return
+        }
+        
+        for i in 0..<(realm?.objects(HistoryModel.self).count)! {
+            historyModel.append((realm?.objects(HistoryModel.self)[i])!)
             
             historyModel.sort{
                 $0.date < $1.date

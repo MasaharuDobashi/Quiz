@@ -12,7 +12,7 @@ import UIKit
 // MARK: - RealmConfig
 
 /// Realmのスキームバージョン
-let realmConfig: UInt64 = 1
+let realmConfig: UInt64 = 3
 
 
 // MARK: - COLORS
@@ -37,3 +37,6 @@ let AllDelete: String = "allDelete"
 
 /// iOS13以降でモーダルを閉じた時にViewWillAppearを呼ぶ
 let ViewUpdate: String = "viewUpdate"
+
+
+let quizTypeUpdate = "quizTypeUpdate"

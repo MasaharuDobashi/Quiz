@@ -13,15 +13,32 @@ import UIKit
 
 extension UILabel {
     
-    public convenience init(title: String?, font: UIFont, textColor: UIColor?, backgroundColor: UIColor?, textAlignment: NSTextAlignment, numberOfLines: Int) {
+    public convenience init(title: String? = nil, font: UIFont? = nil, textColor: UIColor? = nil, backgroundColor: UIColor? = nil, textAlignment: NSTextAlignment? = nil, numberOfLines: Int? = nil) {
         self.init()
         
-        self.text = title
-        self.font = font
-        self.textColor = textColor
-        self.backgroundColor = backgroundColor
-        self.textAlignment = textAlignment
-        self.numberOfLines = numberOfLines
+        if let _title = title {
+            text = _title
+        }
+        
+        if let _font = font {
+            self.font = _font
+        }
+        
+        if let _textColor = textColor {
+            self.textColor = _textColor
+        }
+        
+        if let _backgroundColor = backgroundColor {
+            self.backgroundColor = _backgroundColor
+        }
+        
+        if let _textAlignment = textAlignment {
+            self.textAlignment = _textAlignment
+        }
+        
+        if let _numberOfLines = numberOfLines {
+            self.numberOfLines = _numberOfLines
+        }
     }
     
     func labelHeight(multiplier: CGFloat, cornerRadius: CGFloat? = nil) {
