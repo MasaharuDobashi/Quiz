@@ -64,7 +64,7 @@ final class QuizMainView: UIView {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
         button.setButton(title: "クイズの選択",
-                         backgroundColor: Rose,
+                         backgroundColor: Geranium,
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(quizTypeButtonAction)
         )
@@ -215,7 +215,7 @@ final class QuizMainView: UIView {
             quizTypeButton.backgroundColor = Dawnpink
         } else {
             quizTypeButton.setTitle("クイズの種類を作成", for: .normal)
-            quizTypeButton.backgroundColor = Geranium
+            quizTypeButton.backgroundColor = Dawnpink
         }
     }
     
