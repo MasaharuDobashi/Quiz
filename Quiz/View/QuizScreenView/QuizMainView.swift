@@ -30,7 +30,7 @@ final class QuizMainView: UIView {
     ///
     /// - クイズがなければクイズ作成モーダルを表示する
     /// - クイズを開始する
-    private var quizStartButton:UIButton = {
+    private(set) var quizStartButton:UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "quizStartButton"
         button.setButton(title: "",
@@ -45,7 +45,7 @@ final class QuizMainView: UIView {
     
     
     /// 履歴ボタン
-    private lazy var historyButton: UIButton = {
+    private(set) lazy var historyButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "historyButton"
         button.setButton(title: "履歴",
@@ -60,7 +60,7 @@ final class QuizMainView: UIView {
     
     
     /// クイズの種類
-    let quizTypeButton: UIButton = {
+    private(set) var quizTypeButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
         button.setButton(title: "クイズの選択",
@@ -117,7 +117,7 @@ final class QuizMainView: UIView {
         super.init(frame:frame)
         
         backgroundColor = Beige
-        viewLoad()
+        setConstraint()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -126,31 +126,27 @@ final class QuizMainView: UIView {
     
     
     
-    // MARK: ViewLoad
-    
-    private func viewLoad(){
-        addSubview(quizStartButton)
-        addSubview(quizTypeButton)
-        setConstraint()
-    }
     
     
+    // MARK: Constraint
     
     /// quizStartButtontに制約を付ける
     private func setConstraint(){
+        addSubview(quizStartButton)
         quizStartButton.translatesAutoresizingMaskIntoConstraints = false
         quizStartButton.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
         quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
         
-        
+        addSubview(quizTypeButton)
         quizTypeButton.translatesAutoresizingMaskIntoConstraints = false
         quizTypeButton.topAnchor.constraint(equalTo: quizStartButton.bottomAnchor, constant: 15).isActive = true
         quizTypeButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizTypeButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizTypeButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
     }
+    
     
     
     // MARK: ButtonAction
@@ -171,8 +167,8 @@ final class QuizMainView: UIView {
     }
     
     
-    // MARK: internalFunc
     
+    // MARK: internalFunc
     
     /// クイズスタートボタンの色を変える
     func startButtonColorChange(){
