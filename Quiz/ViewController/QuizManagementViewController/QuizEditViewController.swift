@@ -254,20 +254,20 @@ final class QuizEditViewController: UIViewController {
     func validate(parameters:[String:Any]) -> Bool {
         
         
-        if emptyValidate(title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
             return false
         }
         
-        if emptyValidate(title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
             return false
         }
         
@@ -276,19 +276,6 @@ final class QuizEditViewController: UIViewController {
     
     
     
-    /// 文字数が0以上かどうかバリデーションチェック
-    ///
-    /// - Parameters:
-    ///   - title: チェックするテキスト
-    ///   - message: エラー時のアラートメッセージ
-    /// - Returns: バリデーションの結果
-    func emptyValidate(title: String, message: String) -> Bool {
-        if title.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: message, handler: {_ -> Void in})
-            return false
-        }
-        return true
-    }
     
     
 }

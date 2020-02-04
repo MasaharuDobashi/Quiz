@@ -96,9 +96,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// クイズを作成するモーダルを表示
     override func rightButtonAction() {
-        let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
+        presentModalView(QuizEditViewController(mode: .add))
     }
     
     
@@ -242,9 +240,9 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     }
     
     
+    /// 指定したクイズの編集画面を開く
     func editAction(_ tableViewController: UITableViewController, editViewController editVC: UIViewController) {
-        let navigationController:UINavigationController = UINavigationController(rootViewController: editVC)
-        tableViewController.present(navigationController,animated: true, completion: nil)
+        presentModalView(editVC)
     }
     
     

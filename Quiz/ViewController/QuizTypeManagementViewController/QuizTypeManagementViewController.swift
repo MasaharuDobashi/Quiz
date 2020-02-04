@@ -77,9 +77,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     override func rightButtonAction() {
-        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: nil, mode: .add)
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
+        presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
     }
     
     
@@ -110,8 +108,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 extension QuizTypeManagementViewController: ManagementProtocol {
     
     func editAction(_ tableViewController: UITableViewController, editViewController editVC: UIViewController) {
-        let navigationController:UINavigationController = UINavigationController(rootViewController: editVC)
-        tableViewController.present(navigationController,animated: true, completion: nil)
+        presentModalView(editVC)
     }
     
     

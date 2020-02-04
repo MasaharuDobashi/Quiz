@@ -44,6 +44,39 @@ extension UIViewController {
         }
         #endif
     }
+    
+    
+    
+    /// 文字数が0以上かどうかバリデーションチェック
+    ///
+    /// - Parameters:
+    ///   - title: チェックするテキスト
+    ///   - message: エラー時のアラートメッセージ
+    /// - Returns: バリデーションの結果
+    func emptyValidate(viewController: UIViewController, title: String, message: String) -> Bool {
+        if title.isEmpty {
+            AlertManager().alertAction(viewController: viewController, title: nil, message: message, handler: {_ -> Void in})
+            return false
+        }
+        return true
+    }
+    
+    
+    
+    /// モーダル遷移
+    /// - Parameter viewController: モーダル表示するViewController
+    func presentModalView(_ viewController: UIViewController) {
+        let navigationController = UINavigationController(rootViewController: viewController)
+        present(navigationController,animated: true, completion: nil)
+    }
+    
+    
+    /// Push遷移
+    /// - Parameter viewController: 遷移先のViewController
+    func pushTransition(_ viewController: UIViewController) {
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }
 
 

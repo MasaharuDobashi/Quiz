@@ -23,7 +23,6 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
-//        let isActiveQuiz: Bool = realm?.objects(QuizModel.self).count != 0 ? true : false
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.delegate = self
         
@@ -70,13 +69,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     /// クイズがあればクイズをスタートする、なければクイズの作成モーダルを表示する
     func quizStartButtonAction() {
         if quizMainView.isActiveQuiz {
-            let viewController:QuizScreenViewController = QuizScreenViewController()
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizScreenViewController())
+            
         } else {
-            let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizEditViewController(mode: .add))
             
         }
     }
@@ -85,20 +81,17 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     /// クイズの種類があれば選択画面に遷移する、なければクイズの種類を作成モーダルを表示する
     func quizTypeButtonAction() {
         if quizMainView.isQuizType {
-            let viewController:QuizTypeSelectTableViewController = QuizTypeSelectTableViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
+            pushTransition(QuizTypeSelectTableViewController())
+            
         } else {
-            let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: nil, mode: .add)
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
             
         }
     }
     
     /// 履歴画面を開く
     func historyButtonAction() {
-        let viewController:HistoryViewController = HistoryViewController()
-        navigationController?.pushViewController(viewController, animated: true)
+        pushTransition(HistoryViewController())
     }
     
     
