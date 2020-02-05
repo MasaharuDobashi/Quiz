@@ -40,7 +40,7 @@ final class QuizTypeManagementViewController: UITableViewController {
             })
             return
         }
-        
+        tableView.separatorInset = .zero
         tableView.delegate = self
         tableView.dataSource = self
         

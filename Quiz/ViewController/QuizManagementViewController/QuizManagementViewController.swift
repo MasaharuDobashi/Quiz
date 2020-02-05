@@ -235,8 +235,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// 指定したクイズの詳細を開く
     func detailAction(indexPath: IndexPath) {
-        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        pushTransition(QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail))
     }
     
     

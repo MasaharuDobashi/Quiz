@@ -30,6 +30,7 @@
 		D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D08EBA6621F9FA5300B63F02 /* Assets.xcassets */; };
 		D09D01FB237309AA00D0AC4F /* ManagementProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D01FA237309AA00D0AC4F /* ManagementProtocol.swift */; };
 		D0C6E9AA2201D48D0001B4FE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C6E9A92201D48D0001B4FE /* AlertManager.swift */; };
+		D0D3B38523EAFCE2004AF416 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3B38423EAFCE2004AF416 /* UIColorExtension.swift */; };
 		D0E197D721FD8A340062728F /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */; };
 		D0E197DA21FDD1620062728F /* QuizManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D921FDD1610062728F /* QuizManagementViewController.swift */; };
 		D0E197DC21FDD19F0062728F /* QuizListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197DB21FDD19F0062728F /* QuizListCell.swift */; };
@@ -106,6 +107,7 @@
 		D08EBA6B21F9FA5300B63F02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D09D01FA237309AA00D0AC4F /* ManagementProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementProtocol.swift; sourceTree = "<group>"; };
 		D0C6E9A92201D48D0001B4FE /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		D0D3B38423EAFCE2004AF416 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		D0E197D921FDD1610062728F /* QuizManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizManagementViewController.swift; sourceTree = "<group>"; };
 		D0E197DB21FDD19F0062728F /* QuizListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizListCell.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			children = (
 				D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */,
 				D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */,
+				D0D3B38423EAFCE2004AF416 /* UIColorExtension.swift */,
 				D073E25E2289974B000F9874 /* UILabelExtension.swift */,
 			);
 			path = Extensions;
@@ -552,6 +555,7 @@
 				D0FE73F222D37B5E005E4253 /* Constant.swift in Sources */,
 				D0321DCE236581E000AF93CE /* ListValue.swift in Sources */,
 				D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */,
+				D0D3B38523EAFCE2004AF416 /* UIColorExtension.swift in Sources */,
 				D0E82C432210091300960D7C /* Enums.swift in Sources */,
 				D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */,
 				D0EB043422AFE394009DB116 /* HistoryView.swift in Sources */,
