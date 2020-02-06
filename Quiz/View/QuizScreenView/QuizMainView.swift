@@ -45,6 +45,9 @@ final class QuizMainView: UIView {
     
     
     /// 履歴ボタン
+    ///
+    /// - 履歴がなければ非表示
+    /// - 履歴がなければ表示
     private(set) lazy var historyButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "historyButton"
@@ -60,6 +63,9 @@ final class QuizMainView: UIView {
     
     
     /// クイズの種類
+    ///
+    /// - クイズの種類がなければクイズの種類作成モーダルを表示する
+    /// - クイズの種類選択画面に遷移する
     private(set) var quizTypeButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
@@ -90,8 +96,8 @@ final class QuizMainView: UIView {
     
     /// 履歴があるかないかのフラグ
     ///
-    /// true:  historyButtonを表示する
-    /// nil:  historyButtonを非表示にする
+    /// - true:  historyButtonを表示する
+    /// - false:  historyButtonを非表示にする
     var isHistory: Bool = false {
         didSet {
             historyButtonColorChange()
@@ -99,7 +105,10 @@ final class QuizMainView: UIView {
     }
     
     
-    
+    /// クイズの種類があるかないかのフラグ
+    ///
+    /// - true:  historyButtonを表示する
+    /// - false:   historyButtonを非表示にする
     var isQuizType: Bool = false {
         didSet {
             typeButtonColorChange()
@@ -161,7 +170,7 @@ final class QuizMainView: UIView {
         delegate?.historyButtonAction()
     }
     
-    
+    /// クイズの種類ボタンのタップアクション
     @objc private func quizTypeButtonAction() {
         delegate?.quizTypeButtonAction()
     }
@@ -184,8 +193,8 @@ final class QuizMainView: UIView {
     
     /// 履歴ボタンをaddSubViewする
     ///
-    /// isHistory == true: 履歴ボタンをaddSubViewする
-    /// isHistory == false: 履歴ボタンをremoveFromSuperviewする
+    /// - isHistory == true: 履歴ボタンをaddSubViewする
+    /// - isHistory == false: 履歴ボタンをremoveFromSuperviewする
     func historyButtonColorChange(){
         if isHistory == true {
             addSubview(historyButton)
@@ -203,8 +212,8 @@ final class QuizMainView: UIView {
     
     /// quizTypeButtonをaddSubViewする
     ///
-    /// isQuizType == true: クイズの選択ボタンをaddSubViewする
-    /// isQuizType == false: クイズの選択をremoveFromSuperviewする
+    /// - isQuizType == true: クイズの選択ボタンをaddSubViewする
+    /// - isQuizType == false: クイズの選択をremoveFromSuperviewする
     func typeButtonColorChange(){
         if isQuizType == true {
             quizTypeButton.setTitle("クイズの選択", for: .normal)
