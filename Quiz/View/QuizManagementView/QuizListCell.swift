@@ -101,7 +101,7 @@ final class QuizListCell: UITableViewCell {
             if displaySwitch == "1" {
                 self.backgroundColor = .lightGray
             } else {
-                self.backgroundColor = cellWhite
+                self.backgroundColor = R.color.cellWhite
             }
         }
         
@@ -115,7 +115,7 @@ final class QuizListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = cellWhite
+        backgroundColor = R.color.cellWhite
         
         setConstraint()
     }
@@ -161,7 +161,7 @@ final class QuizListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        backgroundColor = cellWhite
+        backgroundColor = R.color.cellWhite
     }
     
 }

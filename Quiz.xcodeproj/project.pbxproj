@@ -29,6 +29,7 @@
 		D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EBA5F21F9FA5200B63F02 /* AppDelegate.swift */; };
 		D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D08EBA6621F9FA5300B63F02 /* Assets.xcassets */; };
 		D09D01FB237309AA00D0AC4F /* ManagementProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D09D01FA237309AA00D0AC4F /* ManagementProtocol.swift */; };
+		D0ADDA7E23EE9C030057EA61 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0ADDA7D23EE9C020057EA61 /* R.generated.swift */; };
 		D0C6E9AA2201D48D0001B4FE /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C6E9A92201D48D0001B4FE /* AlertManager.swift */; };
 		D0D3B38523EAFCE2004AF416 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0D3B38423EAFCE2004AF416 /* UIColorExtension.swift */; };
 		D0E197D721FD8A340062728F /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */; };
@@ -106,6 +107,7 @@
 		D08EBA6621F9FA5300B63F02 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D08EBA6B21F9FA5300B63F02 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D09D01FA237309AA00D0AC4F /* ManagementProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementProtocol.swift; sourceTree = "<group>"; };
+		D0ADDA7D23EE9C020057EA61 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = R.generated.swift; path = Quiz/Other/R.generated.swift; sourceTree = SOURCE_ROOT; };
 		D0C6E9A92201D48D0001B4FE /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 		D0D3B38423EAFCE2004AF416 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D0E197D621FD8A340062728F /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		D0E82C4422100C1B00960D7C /* Other */ = {
 			isa = PBXGroup;
 			children = (
+				D0ADDA7D23EE9C020057EA61 /* R.generated.swift */,
 				D0C6E9A92201D48D0001B4FE /* AlertManager.swift */,
 				D09D01FA237309AA00D0AC4F /* ManagementProtocol.swift */,
 				D0FE73F122D37B5E005E4253 /* Constant.swift */,
@@ -383,6 +386,7 @@
 			buildConfigurationList = D08EBA8421F9FA5300B63F02 /* Build configuration list for PBXNativeTarget "Quiz" */;
 			buildPhases = (
 				B48529A99B20777C0DB7FEF8 /* [CP] Check Pods Manifest.lock */,
+				D0ADDA7C23EE99CD0057EA61 /* ShellScript */,
 				D08EBA5821F9FA5100B63F02 /* Sources */,
 				D08EBA5921F9FA5100B63F02 /* Frameworks */,
 				D08EBA5A21F9FA5100B63F02 /* Resources */,
@@ -509,6 +513,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D0ADDA7C23EE99CD0057EA61 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$TEMP_DIR/rswift-lastrun",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				$SRCROOT/R.generated.swift,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$PODS_ROOT/R.swift/rswift\" generate \"$SRCROOT/R.generated.swift\"\n# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -550,6 +573,7 @@
 				D05196CD236FF9FC00762178 /* QuizTypeEditView.swift in Sources */,
 				D0E197DC21FDD19F0062728F /* QuizListCell.swift in Sources */,
 				D02E3353238EB0BA001213D5 /* QuizTypeSelectTableViewController.swift in Sources */,
+				D0ADDA7E23EE9C030057EA61 /* R.generated.swift in Sources */,
 				D01CEA2821F9FCDA00AF1266 /* QuizScreenView.swift in Sources */,
 				D08EBA6021F9FA5200B63F02 /* AppDelegate.swift in Sources */,
 				D0FE73F222D37B5E005E4253 /* Constant.swift in Sources */,

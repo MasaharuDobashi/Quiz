@@ -60,7 +60,10 @@ final class QuizTypeSelectTableViewController: UITableViewController {
                 self?.navigationController?.popViewController(animated: true)
                 
             } catch {
-                AlertManager().alertAction(viewController: self!, title: nil, message: "エラーが発生しました", handler: { _ in
+                AlertManager().alertAction(viewController: self!,
+                                           title: nil,
+                                           message: R.string.error.errorMessage,
+                                           handler: { _ in
                     return
                 })
                 return
@@ -88,7 +91,10 @@ final class QuizTypeSelectTableViewController: UITableViewController {
          do {
              realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
          } catch {
-             AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+             AlertManager().alertAction(viewController: self,
+                                        title: nil,
+                                        message: R.string.error.errorMessage,
+                                        handler: { _ in
                  return
              })
              return

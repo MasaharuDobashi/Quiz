@@ -94,7 +94,10 @@ final class QuizEditViewController: UIViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
@@ -146,11 +149,11 @@ final class QuizEditViewController: UIViewController {
         }
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
         }
         
         
-        NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.notification.QuizUpdate), object: nil)
     }
     
     
@@ -192,7 +195,7 @@ final class QuizEditViewController: UIViewController {
                 realm?.add(quizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -232,7 +235,7 @@ final class QuizEditViewController: UIViewController {
                 realm?.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return

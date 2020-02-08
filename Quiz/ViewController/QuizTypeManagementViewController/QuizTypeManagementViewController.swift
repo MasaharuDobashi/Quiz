@@ -35,7 +35,10 @@ final class QuizTypeManagementViewController: UITableViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
@@ -47,7 +50,7 @@ final class QuizTypeManagementViewController: UITableViewController {
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: quizTypeUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
         
     }
     
@@ -122,13 +125,16 @@ extension QuizTypeManagementViewController: ManagementProtocol {
                 realm?.delete(rquizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
         }
         
-        NotificationCenter.default.post(name: Notification.Name(quizTypeUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
     }
     
     

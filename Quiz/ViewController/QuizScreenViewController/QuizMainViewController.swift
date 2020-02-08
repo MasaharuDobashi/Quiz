@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-
+import Rswift
 
 // MARK: - QuizMainViewController
 
@@ -40,7 +40,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
@@ -55,7 +58,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
+        
         quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
         quizMainView.isQuizType = realm?.objects(QuizTypeModel.self).count != 0 ? true : false
         quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
@@ -101,13 +104,13 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     func setNotificationCenter() {
         #if DEBUG
         /// QuizManagementViewControllerでallDeleteがpostされたら履歴ボタンを更新する
-        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: AllDelete), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: R.notification.AllDelete), object: nil)
         #endif
         
         
-        /// ViewUpdate、QuizUpdateがpostされたらViewWillAppearを呼ぶ
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: ViewUpdate), object: nil)
+        /// R.notification.ViewUpdate、R.notification.QuizUpdateがpostされたらViewWillAppearを呼ぶ
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.ViewUpdate), object: nil)
     }
     
     
