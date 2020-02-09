@@ -3,16 +3,16 @@ PODS:
   - R.swift (5.1.0):
     - R.swift.Library (~> 5.1.0)
   - R.swift.Library (5.1.0)
-  - Realm (3.20.0):
-    - Realm/Headers (= 3.20.0)
-  - Realm/Headers (3.20.0)
-  - RealmSwift (3.20.0):
-    - Realm (= 3.20.0)
+  - Realm (4.3.2):
+    - Realm/Headers (= 4.3.2)
+  - Realm/Headers (4.3.2)
+  - RealmSwift (4.3.2):
+    - Realm (= 4.3.2)
 
 DEPENDENCIES:
-  - LineGraphView
+  - LineGraphView (= 1.0.4)
   - R.swift (= 5.1.0)
-  - RealmSwift
+  - RealmSwift (= 4.3.2)
 
 SPEC REPOS:
   trunk:
@@ -26,9 +26,9 @@ SPEC CHECKSUMS:
   LineGraphView: d3b25ac8e9e2a9b4384c1122dd55eeb75b61f417
   R.swift: 8cbc4fc69b740305b6a17c8a8ed968eb788962d9
   R.swift.Library: fa85ce1e0d0b7e818cd9e080df910ba54d2776cc
-  Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
-  RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
+  Realm: 5e92902e2875dff4bb0fd02f67bb737c3d5db2bc
+  RealmSwift: 9a360fc7bae04fc2e308a34fbd899d5faa2d6b22
 
-PODFILE CHECKSUM: f6ca2bb4d34f8895085a6f7e43c3fe79fad4205e
+PODFILE CHECKSUM: 1cf1c50c6d41d05b5f571b2590bff795c3029b52
 
 COCOAPODS: 1.8.4
