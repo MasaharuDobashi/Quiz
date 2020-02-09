@@ -29,7 +29,7 @@ final class QuizTypeEditViewController: UIViewController {
     
     /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
-        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), mode: self.mode)
+        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), style: .grouped, mode: self.mode)
         
         if self.mode != .add {
             view.typeTextField.text = filter?.quizTypeTitle
