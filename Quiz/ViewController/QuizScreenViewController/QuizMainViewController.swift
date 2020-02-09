@@ -81,7 +81,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     }
     
     
-    /// クイズの種類があれば選択画面に遷移する、なければクイズの種類を作成モーダルを表示する
+    /// クイズのカテゴリがあれば選択画面に遷移する、なければクイズのカテゴリを作成モーダルを表示する
     func quizTypeButtonAction() {
         if quizMainView.isQuizType {
             pushTransition(QuizTypeSelectTableViewController())

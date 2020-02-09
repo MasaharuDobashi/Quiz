@@ -76,7 +76,7 @@ final class QuizListCell: UITableViewCell {
         
     }
     
-    /// 問題の種類
+    /// 問題のカテゴリ
     var quizTypeText: String? {
         get {
             quizTypeLable.sizeToFit()

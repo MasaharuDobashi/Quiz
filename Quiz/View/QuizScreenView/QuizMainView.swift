@@ -62,14 +62,14 @@ final class QuizMainView: UIView {
     }()
     
     
-    /// クイズの種類
+    /// クイズのカテゴリ
     ///
-    /// - クイズの種類がなければクイズの種類作成モーダルを表示する
-    /// - クイズの種類選択画面に遷移する
+    /// - クイズのカテゴリがなければクイズのカテゴリ作成モーダルを表示する
+    /// - クイズのカテゴリ選択画面に遷移する
     private(set) var quizTypeButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
-        button.setButton(title: "クイズの選択",
+        button.setButton(title: "",
                          backgroundColor: R.color.Geranium,
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(quizTypeButtonAction)
@@ -105,7 +105,7 @@ final class QuizMainView: UIView {
     }
     
     
-    /// クイズの種類があるかないかのフラグ
+    /// クイズのカテゴリがあるかないかのフラグ
     ///
     /// - true:  historyButtonを表示する
     /// - false:   historyButtonを非表示にする
@@ -170,7 +170,7 @@ final class QuizMainView: UIView {
         delegate?.historyButtonAction()
     }
     
-    /// クイズの種類ボタンのタップアクション
+    /// クイズのカテゴリボタンのタップアクション
     @objc private func quizTypeButtonAction() {
         delegate?.quizTypeButtonAction()
     }
@@ -216,10 +216,10 @@ final class QuizMainView: UIView {
     /// - isQuizType == false: クイズの選択をremoveFromSuperviewする
     func typeButtonColorChange(){
         if isQuizType == true {
-            quizTypeButton.setTitle("クイズの選択", for: .normal)
+            quizTypeButton.setTitle("カテゴリの選択", for: .normal)
             quizTypeButton.backgroundColor = R.color.Dawnpink
         } else {
-            quizTypeButton.setTitle("クイズの種類を作成", for: .normal)
+            quizTypeButton.setTitle("クイズのカテゴリを作成", for: .normal)
             quizTypeButton.backgroundColor = R.color.Dawnpink
         }
     }

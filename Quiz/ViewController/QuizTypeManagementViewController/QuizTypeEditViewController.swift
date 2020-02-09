@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 
 
-/// クイズの種類のVC
+/// クイズのカテゴリのVC
 final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
@@ -22,12 +22,12 @@ final class QuizTypeEditViewController: UIViewController {
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
     
-    /// クイズの種類のID
+    /// クイズのカテゴリのID
     private var typeid: String?
     
     private var filter: QuizTypeModel?
     
-    /// クイズの種類のビュー
+    /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
         let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), mode: self.mode)
         

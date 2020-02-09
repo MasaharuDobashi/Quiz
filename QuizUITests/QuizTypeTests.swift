@@ -11,16 +11,16 @@ import XCTest
 
 protocol QuizTypeTestsProtocol {
     
-    /// クイズの種類の作成
+    /// クイズのカテゴリの作成
     func test_quizTypeCreate()
     
-    /// クイズの種類の編集
+    /// クイズのカテゴリの編集
     func test_quizTypeEdit()
     
-    /// クイズの種類の削除
+    /// クイズのカテゴリの削除
     func test_quizTypeDelete()
     
-    /// クイズの種類作成後にクイズをスタート
+    /// クイズのカテゴリ作成後にクイズをスタート
     func test_quizStart()
 }
 
@@ -161,7 +161,7 @@ class QuizTypeTests: XCTestCase, QuizTypeTestsProtocol {
         sleep(3)
         app.buttons["typeButton"].tap()
         
-        XCTAssert(app.tables.cells.element(boundBy: 0).staticTexts[title].exists, "クイズの種類が追加されていない")
+        XCTAssert(app.tables.cells.element(boundBy: 0).staticTexts[title].exists, "クイズのカテゴリが追加されていない")
         app.tables.cells.element(boundBy: 0).tap()
         app.navigationBars.buttons["Add"].tap()
         app.alerts.buttons["閉じる"].tap()

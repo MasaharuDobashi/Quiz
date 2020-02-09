@@ -16,10 +16,10 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     /// Realmのインスタンス
     private var realm:Realm?
     
-    /// クイズの種類を格納
+    /// クイズのカテゴリを格納
     private var quizTypeModel: [QuizTypeModel]?
 
-    /// 選択されたクイズの種類を格納
+    /// 選択されたクイズのカテゴリを格納
     var checkID: QuizTypeModel?
     
     

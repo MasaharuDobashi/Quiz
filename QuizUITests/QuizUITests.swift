@@ -54,7 +54,7 @@ class ShortcutManager: XCTestCase {
             
             app.toolbars.buttons.firstMatch.tap()
             app.swipeUp()
-            if app.staticTexts["クイズの種類"].exists {
+            if app.staticTexts["クイズのカテゴリ"].exists {
                 app.textFields["quizType"].tap()
                 app.pickers.firstMatch.swipeDown()
                 app.toolbars.buttons.firstMatch.tap()

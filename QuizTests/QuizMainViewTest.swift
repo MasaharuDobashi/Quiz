@@ -57,11 +57,11 @@ class QuizMainViewTest: XCTestCase, QuizMainViewTestProtocol {
         let quizMainView = QuizMainView()
         quizMainView.isQuizType = false
         quizMainView.typeButtonColorChange()
-        XCTAssert(quizMainView.quizTypeButton.titleLabel?.text == "クイズの種類を作成", "テキストが違う")
+        XCTAssert(quizMainView.quizTypeButton.titleLabel?.text == "クイズのカテゴリを作成", "テキストが違う")
         
         quizMainView.isQuizType = true
         quizMainView.typeButtonColorChange()
-        XCTAssert(quizMainView.quizTypeButton.titleLabel?.text == "クイズの選択", "テキストが違う")
+        XCTAssert(quizMainView.quizTypeButton.titleLabel?.text == "カテゴリの選択", "テキストが違う")
     }
     
     

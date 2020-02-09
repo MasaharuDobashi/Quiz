@@ -12,7 +12,7 @@ final class QuizTypeEditView: UIView {
     
     
     private var typeLabel: UILabel = {
-        let label: UILabel = UILabel(title: "クイズの種類")
+        let label: UILabel = UILabel(title: "クイズのカテゴリ")
         label.sizeToFit()
         
         return label
@@ -22,7 +22,7 @@ final class QuizTypeEditView: UIView {
     
     lazy var typeTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "クイズの種類を入力してください"
+        textField.placeholder = "クイズのカテゴリを入力してください"
         
         return textField
     }()
