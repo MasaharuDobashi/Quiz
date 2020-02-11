@@ -52,6 +52,9 @@ final class QuizTypeManagementViewController: UITableViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
         
+        
+        setDeleteBarButtonItem()
+        
     }
     
     
@@ -90,6 +93,46 @@ final class QuizTypeManagementViewController: UITableViewController {
     }
     
 
+    /// Debug時にデータベースのデータを削除用のボタンをセット
+    func setDeleteBarButtonItem() {
+        #if DEBUG
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
+        #endif
+    }
+    
+    
+    
+    /// デバッグ用でデータベースを削除する
+    @objc override func leftButtonAction(){
+        
+        AlertManager().alertAction(viewController: self,
+                                   title: "データベースの削除",
+                                   message: "作成した問題や履歴を全件削除します",
+                                   handler1: { [weak self]  (action) in
+                                    
+                                    do {
+                                        try self?.realm?.write {
+                                            self?.realm?.deleteAll()
+                                        }
+                                    } catch {
+                                        AlertManager().alertAction(viewController: self!,
+                                                                   title: nil,
+                                                                   message: R.string.error.errorMessage,
+                                                                   handler: { _ in
+                                            return
+                                        })
+                                        return
+                                    }
+                                    
+                                    self?.modelAppend()
+                                    self?.tabBarController?.selectedIndex = 0
+                                    
+                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
+        }){ (action) in return }
+        
+    }
+    
     
 }
 
@@ -178,7 +221,7 @@ extension QuizTypeManagementViewController {
         
         if quizTypeModel?.count == 0 {
             let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            cell.textLabel?.text = "登録されていません"
+            cell.textLabel?.text = "まだカテゴリが作成されていません"
             cell.selectionStyle = .none
             return cell
         }
