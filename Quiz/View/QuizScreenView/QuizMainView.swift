@@ -39,6 +39,9 @@ final class QuizMainView: UIView {
                                   target: self, action: #selector(quizStartButtonTapAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
@@ -57,6 +60,9 @@ final class QuizMainView: UIView {
                                 target: self, action: #selector(historyButtonAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
@@ -75,6 +81,9 @@ final class QuizMainView: UIView {
                          target: self, action: #selector(quizTypeButtonAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
@@ -217,7 +226,7 @@ final class QuizMainView: UIView {
     func typeButtonColorChange(){
         if isQuizType == true {
             quizTypeButton.setTitle("カテゴリの選択", for: .normal)
-            quizTypeButton.backgroundColor = R.color.Dawnpink
+            quizTypeButton.backgroundColor = R.color.Geranium
         } else {
             quizTypeButton.setTitle("クイズのカテゴリを作成", for: .normal)
             quizTypeButton.backgroundColor = R.color.Dawnpink

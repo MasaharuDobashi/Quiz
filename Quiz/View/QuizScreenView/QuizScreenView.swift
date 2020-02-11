@@ -177,6 +177,9 @@ class QuizScreenView: UIView {
             )
             
             buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
+            buttons[i].layer.shadowOpacity = 0.4
+            buttons[i].layer.shadowOffset = CGSize(width: 1, height: 1)
+            buttons[i].clipsToBounds = false
             
             
             numbers.remove(at: num)
