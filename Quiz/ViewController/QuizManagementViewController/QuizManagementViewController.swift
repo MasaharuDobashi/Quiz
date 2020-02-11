@@ -37,7 +37,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -96,9 +96,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// クイズを作成するモーダルを表示
     override func rightButtonAction() {
-        let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
+        presentModalView(QuizEditViewController(mode: .add))
     }
     
     
@@ -116,7 +114,10 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
                                             self?.realm?.deleteAll()
                                         }
                                     } catch {
-                                        AlertManager().alertAction(viewController: self!, title: nil, message: "エラーが発生しました", handler: { _ in
+                                        AlertManager().alertAction(viewController: self!,
+                                                                   title: nil,
+                                                                   message: R.string.error.errorMessage,
+                                                                   handler: { _ in
                                             return
                                         })
                                         return
@@ -125,7 +126,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
                                     self?.modelAppend()
                                     self?.tabBarController?.selectedIndex = 0
                                     
-                                    NotificationCenter.default.post(name: Notification.Name(AllDelete), object: nil)
+                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
         }){ (action) in return }
         
     }
@@ -237,14 +238,13 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// 指定したクイズの詳細を開く
     func detailAction(indexPath: IndexPath) {
-        let viewController:QuizEditViewController = QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail)
-        self.navigationController?.pushViewController(viewController, animated: true)
+        pushTransition(QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail))
     }
     
     
+    /// 指定したクイズの編集画面を開く
     func editAction(_ tableViewController: UITableViewController, editViewController editVC: UIViewController) {
-        let navigationController:UINavigationController = UINavigationController(rootViewController: editVC)
-        tableViewController.present(navigationController,animated: true, completion: nil)
+        presentModalView(editVC)
     }
     
     
@@ -259,7 +259,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
                 realm?.delete(rquizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -290,13 +290,13 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     func setNotificationCenter() {
         /// quizModelをアップデート
-        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
         
         
         /// iOS13のモーダルを開きクイズを新規作成、編集をしてモーダルを閉じた時に
         /// viewWillAppearを呼び出す処理をセットする
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: ViewUpdate), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.ViewUpdate), object: nil)
         }
         
     }

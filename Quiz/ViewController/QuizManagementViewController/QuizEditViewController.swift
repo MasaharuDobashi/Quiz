@@ -94,7 +94,10 @@ final class QuizEditViewController: UIViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
@@ -146,11 +149,11 @@ final class QuizEditViewController: UIViewController {
         }
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
         }
         
         
-        NotificationCenter.default.post(name: Notification.Name(QuizUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.notification.QuizUpdate), object: nil)
     }
     
     
@@ -192,7 +195,7 @@ final class QuizEditViewController: UIViewController {
                 realm?.add(quizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -232,7 +235,7 @@ final class QuizEditViewController: UIViewController {
                 realm?.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -254,20 +257,20 @@ final class QuizEditViewController: UIViewController {
     func validate(parameters:[String:Any]) -> Bool {
         
         
-        if emptyValidate(title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
             return false
         }
         
-        if emptyValidate(title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
             return false
         }
-        if emptyValidate(title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
             return false
         }
         
@@ -276,19 +279,6 @@ final class QuizEditViewController: UIViewController {
     
     
     
-    /// 文字数が0以上かどうかバリデーションチェック
-    ///
-    /// - Parameters:
-    ///   - title: チェックするテキスト
-    ///   - message: エラー時のアラートメッセージ
-    /// - Returns: バリデーションの結果
-    func emptyValidate(title: String, message: String) -> Bool {
-        if title.count == 0 {
-            AlertManager().alertAction(viewController: self, title: nil, message: message, handler: {_ -> Void in})
-            return false
-        }
-        return true
-    }
     
     
 }

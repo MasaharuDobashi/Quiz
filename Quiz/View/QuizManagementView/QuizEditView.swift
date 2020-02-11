@@ -18,7 +18,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     /// クイズタイプを格納する
     var quizTypeModel: [QuizTypeModel]?
     
-    /// クイズの種類のIDを格納する
+    /// クイズのカテゴリのIDを格納する
     var typeid: String?
     
     /// 新規追加、編集、詳細の判別
@@ -150,7 +150,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
-        cell.backgroundColor = cellWhite
+        cell.backgroundColor = R.color.cellWhite
         
         guard let rowEditValue:RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
         
@@ -402,9 +402,9 @@ extension QuizEditView {
         }
         
         private struct QuizType: RowEditValue {
-            let placeholder: String = " クイズの種類を選択してください"
+            let placeholder: String = " クイズのカテゴリを選択してください"
             let accessibilityIdentifier: String = "quizType"
-            let headerTitle: String = "クイズの種類"
+            let headerTitle: String = "クイズのカテゴリ"
         }
         
         private struct ShowHide: RowEditValue {

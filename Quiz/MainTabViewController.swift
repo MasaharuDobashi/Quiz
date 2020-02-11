@@ -16,12 +16,12 @@ class MainTabViewController: UITabBarController {
         var viewControllers = [UIViewController]()
         
         let quizMainViewController:QuizMainViewController = QuizMainViewController()
-        let quizCreateViewController:QuizManagementViewController = QuizManagementViewController()
-        let quizTypeManagementViewController: QuizTypeManagementViewController = QuizTypeManagementViewController()
+        let quizCreateViewController:QuizManagementViewController = QuizManagementViewController(style: .grouped)
+        let quizTypeManagementViewController: QuizTypeManagementViewController = QuizTypeManagementViewController(style: .grouped)
         
-        quizMainViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        quizCreateViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .mostViewed, tag: 1)
-        quizTypeManagementViewController.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 2)
+        quizMainViewController.tabBarItem = UITabBarItem(title: "メイン", image: UIImage(), tag: 0)
+        quizCreateViewController.tabBarItem = UITabBarItem(title: "クイズ", image: UIImage(), tag: 1)
+        quizTypeManagementViewController.tabBarItem = UITabBarItem(title: "カテゴリ", image: UIImage(), tag: 2)
 //        quizMainViewController.tabBarItem.title = "メイン"
 //        quizCreateViewController.tabBarItem.title = "管理"
         

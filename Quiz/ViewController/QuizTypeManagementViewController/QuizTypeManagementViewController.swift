@@ -35,19 +35,25 @@ final class QuizTypeManagementViewController: UITableViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
         }
-        
+        tableView.separatorInset = .zero
         tableView.delegate = self
         tableView.dataSource = self
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: quizTypeUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
+        
+        
+        setDeleteBarButtonItem()
         
     }
     
@@ -77,9 +83,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     override func rightButtonAction() {
-        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: nil, mode: .add)
-        let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController,animated: true, completion: nil)
+        presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
     }
     
     
@@ -89,6 +93,46 @@ final class QuizTypeManagementViewController: UITableViewController {
     }
     
 
+    /// Debug時にデータベースのデータを削除用のボタンをセット
+    func setDeleteBarButtonItem() {
+        #if DEBUG
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
+        #endif
+    }
+    
+    
+    
+    /// デバッグ用でデータベースを削除する
+    @objc override func leftButtonAction(){
+        
+        AlertManager().alertAction(viewController: self,
+                                   title: "データベースの削除",
+                                   message: "作成した問題や履歴を全件削除します",
+                                   handler1: { [weak self]  (action) in
+                                    
+                                    do {
+                                        try self?.realm?.write {
+                                            self?.realm?.deleteAll()
+                                        }
+                                    } catch {
+                                        AlertManager().alertAction(viewController: self!,
+                                                                   title: nil,
+                                                                   message: R.string.error.errorMessage,
+                                                                   handler: { _ in
+                                            return
+                                        })
+                                        return
+                                    }
+                                    
+                                    self?.modelAppend()
+                                    self?.tabBarController?.selectedIndex = 0
+                                    
+                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
+        }){ (action) in return }
+        
+    }
+    
     
 }
 
@@ -110,8 +154,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 extension QuizTypeManagementViewController: ManagementProtocol {
     
     func editAction(_ tableViewController: UITableViewController, editViewController editVC: UIViewController) {
-        let navigationController:UINavigationController = UINavigationController(rootViewController: editVC)
-        tableViewController.present(navigationController,animated: true, completion: nil)
+        presentModalView(editVC)
     }
     
     
@@ -125,13 +168,16 @@ extension QuizTypeManagementViewController: ManagementProtocol {
                 realm?.delete(rquizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
         }
         
-        NotificationCenter.default.post(name: Notification.Name(quizTypeUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
     }
     
     
@@ -175,7 +221,7 @@ extension QuizTypeManagementViewController {
         
         if quizTypeModel?.count == 0 {
             let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            cell.textLabel?.text = "登録されていません"
+            cell.textLabel?.text = "まだカテゴリが作成されていません"
             cell.selectionStyle = .none
             return cell
         }

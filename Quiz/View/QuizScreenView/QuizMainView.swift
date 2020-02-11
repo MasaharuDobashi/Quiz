@@ -30,45 +30,60 @@ final class QuizMainView: UIView {
     ///
     /// - クイズがなければクイズ作成モーダルを表示する
     /// - クイズを開始する
-    private var quizStartButton:UIButton = {
+    private(set) var quizStartButton:UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "quizStartButton"
         button.setButton(title: "",
-                                  backgroundColor: Geranium,
+                                  backgroundColor: R.color.Geranium,
                                   font: UIFont.boldSystemFont(ofSize: 18),
                                   target: self, action: #selector(quizStartButtonTapAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
     
     
     /// 履歴ボタン
-    private lazy var historyButton: UIButton = {
+    ///
+    /// - 履歴がなければ非表示
+    /// - 履歴がなければ表示
+    private(set) lazy var historyButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "historyButton"
         button.setButton(title: "履歴",
-                                backgroundColor: Rose,
+                                backgroundColor:R.color.Rose,
                                 font: UIFont.boldSystemFont(ofSize: 18),
                                 target: self, action: #selector(historyButtonAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
     
     
-    /// クイズの種類
-    let quizTypeButton: UIButton = {
+    /// クイズのカテゴリ
+    ///
+    /// - クイズのカテゴリがなければクイズのカテゴリ作成モーダルを表示する
+    /// - クイズのカテゴリ選択画面に遷移する
+    private(set) var quizTypeButton: UIButton = {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
-        button.setButton(title: "クイズの選択",
-                         backgroundColor: Geranium,
+        button.setButton(title: "",
+                         backgroundColor: R.color.Geranium,
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(quizTypeButtonAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
+        button.layer.shadowOpacity = 0.4
+        button.layer.shadowOffset = CGSize(width: 1, height: 1)
+        button.clipsToBounds = false
         
         return button
     }()
@@ -90,8 +105,8 @@ final class QuizMainView: UIView {
     
     /// 履歴があるかないかのフラグ
     ///
-    /// true:  historyButtonを表示する
-    /// nil:  historyButtonを非表示にする
+    /// - true:  historyButtonを表示する
+    /// - false:  historyButtonを非表示にする
     var isHistory: Bool = false {
         didSet {
             historyButtonColorChange()
@@ -99,7 +114,10 @@ final class QuizMainView: UIView {
     }
     
     
-    
+    /// クイズのカテゴリがあるかないかのフラグ
+    ///
+    /// - true:  historyButtonを表示する
+    /// - false:   historyButtonを非表示にする
     var isQuizType: Bool = false {
         didSet {
             typeButtonColorChange()
@@ -116,8 +134,8 @@ final class QuizMainView: UIView {
     override init(frame: CGRect) {
         super.init(frame:frame)
         
-        backgroundColor = Beige
-        viewLoad()
+        backgroundColor = R.color.Beige
+        setConstraint()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -126,31 +144,27 @@ final class QuizMainView: UIView {
     
     
     
-    // MARK: ViewLoad
-    
-    private func viewLoad(){
-        addSubview(quizStartButton)
-        addSubview(quizTypeButton)
-        setConstraint()
-    }
     
     
+    // MARK: Constraint
     
     /// quizStartButtontに制約を付ける
     private func setConstraint(){
+        addSubview(quizStartButton)
         quizStartButton.translatesAutoresizingMaskIntoConstraints = false
         quizStartButton.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -15).isActive = true
         quizStartButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizStartButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizStartButton.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 0.8).isActive = true
         
-        
+        addSubview(quizTypeButton)
         quizTypeButton.translatesAutoresizingMaskIntoConstraints = false
         quizTypeButton.topAnchor.constraint(equalTo: quizStartButton.bottomAnchor, constant: 15).isActive = true
         quizTypeButton.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         quizTypeButton.heightAnchor.constraint(equalToConstant: quizStartButton.bounds.height).isActive = true
         quizTypeButton.widthAnchor.constraint(equalTo: quizStartButton.widthAnchor).isActive = true
     }
+    
     
     
     // MARK: ButtonAction
@@ -165,31 +179,31 @@ final class QuizMainView: UIView {
         delegate?.historyButtonAction()
     }
     
-    
+    /// クイズのカテゴリボタンのタップアクション
     @objc private func quizTypeButtonAction() {
         delegate?.quizTypeButtonAction()
     }
     
     
-    // MARK: internalFunc
     
+    // MARK: internalFunc
     
     /// クイズスタートボタンの色を変える
     func startButtonColorChange(){
         if isActiveQuiz == false {
             quizStartButton.setTitle("クイズを作成", for: .normal)
-            quizStartButton.backgroundColor = Dawnpink
+            quizStartButton.backgroundColor = R.color.Dawnpink
         } else {
             quizStartButton.setTitle("クイズスタート", for: .normal)
-            quizStartButton.backgroundColor = Geranium
+            quizStartButton.backgroundColor = R.color.Geranium
         }
     }
     
     
     /// 履歴ボタンをaddSubViewする
     ///
-    /// isHistory == true: 履歴ボタンをaddSubViewする
-    /// isHistory == false: 履歴ボタンをremoveFromSuperviewする
+    /// - isHistory == true: 履歴ボタンをaddSubViewする
+    /// - isHistory == false: 履歴ボタンをremoveFromSuperviewする
     func historyButtonColorChange(){
         if isHistory == true {
             addSubview(historyButton)
@@ -207,15 +221,15 @@ final class QuizMainView: UIView {
     
     /// quizTypeButtonをaddSubViewする
     ///
-    /// isQuizType == true: クイズの選択ボタンをaddSubViewする
-    /// isQuizType == false: クイズの選択をremoveFromSuperviewする
+    /// - isQuizType == true: クイズの選択ボタンをaddSubViewする
+    /// - isQuizType == false: クイズの選択をremoveFromSuperviewする
     func typeButtonColorChange(){
         if isQuizType == true {
-            quizTypeButton.setTitle("クイズの選択", for: .normal)
-            quizTypeButton.backgroundColor = Dawnpink
+            quizTypeButton.setTitle("カテゴリの選択", for: .normal)
+            quizTypeButton.backgroundColor = R.color.Geranium
         } else {
-            quizTypeButton.setTitle("クイズの種類を作成", for: .normal)
-            quizTypeButton.backgroundColor = Dawnpink
+            quizTypeButton.setTitle("クイズのカテゴリを作成", for: .normal)
+            quizTypeButton.backgroundColor = R.color.Dawnpink
         }
     }
     

@@ -8,11 +8,12 @@
 
 import UIKit
 
-final class QuizTypeEditView: UIView {
+final class QuizTypeEditView: UITableView, UITableViewDelegate, UITableViewDataSource {
+
     
     
     private var typeLabel: UILabel = {
-        let label: UILabel = UILabel(title: "クイズの種類")
+        let label: UILabel = UILabel(title: "クイズのカテゴリ")
         label.sizeToFit()
         
         return label
@@ -22,25 +23,28 @@ final class QuizTypeEditView: UIView {
     
     lazy var typeTextField: UITextField = {
         let textField: UITextField = UITextField()
-        textField.placeholder = "クイズの種類を入力してください"
+        textField.placeholder = "クイズのカテゴリを入力してください"
         
         return textField
     }()
     
     
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        viewLoad()
+    override init(frame: CGRect, style: UITableView.Style) {
+        super.init(frame: frame, style: style)
     }
     
     
     
     
     /// edit,detail Init
-    convenience init(frame: CGRect, mode:ModeEnum) {
-        self.init(frame: frame)
+    convenience init(frame: CGRect, style: UITableView.Style, mode:ModeEnum) {
+        self.init(frame: frame, style: style)
+        
+        delegate = self
+        dataSource = self
+        allowsSelection = false
+        separatorInset = .zero
         
         if mode == .detail {
             typeTextField.isEnabled = false
@@ -53,21 +57,65 @@ final class QuizTypeEditView: UIView {
     }
     
     
-    private func viewLoad() {
-        addSubview(typeLabel)
-        typeLabel.translatesAutoresizingMaskIntoConstraints = false
-        typeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 100).isActive = true
-        typeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
-        typeLabel.widthAnchor.constraint(equalToConstant: typeLabel.bounds.width).isActive = true
-        typeLabel.heightAnchor.constraint(equalToConstant: typeLabel.bounds.height).isActive = true
-        
-        addSubview(typeTextField)
-        typeTextField.translatesAutoresizingMaskIntoConstraints = false
-        typeTextField.topAnchor.constraint(equalTo: typeLabel.bottomAnchor, constant: 0).isActive = true
-        typeTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
-        typeTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20).isActive = true
-        typeTextField.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.1).isActive = true
-        
+    
+    
+    // MARK: UITableViewDelegate, UITableViewDataSource
+    
+    override func numberOfRows(inSection section: Int) -> Int {
+        return 1
     }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    
+    // MARK: Cell
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        cell.addSubview(typeTextField)
+        
+        typeTextField.translatesAutoresizingMaskIntoConstraints = false
+        typeTextField.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true
+        typeTextField.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 20).isActive = true
+        typeTextField.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
+        typeTextField.bottomAnchor.constraint(equalTo: cell.bottomAnchor).isActive = true
+        
+        return cell
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
+    
+    
+    
+    // MARK: Header
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView:UIView = UIView()
+        let headerLabel:UILabel = UILabel()
+        
+        
+        headerLabel.text = "クイズのカテゴリ"
+        headerLabel.accessibilityIdentifier = "quizTypeLabel"
+        headerView.addSubview(headerLabel)
+        headerLabel.translatesAutoresizingMaskIntoConstraints = false
+        headerLabel.topAnchor.constraint(equalTo: headerView.topAnchor).isActive = true
+        headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20).isActive = true
+        headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
+        headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
+        
+        return headerView
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
     
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 import RealmSwift
-
+import Rswift
 
 // MARK: - QuizMainViewController
 
@@ -23,7 +23,6 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
-//        let isActiveQuiz: Bool = realm?.objects(QuizModel.self).count != 0 ? true : false
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
         quizMainView.delegate = self
         
@@ -41,7 +40,10 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self,
+                                       title: nil,
+                                       message: R.string.error.errorMessage,
+                                       handler: { _ in
                 return
             })
             return
@@ -56,7 +58,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
+        
         quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
         quizMainView.isQuizType = realm?.objects(QuizTypeModel.self).count != 0 ? true : false
         quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
@@ -70,35 +72,29 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     /// クイズがあればクイズをスタートする、なければクイズの作成モーダルを表示する
     func quizStartButtonAction() {
         if quizMainView.isActiveQuiz {
-            let viewController:QuizScreenViewController = QuizScreenViewController()
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizScreenViewController())
+            
         } else {
-            let viewController:QuizEditViewController = QuizEditViewController(mode: .add)
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizEditViewController(mode: .add))
             
         }
     }
     
     
-    /// クイズの種類があれば選択画面に遷移する、なければクイズの種類を作成モーダルを表示する
+    /// クイズのカテゴリがあれば選択画面に遷移する、なければクイズのカテゴリを作成モーダルを表示する
     func quizTypeButtonAction() {
         if quizMainView.isQuizType {
-            let viewController:QuizTypeSelectTableViewController = QuizTypeSelectTableViewController()
-            self.navigationController?.pushViewController(viewController, animated: true)
+            pushTransition(QuizTypeSelectTableViewController())
+            
         } else {
-            let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: nil, mode: .add)
-            let navigationController:UINavigationController = UINavigationController(rootViewController: viewController)
-            present(navigationController,animated: true, completion: nil)
+            presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
             
         }
     }
     
     /// 履歴画面を開く
     func historyButtonAction() {
-        let viewController:HistoryViewController = HistoryViewController()
-        navigationController?.pushViewController(viewController, animated: true)
+        pushTransition(HistoryViewController())
     }
     
     
@@ -108,13 +104,13 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     func setNotificationCenter() {
         #if DEBUG
         /// QuizManagementViewControllerでallDeleteがpostされたら履歴ボタンを更新する
-        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: AllDelete), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: R.notification.AllDelete), object: nil)
         #endif
         
         
-        /// ViewUpdate、QuizUpdateがpostされたらViewWillAppearを呼ぶ
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: QuizUpdate), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: ViewUpdate), object: nil)
+        /// R.notification.ViewUpdate、R.notification.QuizUpdateがpostされたらViewWillAppearを呼ぶ
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.ViewUpdate), object: nil)
     }
     
     

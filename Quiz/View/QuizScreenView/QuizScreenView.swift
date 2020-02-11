@@ -41,7 +41,7 @@ class QuizScreenView: UIView {
         let label: UILabel = UILabel(title: quizModel.quizTitle,
                                               font: UIFont.boldSystemFont(ofSize: 20),
                                               textColor: .white,
-                                              backgroundColor: Rose,
+                                              backgroundColor:R.color.Rose,
                                               textAlignment: .center,
                                               numberOfLines: 0
         )
@@ -65,7 +65,7 @@ class QuizScreenView: UIView {
     convenience init(frame:CGRect,  quizModel model:QuizModel){
         self.init(frame: frame)
         quizModel = model
-        backgroundColor = Beige
+        backgroundColor = R.color.Beige
         
         viewLoad()
     }
@@ -170,13 +170,16 @@ class QuizScreenView: UIView {
         for i in 0..<buttons.count {
             let num:Int = Int(arc4random_uniform(UInt32(numbers.count)))
             buttons[i].setButton(title: stringArray[num],
-                                 backgroundColor: Geranium,
+                                 backgroundColor: R.color.Geranium,
                                  font: UIFont.boldSystemFont(ofSize: 18),
                                  target: self,
                                  action: #selector(buttonTapAction)
             )
             
             buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
+            buttons[i].layer.shadowOpacity = 0.4
+            buttons[i].layer.shadowOffset = CGSize(width: 1, height: 1)
+            buttons[i].clipsToBounds = false
             
             
             numbers.remove(at: num)

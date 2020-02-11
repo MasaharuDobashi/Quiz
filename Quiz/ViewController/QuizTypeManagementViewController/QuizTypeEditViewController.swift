@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 
 
-/// クイズの種類のVC
+/// クイズのカテゴリのVC
 final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
@@ -22,14 +22,14 @@ final class QuizTypeEditViewController: UIViewController {
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
     
-    /// クイズの種類のID
+    /// クイズのカテゴリのID
     private var typeid: String?
     
     private var filter: QuizTypeModel?
     
-    /// クイズの種類のビュー
+    /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
-        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), mode: self.mode)
+        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), style: .grouped, mode: self.mode)
         
         if self.mode != .add {
             view.typeTextField.text = filter?.quizTypeTitle
@@ -50,7 +50,10 @@ final class QuizTypeEditViewController: UIViewController {
         do {
               realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
           } catch {
-              AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+              AlertManager().alertAction(viewController: self,
+                                         title: nil,
+                                         message: R.string.error.errorMessage,
+                                         handler: { _ in
                   return
               })
               return
@@ -70,7 +73,7 @@ final class QuizTypeEditViewController: UIViewController {
         super.viewDidLoad()
         realm = try! Realm(configuration: config)
         
-        view.backgroundColor = cellWhite
+        view.backgroundColor = R.color.cellWhite
         
         if mode != .detail {
             navigationItemAction()
@@ -112,11 +115,11 @@ final class QuizTypeEditViewController: UIViewController {
         }
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
         }
         
         
-        NotificationCenter.default.post(name: Notification.Name(quizTypeUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
     }
     
     
@@ -135,7 +138,7 @@ final class QuizTypeEditViewController: UIViewController {
                 realm?.add(quizTypeModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -152,7 +155,7 @@ final class QuizTypeEditViewController: UIViewController {
                 filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return

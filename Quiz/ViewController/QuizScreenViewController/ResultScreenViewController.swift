@@ -61,7 +61,7 @@ final class ResultScreenViewController: UIViewController {
         
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(ViewUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
         }
         
     }
@@ -90,7 +90,7 @@ final class ResultScreenViewController: UIViewController {
                 realm?.add(historyModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -125,7 +125,7 @@ final class ResultScreenViewController: UIViewController {
                 realm?.delete(historyModel.first!)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: "エラーが発生しました", handler: { _ in
+            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
