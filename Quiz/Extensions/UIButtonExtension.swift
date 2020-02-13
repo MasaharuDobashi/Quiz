@@ -29,4 +29,33 @@ extension UIButton {
         self.layer.cornerRadius = self.bounds.height / cornerRadius
         self.clipsToBounds = true
     }
+    
+    
+    
+    /// ボタンを押したとき、離したときの影のon,off
+    func highlightAction() {
+        addShadow()
+        addTarget(self, action: #selector(buttonReleased), for: .touchUpInside)
+        addTarget(self, action: #selector(buttonPressed), for: .touchDown)
+    }
+    
+    /// ボタンに影をつける
+    private func addShadow() {
+        layer.shadowOpacity = 0.4
+        layer.shadowOffset = CGSize(width: 1, height: 1)
+        clipsToBounds = false
+    }
+    
+    
+    /// ボタンを押した時にボタンの影を消す
+    @objc private func buttonPressed(_ button: UIButton) {
+        button.layer.shadowOpacity = 0.0
+    }
+    
+    
+    /// ボタンを離したときにボタンの影を付ける
+    @objc private func buttonReleased(_ button: UIButton) {
+        button.layer.shadowOpacity = 0.4
+    }
+    
 }
