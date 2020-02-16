@@ -91,21 +91,24 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         
         let quizModelCount:Int = (realm?.objects(QuizModel.self).count)!
         
-        if realm?.objects(QuizTypeModel.self).count == 0 || realm?.objects(QuizTypeModel.self).count == nil {
+        if (realm?.objects(QuizTypeModel.self).isEmpty)! {
+            /// カテゴリがなかった場合
             for i in 0..<quizModelCount {
                 if realm?.objects(QuizModel.self)[i].displayFlag != "1" {
                     quizModel?.append((realm?.objects(QuizModel.self)[i])!)
                 }
             }
-            quizSelect = QuizSelect(rawValue: "0")
+            quizSelect = .zero
         } else {
             for i in 0..<quizModelCount {
+                /// カテゴリが選択されている
                 if realm?.objects(QuizModel.self)[i].displayFlag != "1" && realm?.objects(QuizModel.self)[i].quizTypeModel?.isSelect == "1" {
                     quizModel?.append((realm?.objects(QuizModel.self)[i])!)
                     
-                    quizSelect = QuizSelect(rawValue: "1")
+                    quizSelect = .select
                 } else {
-                    quizSelect = QuizSelect(rawValue: "2")
+                    /// カテゴリが作成されているが選択されていない
+                    quizSelect = .notSelect
                 }
             }
             
