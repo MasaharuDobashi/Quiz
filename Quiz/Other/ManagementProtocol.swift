@@ -6,16 +6,10 @@
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
-import RealmSwift
+import UIKit
 
 
 protocol ManagementProtocol {
-    
-    /// Realmのインスタンス
-    var realm: Realm? { get }
-    
-    /// Realmのスキームバージョンを設定
-    var config:Realm.Configuration { get }
     
     /// 配列にRealmで保存したデータを追加する
     func modelAppend()

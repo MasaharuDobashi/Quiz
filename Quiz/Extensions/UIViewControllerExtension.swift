@@ -40,7 +40,9 @@ extension UIViewController {
     func debugPrint(object: Any?){
         #if DEBUG
         if let _object = object {
+            print("\nObject Log Start -------------------------------------")
             print(_object)
+            print("Object Log end   -------------------------------------")
         }
         #endif
     }
@@ -76,6 +78,19 @@ extension UIViewController {
     func pushTransition(_ viewController: UIViewController) {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    
+    
+    /// ナビゲーションバーに「+」ボタンとRealmModelの全件削除用のボタン(debug時)を追加する
+    func setBarButtonItem() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        
+        #if DEBUG
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
+        #endif
+    }
+    
     
 }
 
