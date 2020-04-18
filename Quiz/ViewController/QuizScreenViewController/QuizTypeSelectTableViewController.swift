@@ -41,7 +41,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     /// 選択したクイズを登録
     override func rightButtonAction() {
-        AlertManager().alertAction(viewController: self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
+        AlertManager().alertAction(self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
             
             /// チャックマークのついたセルのIDを格納
             guard let id: String = self?.checkID?.id else { return }
@@ -60,7 +60,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
                 self?.navigationController?.popViewController(animated: true)
                 
             } catch {
-                AlertManager().alertAction(viewController: self!,
+                AlertManager().alertAction(self!,
                                            title: nil,
                                            message: R.string.error.errorMessage,
                                            handler: { _ in
@@ -91,7 +91,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
          do {
              realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
          } catch {
-             AlertManager().alertAction(viewController: self,
+             AlertManager().alertAction( self,
                                         title: nil,
                                         message: R.string.error.errorMessage,
                                         handler: { _ in

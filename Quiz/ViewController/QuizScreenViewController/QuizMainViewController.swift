@@ -40,7 +40,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self,
+            AlertManager().alertAction( self,
                                        title: nil,
                                        message: R.string.error.errorMessage,
                                        handler: { _ in

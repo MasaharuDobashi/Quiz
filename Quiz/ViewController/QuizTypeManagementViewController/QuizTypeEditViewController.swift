@@ -50,7 +50,7 @@ final class QuizTypeEditViewController: UIViewController {
         do {
               realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
           } catch {
-              AlertManager().alertAction(viewController: self,
+              AlertManager().alertAction( self,
                                          title: nil,
                                          message: R.string.error.errorMessage,
                                          handler: { _ in
@@ -104,12 +104,12 @@ final class QuizTypeEditViewController: UIViewController {
         
         if mode == .add {
             addRealm()
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
+            AlertManager().alertAction( self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
         } else if mode == .edit {
             updateRealm()
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
+            AlertManager().alertAction( self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
         }
@@ -138,7 +138,7 @@ final class QuizTypeEditViewController: UIViewController {
                 realm?.add(quizTypeModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -155,7 +155,7 @@ final class QuizTypeEditViewController: UIViewController {
                 filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return

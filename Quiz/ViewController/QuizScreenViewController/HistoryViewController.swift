@@ -35,7 +35,7 @@ final class HistoryViewController: UIViewController {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
             
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction(self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return

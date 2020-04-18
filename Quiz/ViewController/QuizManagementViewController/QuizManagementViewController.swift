@@ -21,7 +21,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     var realm: Realm?
     
     /// クイズのリストを格納する
-    private var quizModel:[QuizModel]? {
+    private var quizModel: Results<QuizModel>? {
         didSet {
             tableView.reloadData()
         }
@@ -37,7 +37,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -76,18 +76,7 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// 配列にRealmで保存したデータを追加する
     func modelAppend(){
-        quizModel = [QuizModel]()
-        
-        
-//        let quizModelCount:Int = realm.objects(QuizModel.self).count
-        for model in (realm?.objects(QuizModel.self))! {
-            quizModel?.append(model)
-            
-            quizModel?.sort {
-                $0.id < $1.id
-            }
-            
-        }
+        quizModel = QuizModel.allFindQuiz(self, isSort: true)
     }
     
     
@@ -104,29 +93,15 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     /// デバッグ用でデータベースを削除する
     @objc override func leftButtonAction(){
         
-        AlertManager().alertAction(viewController: self,
+        AlertManager().alertAction(self,
                                    title: "データベースの削除",
                                    message: "作成した問題や履歴を全件削除します",
                                    handler1: { [weak self]  (action) in
-                                    
-                                    do {
-                                        try self?.realm?.write {
-                                            self?.realm?.deleteAll()
-                                        }
-                                    } catch {
-                                        AlertManager().alertAction(viewController: self!,
-                                                                   title: nil,
-                                                                   message: R.string.error.errorMessage,
-                                                                   handler: { _ in
-                                            return
-                                        })
-                                        return
+                                    RealmManager().allModelDelete(self!) {
+                                        self?.modelAppend()
+                                        self?.tabBarController?.selectedIndex = 0
+                                        NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
                                     }
-                                    
-                                    self?.modelAppend()
-                                    self?.tabBarController?.selectedIndex = 0
-                                    
-                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
         }){ (action) in return }
         
     }
@@ -202,7 +177,9 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
             (action, indexPath) in
             
             self?.editAction(self!,
-                             editViewController: QuizEditViewController(quzi_id: indexPath.row, mode: .edit)
+                             editViewController: QuizEditViewController(quzi_id: (self?.quizModel?[indexPath.row].id)!,
+                                                                         createTime: (self?.quizModel?[indexPath.row].createTime)!,
+                                                                        mode: .edit)
             )
         }
         edit.backgroundColor = UIColor.orange
@@ -238,7 +215,10 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// 指定したクイズの詳細を開く
     func detailAction(indexPath: IndexPath) {
-        pushTransition(QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail))
+        pushTransition(QuizEditViewController(quzi_id: (quizModel?[indexPath.row].id)!,
+                                              createTime: (quizModel?[indexPath.row].createTime)!,
+                                              mode: ModeEnum.detail)
+        )
     }
     
     
@@ -250,30 +230,15 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     /// 指定したクイズを削除する
     private func deleteRealm(indexPath: IndexPath){
-        guard let rquizModel = realm?.objects(QuizModel.self)[indexPath.row] else { return }
-        
-        
-        
-        do {
-            try realm?.write() {
-                realm?.delete(rquizModel)
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
+        QuizModel.deleteQuiz(self, id: (quizModel?[indexPath.row].id)!, createTime: quizModel?[indexPath.row].createTime)
     }
     
     
     
     /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
-        AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
+        AlertManager().alertAction(self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
             self?.deleteRealm(indexPath: indexPath)
-            self?.quizModel?.removeAll()
             self?.modelAppend()
             
             }, handler2: {_ -> Void in})

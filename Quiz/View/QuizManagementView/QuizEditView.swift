@@ -321,7 +321,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
                                         key.incorrectAnswer2: false2_textField.text ?? "",
                                         key.incorrectAnswer3: false3_textField.text ?? "",
                                         key.quizType: typeid ?? "",
-                                        key.showHide: displaySwitch.isOn == true ? "0" : "1"
+                                        key.displayFlag: displaySwitch.isOn == true ? "0" : "1"
                                         ]
         
         
@@ -423,5 +423,5 @@ struct ParameterKey {
     let incorrectAnswer2: String = "incorrectAnswer2"
     let incorrectAnswer3: String = "incorrectAnswer3"
     let quizType: String = "quizType"
-    let showHide: String = "showHide"
+    let displayFlag: String = "displayFlag"
 }

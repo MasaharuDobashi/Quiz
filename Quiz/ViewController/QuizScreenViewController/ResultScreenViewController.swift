@@ -90,7 +90,7 @@ final class ResultScreenViewController: UIViewController {
                 realm?.add(historyModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -125,7 +125,7 @@ final class ResultScreenViewController: UIViewController {
                 realm?.delete(historyModel.first!)
             }
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return

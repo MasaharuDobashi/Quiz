@@ -17,7 +17,9 @@ final class QuizEditViewController: UIViewController {
     private var realm:Realm?
     
     /// クイズのID
-    private var quzi_id:Int?
+    private var quzi_id: String?
+    
+    private var createTime: String?
     
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
@@ -75,9 +77,10 @@ final class QuizEditViewController: UIViewController {
     
     
     /// edit,detail Init
-    convenience init(quzi_id:Int, mode: ModeEnum){
+    convenience init(quzi_id: String, createTime: String, mode: ModeEnum){
         self.init(nibName: nil, bundle: nil)
         self.quzi_id = quzi_id
+        self.createTime = createTime
         self.mode = mode
     }
     
@@ -94,7 +97,7 @@ final class QuizEditViewController: UIViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self,
+            AlertManager().alertAction( self,
                                        title: nil,
                                        message: R.string.error.errorMessage,
                                        handler: { _ in
@@ -127,128 +130,54 @@ final class QuizEditViewController: UIViewController {
         let parameters: [String:Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
         
-        realmAction(parameters: parameters)
+        realmAction(parameters: parameters) {
+            postNotificationCenter()
+        }
     }
     
     
     
     // MARK: Realm Func
     
-    private func realmAction(parameters: [String: Any]){
+    private func realmAction(parameters: [String: Any], completion: () ->Void) {
         
         if mode == .add {
-            addRealm(parameters)
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
-                self?.leftButtonAction()
-            })
+            addRealm(parameters) {
+                AlertManager().alertAction( self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
+                    self?.leftButtonAction()
+                })
+            }
         } else if mode == .edit {
-            updateRealm(parameters)
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
-                self?.leftButtonAction()
-            })
+            updateRealm(parameters) {
+                AlertManager().alertAction(self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
+                    self?.leftButtonAction()
+                })
+            }
         }
         
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
-        }
-        
-        
-        NotificationCenter.default.post(name: Notification.Name(R.notification.QuizUpdate), object: nil)
+        completion()
+
     }
     
     
     /// Realmに新規追加
-    private func addRealm(_ parameters: [String: Any]){
-        let quizModel = QuizModel()
-        let title:String = parameters[key.title] as! String
-        let correctAnswer:String =  parameters[key.correctAnswer] as! String
-        let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
-        let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
-        let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
-        // TODO:
-        let quizid: String? = quizEditView.typeid
-        var quizType: QuizTypeModel?
-        if quizid != nil {
-            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
-        } else {
-            quizType = nil
-        }
-        
-        let showHide: String = parameters[key.showHide] as! String
-        
-        
-        guard let id:Int = realm?.objects(QuizModel.self).count else { return }
-        
-        quizModel.id = String(id)
-        quizModel.quizTitle = title
-        quizModel.trueAnswer = correctAnswer
-        quizModel.falseAnswer1 = incorrectAnswer1
-        quizModel.falseAnswer2 = incorrectAnswer2
-        quizModel.falseAnswer3 = incorrectAnswer3
-        quizModel.quizTypeModel = quizType
-        quizModel.displayFlag = showHide
-        
-        
-        
-        do {
-            try realm?.write() {
-                realm?.add(quizModel)
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
-        
+    private func addRealm(_ parameters: [String: Any], completion: () ->Void) {
+        QuizModel.addQuiz(self, parameters: parameters)
+        completion()
     }
     
     
     /// アップデート
-    private func updateRealm(_ parameters: [String:Any]){
-        let title:String = parameters[key.title] as! String
-        let correctAnswer:String =  parameters[key.correctAnswer] as! String
-        let incorrectAnswer1: String = parameters[key.incorrectAnswer1] as! String
-        let incorrectAnswer2: String = parameters[key.incorrectAnswer2] as! String
-        let incorrectAnswer3: String = parameters[key.incorrectAnswer3] as! String
-        // TODO:
-        let quizid: String? = quizEditView.typeid
-        var quizType: QuizTypeModel?
-        if quizid != nil {
-            quizType = realm?.objects(QuizTypeModel.self)[Int(quizid!)!]
-        } else {
-            quizType = nil
-        }
-        let showHide: String = parameters[key.showHide] as! String
-        
-        
-        
-        do {
-            try realm?.write() {
-                realm?.objects(QuizModel.self)[quzi_id!].quizTitle = title
-                realm?.objects(QuizModel.self)[quzi_id!].trueAnswer = correctAnswer
-                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer1 = incorrectAnswer1
-                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer2 = incorrectAnswer2
-                realm?.objects(QuizModel.self)[quzi_id!].falseAnswer3 = incorrectAnswer3
-                realm?.objects(QuizModel.self)[quzi_id!].quizTypeModel = quizType
-                realm?.objects(QuizModel.self)[quzi_id!].displayFlag = showHide
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
+    private func updateRealm(_ parameters: [String:Any], completion: () ->Void) {
+        QuizModel.updateQuiz(self, parameters: parameters, id: quzi_id! , createTime: createTime)
+        completion()
     }
     
     
-    // MARK: Other
+    // MARK: Other 
     
-    private func quizModelAppend(quiz_id:Int){
-        quizModel = QuizModel()
-        quizModel = realm?.objects(QuizModel.self)[quiz_id]
+    private func quizModelAppend(quiz_id: String){
+        quizModel = QuizModel.findQuiz(self, quizid: quiz_id, createTime: createTime)
     }
     
     
@@ -274,10 +203,21 @@ final class QuizEditViewController: UIViewController {
             return false
         }
         
+        
+        if (realm?.objects(QuizTypeModel.self).count)! > 0 {
+            if emptyValidate(viewController: self, title: parameters[key.quizType] as! String, message: "カテゴリが未選択です") == false {
+                return false
+            }
+        }
+        
+        
         return true
     }
     
     
+    private func postNotificationCenter() {
+        NotificationCenter.default.post(name: Notification.Name(R.notification.QuizUpdate), object: nil)
+    }
     
     
     

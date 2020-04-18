@@ -35,7 +35,7 @@ final class QuizTypeManagementViewController: UITableViewController {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self,
+            AlertManager().alertAction( self,
                                        title: nil,
                                        message: R.string.error.errorMessage,
                                        handler: { _ in
@@ -106,7 +106,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     /// デバッグ用でデータベースを削除する
     @objc override func leftButtonAction(){
         
-        AlertManager().alertAction(viewController: self,
+        AlertManager().alertAction(self,
                                    title: "データベースの削除",
                                    message: "作成した問題や履歴を全件削除します",
                                    handler1: { [weak self]  (action) in
@@ -116,7 +116,7 @@ final class QuizTypeManagementViewController: UITableViewController {
                                             self?.realm?.deleteAll()
                                         }
                                     } catch {
-                                        AlertManager().alertAction(viewController: self!,
+                                        AlertManager().alertAction( self!,
                                                                    title: nil,
                                                                    message: R.string.error.errorMessage,
                                                                    handler: { _ in
@@ -168,7 +168,7 @@ extension QuizTypeManagementViewController: ManagementProtocol {
                 realm?.delete(rquizModel)
             }
         } catch {
-            AlertManager().alertAction(viewController: self,
+            AlertManager().alertAction( self,
                                        title: nil,
                                        message: R.string.error.errorMessage,
                                        handler: { _ in

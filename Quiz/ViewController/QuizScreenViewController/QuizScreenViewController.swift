@@ -49,7 +49,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         do {
             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
         } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
                 return
             })
             return
@@ -114,9 +114,6 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             
         }
         
-        
-        
-        
     }
     
     
@@ -129,12 +126,12 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             
             switch quizSelect {
             case .zero, .select:
-                AlertManager().alertAction(viewController: self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
+                AlertManager().alertAction( self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
                     self.leftButtonAction()
                 })
                 return false
             case .notSelect:
-                AlertManager().alertAction(viewController: self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
+                AlertManager().alertAction( self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
                     self.leftButtonAction()
                 })
                 return false
@@ -145,7 +142,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
             
         } else if quizModel.count > 10 {
             self.view.backgroundColor = .white
-            AlertManager().alertAction(viewController: self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+            AlertManager().alertAction( self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
                 self.leftButtonAction()
             })
             return false

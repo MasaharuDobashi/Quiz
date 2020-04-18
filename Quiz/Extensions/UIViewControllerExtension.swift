@@ -55,7 +55,7 @@ extension UIViewController {
     /// - Returns: バリデーションの結果
     func emptyValidate(viewController: UIViewController, title: String, message: String) -> Bool {
         if title.isEmpty {
-            AlertManager().alertAction(viewController: viewController, title: nil, message: message, handler: {_ -> Void in})
+            AlertManager().alertAction(viewController, title: nil, message: message, handler: {_ -> Void in})
             return false
         }
         return true
