@@ -51,4 +51,17 @@ class RealmManager {
         }
         
     }
+    
+    
+    
+    
+    /// Realmで保存したDB全件削除
+    func allDelete() {
+        let realm = try? Realm()
+        
+            try! realm?.write {
+                realm?.deleteAll()
+        }
+        
+    }
 }

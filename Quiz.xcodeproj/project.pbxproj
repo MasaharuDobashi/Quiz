@@ -26,6 +26,7 @@
 		D05196CD236FF9FC00762178 /* QuizTypeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05196CC236FF9FC00762178 /* QuizTypeEditView.swift */; };
 		D06C80E0236F0FFE00282569 /* QuizTypeManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06C80DF236F0FFE00282569 /* QuizTypeManagementViewController.swift */; };
 		D06C80E2236F100E00282569 /* QuizTypeManagementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06C80E1236F100E00282569 /* QuizTypeManagementView.swift */; };
+		D06DA264244C927B00222033 /* QuizModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06DA263244C927B00222033 /* QuizModelTest.swift */; };
 		D073E25F2289974B000F9874 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D073E25E2289974B000F9874 /* UILabelExtension.swift */; };
 		D0816C4E240807720015BFB0 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0816C4D240807710015BFB0 /* R.generated.swift */; };
 		D08E931023E05D3D00E5AA71 /* QuizMainViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08E930F23E05D3D00E5AA71 /* QuizMainViewTest.swift */; };
@@ -107,6 +108,7 @@
 		D05196CC236FF9FC00762178 /* QuizTypeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeEditView.swift; sourceTree = "<group>"; };
 		D06C80DF236F0FFE00282569 /* QuizTypeManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeManagementViewController.swift; sourceTree = "<group>"; };
 		D06C80E1236F100E00282569 /* QuizTypeManagementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeManagementView.swift; sourceTree = "<group>"; };
+		D06DA263244C927B00222033 /* QuizModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModelTest.swift; sourceTree = "<group>"; };
 		D073E25E2289974B000F9874 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		D0816C4D240807710015BFB0 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
 		D08E930F23E05D3D00E5AA71 /* QuizMainViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMainViewTest.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			children = (
 				D02F70932312649400574722 /* Info.plist */,
 				D08E930F23E05D3D00E5AA71 /* QuizMainViewTest.swift */,
+				D06DA263244C927B00222033 /* QuizModelTest.swift */,
 			);
 			path = QuizTests;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D06DA264244C927B00222033 /* QuizModelTest.swift in Sources */,
 				D08E931023E05D3D00E5AA71 /* QuizMainViewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
