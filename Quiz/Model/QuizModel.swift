@@ -86,12 +86,6 @@ class QuizModel: Object {
         
         guard let realm = RealmManager.initRealm(vc) else { return }
         let quizModel: QuizModel = QuizModel()
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-        formatter.locale = Locale(identifier: "ja_JP")
-        let s_Date:String = formatter.string(from: Date())
-        
         quizModel.id = String(realm.objects(QuizModel.self).count + 1)
         quizModel.quizTitle = parameters[ParameterKey().title] as! String
         quizModel.trueAnswer = parameters[ParameterKey().correctAnswer] as! String
@@ -106,7 +100,7 @@ class QuizModel: Object {
         if let _quizTypeModel = quiztype {
             quizModel.quizTypeModel = _quizTypeModel
         }
-        quizModel.createTime = s_Date
+        quizModel.createTime = String().nowDate_sec()
         
         do {
             try realm.write() {
@@ -151,12 +145,7 @@ class QuizModel: Object {
                     
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
                     if quizModel.createTime!.isEmpty {
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
-                        formatter.locale = Locale(identifier: "ja_JP")
-                        let s_Date:String = formatter.string(from: Date())
-                        
-                        quizModel.createTime = s_Date
+                        quizModel.createTime = String().nowDate_sec()
                     }
                     
                 }

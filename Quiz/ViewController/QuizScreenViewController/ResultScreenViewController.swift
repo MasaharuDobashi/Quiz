@@ -16,7 +16,7 @@ final class ResultScreenViewController: UIViewController {
     private var realm: Realm?
     
     /// 履歴を格納する
-    private var historyModel: HistoryModel!
+    private var historyModel: Results<HistoryModel>!
     
     /// 正解数
     private var trueConunt: Int = 0
@@ -43,7 +43,7 @@ final class ResultScreenViewController: UIViewController {
         self.init(nibName: nil, bundle: nil)
         self.trueConunt = trueConunt
         
-        addRealm(trueConunt: trueConunt)
+        HistoryModel.addHistory(self, count: trueConunt)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,76 +72,6 @@ final class ResultScreenViewController: UIViewController {
         super.viewDidAppear(animated)
         
         resultScreenView.animation()
-    }
-    
-    
-    private func addRealm(trueConunt: Int){
-        let conunt: String = String(trueConunt)
-        historyModel = HistoryModel()
-        
-        
-        historyModel.quizTrueCount = conunt
-        historyModel.date = nowDate()
-        
-        
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-            try realm?.write() {
-                realm?.add(historyModel)
-            }
-        } catch {
-            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
-        if (realm?.objects(HistoryModel.self).count)! > 30 {
-            deleteRealm()
-        }
-        
-        debugPrint(object: historyModel)
-    }
-    
-    
-    
-    
-    
-    private func deleteRealm(){
-        var historyModel:[HistoryModel] = [HistoryModel]()
-        for i in 0..<(realm?.objects(HistoryModel.self).count)! {
-            historyModel.append((realm?.objects(HistoryModel.self)[i])!)
-            
-            historyModel.sort{
-                $0.date < $1.date
-            }
-        }
-        
-        debugPrint(object: historyModel.first)
-        
-        
-        do {
-            try realm?.write() {
-                realm?.delete(historyModel.first!)
-            }
-        } catch {
-            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
-        
-    }
-    
-    
-    
-    /// 時間を整形
-    func nowDate() -> String {
-        let format = DateFormatter()
-        format.dateFormat = "yyyy/MM/dd hh:mm"
-        let now = Date()
-        return format.string(from: now)
     }
     
 }
