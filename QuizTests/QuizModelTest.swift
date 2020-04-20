@@ -98,4 +98,32 @@ class QuizModelTest: XCTestCase {
         
     }
     
+    
+    /// クイズ削除テスト
+    func test_deleteQuizModelTest() {
+        
+        let parameters: [String: Any] = [ParameterKey().title: "UnitTest",
+                                         ParameterKey().correctAnswer: "correctAnswer",
+                                         ParameterKey().incorrectAnswer1: "incorrectAnswer1",
+                                         ParameterKey().incorrectAnswer2: "incorrectAnswer2",
+                                         ParameterKey().incorrectAnswer3: "incorrectAnswer3",
+                                         ParameterKey().displayFlag: "0",
+                                         ParameterKey().quizType: ""
+        ]
+        
+        QuizModel.addQuiz(UIViewController(), parameters: parameters)
+        
+        let quizModel = QuizModel.findQuiz(UIViewController(), quizid: "1", createTime: nil)
+        
+        QuizModel.deleteQuiz(UIViewController(),
+                             id: quizModel!.id,
+                             createTime: quizModel?.createTime
+        )
+        
+        
+        let allquizModel = QuizModel.allFindQuiz(UIViewController(), isSort: true)
+        XCTAssert(allquizModel?.count == 0, "クイズが削除されていない")
+        
+    }
+    
 }
