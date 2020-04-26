@@ -60,7 +60,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         super.viewWillAppear(animated)
         
         quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView.isQuizType = realm?.objects(QuizTypeModel.self).count != 0 ? true : false
+        quizMainView.isQuizType = realm?.objects(QuizCategoryModel.self).count != 0 ? true : false
         quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
         
     }

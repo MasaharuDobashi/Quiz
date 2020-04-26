@@ -9,10 +9,15 @@
 import Foundation
 import RealmSwift
 
-class QuizTypeModel: Object {
+class QuizCategoryModel: Object {
     @objc dynamic var id: String = ""
     @objc dynamic var quizTypeTitle: String = ""
     @objc dynamic var isSelect: String = ""
+    
+    
+    
+    
+    
     
 }
 

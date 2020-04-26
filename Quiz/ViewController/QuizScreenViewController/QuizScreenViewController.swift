@@ -24,7 +24,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     private var realm:Realm?
     
     /// クイズを格納する配列
-    private var quizModel:[QuizModel]!
+    private var quizModel:Results<QuizModel>!
     
     /// 何問目かを格納
     var quizNum: Int = 0
@@ -43,38 +43,17 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
-        
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
-        
-        
         quizModelAppend()
-        
-        /// クイズが0件だったらquizScreenViewをaddSubViewしない
-        if quizModel.count == 0 {return}
-        
-        /// クイズ11件以上だったらquizScreenViewをaddSubViewしない
-        if quizModel.count > 10 {return}
-        
-        view.addSubview(quizScreenView)
+        quizActiveCheck()
     }
     
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
-        if !isQuizActive() { return }
+  
         debugPrint(object: quizModel[quizNum])
         
         quizScreenView.quizModel = quizModel[quizNum]
@@ -87,24 +66,16 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     
     /// 表示するクイズを配列に格納する
     private func quizModelAppend(){
-        quizModel = [QuizModel]()
+        quizModel = QuizModel.displayFindQuiz(self)
         
-        let quizModelCount:Int = (realm?.objects(QuizModel.self).count)!
-        
-        if (realm?.objects(QuizTypeModel.self).isEmpty)! {
+        if QuizCategoryModel.findAllQuizCategoryModel(self)!.isEmpty {
             /// カテゴリがなかった場合
-            for i in 0..<quizModelCount {
-                if realm?.objects(QuizModel.self)[i].displayFlag != "1" {
-                    quizModel?.append((realm?.objects(QuizModel.self)[i])!)
-                }
-            }
             quizSelect = .zero
         } else {
-            for i in 0..<quizModelCount {
+            for _ in 0..<quizModel.count {
                 /// カテゴリが選択されている
-                if realm?.objects(QuizModel.self)[i].displayFlag != "1" && realm?.objects(QuizModel.self)[i].quizTypeModel?.isSelect == "1" {
-                    quizModel?.append((realm?.objects(QuizModel.self)[i])!)
-                    
+                if  QuizModel.selectQuiz(self)!.count > 0 && QuizModel.selectQuiz(self)!.count < 10 {
+                    quizModel = QuizModel.selectQuiz(self)
                     quizSelect = .select
                 } else {
                     /// カテゴリが作成されているが選択されていない
@@ -117,38 +88,39 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }
     
     
+    
     /// クイズを開始できるかチェックする
     ///
-    /// 0件から10件以内かどうかを確認する
-    func isQuizActive() -> Bool {
-        if quizModel.count == 0 {
+    /// クイズを開始できる場合はquizScreenViewをaddSubViewする
+    ///
+    /// 開始できない場合はモーダルを閉じる
+    private func quizActiveCheck() {
+        
+        if quizModel.count > 10 {
+            self.view.backgroundColor = .white
+            AlertManager().alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+                self.leftButtonAction()
+            })
+            
+        } else {
             self.view.backgroundColor = .white
             
             switch quizSelect {
-            case .zero, .select:
-                AlertManager().alertAction( self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
-                    self.leftButtonAction()
-                })
-                return false
+            case .select, .zero:
+                view.addSubview(quizScreenView)
+                
             case .notSelect:
-                AlertManager().alertAction( self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
+                AlertManager().alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
                     self.leftButtonAction()
+                    
                 })
-                return false
             case .none:
-                return false
+                AlertManager().alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
+                    self.leftButtonAction()
+                    
+                })
             }
-            
-            
-        } else if quizModel.count > 10 {
-            self.view.backgroundColor = .white
-            AlertManager().alertAction( self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
-                self.leftButtonAction()
-            })
-            return false
         }
-        
-        return true
         
     }
     
@@ -180,15 +152,18 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
  
     
     
+    // MARK: Enum
+    
+    /// カテゴリの選択状態
     enum QuizSelect: String {
         
-        /// quizTypeの登録なし
+        /// QuizCategoryの登録なし
         case zero = "0"
         
-        /// quizTypeの登録あり、quizTypeを選択済み
+        /// QuizCategoryの登録あり、quizTypeを選択済み
         case select = "1"
         
-        /// quizTypeの登録あり、quizTypeを未選択
+        /// QuizCategoryの登録あり、quizTypeを未選択
         case notSelect = "2"
     }
  

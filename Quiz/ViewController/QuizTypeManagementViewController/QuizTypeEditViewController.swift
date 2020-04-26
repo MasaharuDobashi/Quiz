@@ -25,7 +25,7 @@ final class QuizTypeEditViewController: UIViewController {
     /// クイズのカテゴリのID
     private var typeid: String?
     
-    private var filter: QuizTypeModel?
+    private var filter: QuizCategoryModel?
     
     /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
@@ -61,7 +61,7 @@ final class QuizTypeEditViewController: UIViewController {
           
         
         if let _typeid = typeid {
-            filter = self.realm?.objects(QuizTypeModel.self).filter("id == '\(String(describing: _typeid))'").first!
+            filter = self.realm?.objects(QuizCategoryModel.self).filter("id == '\(String(describing: _typeid))'").first!
         }
     }
     
@@ -122,41 +122,16 @@ final class QuizTypeEditViewController: UIViewController {
     
     /// Realmに新規追加
     private func addRealm(){
-        let quizTypeModel = QuizTypeModel()
-        realm = try! Realm(configuration: config)
-        
-        guard let id: Int = realm?.objects(QuizTypeModel.self).count else { return }
-        
-        quizTypeModel.id = String(id)
-        quizTypeModel.quizTypeTitle = quizTypeEditView.typeTextField.text!
-        
-        do {
-            try realm?.write() {
-                realm?.add(quizTypeModel)
-            }
-        } catch {
-            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
+        QuizCategoryModel.addQuizCategoryModel(self, categorytitle: quizTypeEditView.typeTextField.text!)
         
     }
     
     
     /// アップデート
-    private func updateRealm(){
+    private func updateRealm() {
         
-        do {
-            try realm?.write() {
-                filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!
-            }
-        } catch {
-            AlertManager().alertAction( self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
+        QuizCategoryModel.updateQuizCategoryModel(self, id: filter!.id, createTime: filter?.createTime, categorytitle: quizTypeEditView.typeTextField.text!)
+        
         
     }
 }

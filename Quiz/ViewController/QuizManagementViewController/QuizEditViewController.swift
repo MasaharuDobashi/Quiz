@@ -26,13 +26,10 @@ final class QuizEditViewController: UIViewController {
     
     /// クイズを格納
     private var quizModel: QuizModel!
-    private var quizTypeModel: [QuizTypeModel]! {
-        didSet {
-            quizEditView.quizTypeModel = quizTypeModel
-        }
-    }
     
-    let key:ParameterKey = ParameterKey()
+    ///  カテゴリを格納
+    private var quizCategoryModel: Results<QuizCategoryModel>!
+    
     
     
     private lazy var quizEditView:QuizEditView = {
@@ -41,17 +38,20 @@ final class QuizEditViewController: UIViewController {
         case .add:
             navigationItemAction()
             let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped, mode: mode)
+            quizEditView.quizTypeModel = quizCategoryModel
             return quizEditView
         case .edit:
             navigationItemAction()
             quizModelAppend(quiz_id: quzi_id!)
             let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
+            quizEditView.quizTypeModel = quizCategoryModel
             debugPrint(object: quizModel)
             
             return quizEditView
         case .detail:
             quizModelAppend(quiz_id: quzi_id!)
             let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
+            quizEditView.quizTypeModel = quizCategoryModel
             debugPrint(object: quizModel)
             
             return quizEditView
@@ -94,23 +94,8 @@ final class QuizEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction( self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
-        }
         
-        quizTypeModel = [QuizTypeModel]()
-        for model in (realm?.objects(QuizTypeModel.self))! {
-            quizTypeModel.append(model)
-        }
-        
+        quizCategoryModel = QuizCategoryModel.findAllQuizCategoryModel(self)
         view.addSubview(quizEditView)
         
         
@@ -186,26 +171,26 @@ final class QuizEditViewController: UIViewController {
     func validate(parameters:[String:Any]) -> Bool {
         
         
-        if emptyValidate(viewController: self, title: parameters[key.title] as! String, message: "クイズのタイトルが未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().title] as! String, message: "クイズのタイトルが未入力です。") == false {
             return false
         }
         
-        if emptyValidate(viewController: self, title: parameters[key.correctAnswer] as! String, message: "正解が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().correctAnswer] as! String, message: "正解が未入力です。") == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[key.incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
             return false
         }
         
         
-        if (realm?.objects(QuizTypeModel.self).count)! > 0 {
-            if emptyValidate(viewController: self, title: parameters[key.quizType] as! String, message: "カテゴリが未選択です") == false {
+        if (QuizCategoryModel.findAllQuizCategoryModel(self)?.count)! > 0 {
+            if emptyValidate(viewController: self, title: parameters[ParameterKey().quizType] as! String, message: "カテゴリが未選択です") == false {
                 return false
             }
         }

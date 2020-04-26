@@ -16,7 +16,7 @@ class QuizTypeManagementView: UITableView {
     
     
     /// クイズのすカテゴリの配列
-    var quizTypeModel: [QuizTypeModel]? {
+    var quizTypeModel: [QuizCategoryModel]? {
         didSet {
             reloadData()
         }

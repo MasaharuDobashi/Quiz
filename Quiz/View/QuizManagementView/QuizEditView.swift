@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
     
@@ -16,7 +17,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     private var quizModel: QuizModel?
     
     /// クイズタイプを格納する
-    var quizTypeModel: [QuizTypeModel]?
+    var quizTypeModel: Results<QuizCategoryModel>!
     
     /// クイズのカテゴリのIDを格納する
     var typeid: String?

@@ -38,7 +38,7 @@ class QuizModel: Object {
     @objc dynamic var displayFlag: String = ""
     
     /// クイズのカテゴリ
-    @objc dynamic var quizTypeModel: QuizTypeModel?
+    @objc dynamic var quizTypeModel: QuizCategoryModel?
     
     
     /// クイズの作成日時
@@ -77,6 +77,19 @@ class QuizModel: Object {
     }
     
     
+    /// クイズの全件検索
+    class func displayFindQuiz(_ vc: UIViewController) -> Results<QuizModel>? {
+        guard let realm = RealmManager.initRealm(vc) else { return nil }
+        return (realm.objects(QuizModel.self).filter("displayFlag == '0'"))
+    }
+    
+    
+    
+    class func selectQuiz(_ vc: UIViewController) -> Results<QuizModel>? {
+        guard let realm = RealmManager.initRealm(vc) else { return nil }
+        return (realm.objects(QuizModel.self).filter("quizTypeModel.isSelect == '1' AND displayFlag == '0'"))
+    }
+     
     
     /// ToDoを追加する
     /// - Parameters:
@@ -95,7 +108,7 @@ class QuizModel: Object {
         quizModel.displayFlag = parameters[ParameterKey().displayFlag] as! String
         
                 
-        let quiztype = realm.objects(QuizTypeModel.self).filter("id == '\( parameters[ParameterKey().quizType] as! String)'").first
+        let quiztype = realm.objects(QuizCategoryModel.self).filter("id == '\( parameters[ParameterKey().quizType] as! String)'").first
         
         if let _quizTypeModel = quiztype {
             quizModel.quizTypeModel = _quizTypeModel
@@ -127,7 +140,7 @@ class QuizModel: Object {
         guard let realm = RealmManager.initRealm(vc) else { return }
         
         
-        let quiztype = realm.objects(QuizTypeModel.self).filter("id == '\( parameters[ParameterKey().quizType] as! String)'").first
+        let quiztype = realm.objects(QuizCategoryModel.self).filter("id == '\( parameters[ParameterKey().quizType] as! String)'").first
             
         
         if let quizModel = QuizModel.findQuiz(vc, quizid: id, createTime: createTime) {

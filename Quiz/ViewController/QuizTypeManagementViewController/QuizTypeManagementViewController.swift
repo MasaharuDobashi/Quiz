@@ -15,12 +15,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 
     // MARK: Properties
     
-    var config = Realm.Configuration(schemaVersion: realmConfig)
-    
-    var realm: Realm?
-    
-    
-    var quizTypeModel: [QuizTypeModel]? {
+    var quizTypeModel: Results<QuizCategoryModel>? {
         didSet {
             tableView.reloadData()
         }
@@ -32,24 +27,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction( self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
-        }
-        
-
-        
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
-        
-        
         
         setBarButtonItem()
     }
@@ -83,7 +61,6 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     @objc func updateQuizTypeUpdate(notification: Notification) {
-        quizTypeModel?.removeAll()
         modelAppend()
     }
     
@@ -126,12 +103,7 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     
     /// 配列にRealmで保存したデータを追加する
     func modelAppend() {
-        quizTypeModel = [QuizTypeModel]()
-        
-        let quizTypeModelCount:Int = (realm?.objects(QuizTypeModel.self).count)!
-        for i in 0..<quizTypeModelCount {
-            quizTypeModel?.append((realm?.objects(QuizTypeModel.self)[i])!)
-        }
+        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
     }
     
     
@@ -143,23 +115,13 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     
     
     func deleteAction(indexPath: IndexPath) {
-        guard let rquizModel = realm?.objects(QuizTypeModel.self)[indexPath.row] else { return }
         
-        do {
-            try realm?.write() {
-                realm?.delete(rquizModel)
-            }
-        } catch {
-            AlertManager().alertAction(self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
+        QuizCategoryModel().deleteQuizCategoryModel(self, id: (quizTypeModel?[indexPath.row].id)!, createTime: (quizTypeModel?[indexPath.row].createTime)!) {
+            
+            NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
         }
         
-        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
+
     }
     
     

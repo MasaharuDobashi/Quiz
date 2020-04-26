@@ -43,7 +43,7 @@
 		D0E5323323A129570076D4D1 /* QuizTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5323223A129570076D4D1 /* QuizTypeTests.swift */; };
 		D0E82C432210091300960D7C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E82C422210091300960D7C /* Enums.swift */; };
 		D0E8F9E024433A6000249654 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8F9DF24433A6000249654 /* HistoryModel.swift */; };
-		D0E8F9E224433A7400249654 /* QuizTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8F9E124433A7400249654 /* QuizTypeModel.swift */; };
+		D0E8F9E224433A7400249654 /* QuizCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8F9E124433A7400249654 /* QuizCategoryModel.swift */; };
 		D0E94A1C21FF2DE80071DB64 /* QuizEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */; };
 		D0E94A1E21FF2DFF0071DB64 /* QuizEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */; };
 		D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0EB043122AFE37F009DB116 /* HistoryViewController.swift */; };
@@ -130,7 +130,7 @@
 		D0E5323223A129570076D4D1 /* QuizTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeTests.swift; sourceTree = "<group>"; };
 		D0E82C422210091300960D7C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
 		D0E8F9DF24433A6000249654 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
-		D0E8F9E124433A7400249654 /* QuizTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeModel.swift; sourceTree = "<group>"; };
+		D0E8F9E124433A7400249654 /* QuizCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCategoryModel.swift; sourceTree = "<group>"; };
 		D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditView.swift; sourceTree = "<group>"; };
 		D0E94A1D21FF2DFF0071DB64 /* QuizEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditViewController.swift; sourceTree = "<group>"; };
 		D0EB043122AFE37F009DB116 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
@@ -203,7 +203,7 @@
 				D0F98F702444AC34005AF6CC /* RealmManager.swift */,
 				D01CEA2B21F9FD6400AF1266 /* QuizModel.swift */,
 				D0E8F9DF24433A6000249654 /* HistoryModel.swift */,
-				D0E8F9E124433A7400249654 /* QuizTypeModel.swift */,
+				D0E8F9E124433A7400249654 /* QuizCategoryModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -596,7 +596,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$SRCROOT/R.generated.swift",
+				$SRCROOT/R.generated.swift,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -659,7 +659,7 @@
 				D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */,
 				D0816C4E240807720015BFB0 /* R.generated.swift in Sources */,
 				D0EB043422AFE394009DB116 /* HistoryView.swift in Sources */,
-				D0E8F9E224433A7400249654 /* QuizTypeModel.swift in Sources */,
+				D0E8F9E224433A7400249654 /* QuizCategoryModel.swift in Sources */,
 				D073E25F2289974B000F9874 /* UILabelExtension.swift in Sources */,
 				D06C80E0236F0FFE00282569 /* QuizTypeManagementViewController.swift in Sources */,
 				D01CEA2421F9FCAA00AF1266 /* ResultScreenViewController.swift in Sources */,
