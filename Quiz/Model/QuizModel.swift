@@ -84,7 +84,7 @@ class QuizModel: Object {
     }
     
     
-    
+    /// 選択されているカテゴリのクイズを検索
     class func selectQuiz(_ vc: UIViewController) -> Results<QuizModel>? {
         guard let realm = RealmManager.initRealm(vc) else { return nil }
         return (realm.objects(QuizModel.self).filter("quizTypeModel.isSelect == '1' AND displayFlag == '0'"))

@@ -128,4 +128,49 @@ class QuizModelTest: XCTestCase {
         
     }
     
+    
+    
+    /// 選択したカテゴリのクイズが格納されるかテスト
+    func test_selectQuizModelTest() {
+        
+        QuizCategoryModel.addQuizCategoryModel(UIViewController(), categorytitle: "カテゴリ1")
+        QuizCategoryModel.updateisSelect(UIViewController(), selectCategory: QuizCategoryModel.findQuizCategoryModel(UIViewController(), id: "1", createTime: nil)!)
+        
+        for i in 0..<30 {
+            var parameters: [String: Any]
+            if i % 2 == 0 {
+                 parameters = [ParameterKey().title: "UnitTest\(String(i))",
+                    ParameterKey().correctAnswer: "correctAnswer",
+                    ParameterKey().incorrectAnswer1: "incorrectAnswer1",
+                    ParameterKey().incorrectAnswer2: "incorrectAnswer2",
+                    ParameterKey().incorrectAnswer3: "incorrectAnswer3",
+                    ParameterKey().displayFlag: "0",
+                    ParameterKey().quizType: "1"
+                ]
+            } else {
+                 parameters = [ParameterKey().title: "UnitTest\(String(i))",
+                    ParameterKey().correctAnswer: "correctAnswer",
+                    ParameterKey().incorrectAnswer1: "incorrectAnswer1",
+                    ParameterKey().incorrectAnswer2: "incorrectAnswer2",
+                    ParameterKey().incorrectAnswer3: "incorrectAnswer3",
+                    ParameterKey().displayFlag: "0",
+                    ParameterKey().quizType: ""
+                ]
+            }
+            sleep(1)
+            QuizModel.addQuiz(UIViewController(), parameters: parameters)
+        }
+        let quizModel = QuizModel.selectQuiz(UIViewController())
+        
+        
+        for quiz in quizModel! {
+            XCTAssert(quiz.quizTypeModel == QuizCategoryModel.findQuizCategoryModel(UIViewController(), id: "1", createTime: nil), "選択されたものが追加されていない")
+        }
+        
+        
+        
+        
+    }
+
+    
 }
