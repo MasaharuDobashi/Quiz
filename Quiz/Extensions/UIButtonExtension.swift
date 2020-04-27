@@ -17,6 +17,7 @@ extension UIButton {
         setTitle(title, for: .normal)
         self.backgroundColor = backgroundColor
         titleLabel?.font = font
+        isExclusiveTouch = true;
         
         if let action = action {
             addTarget(target, action: action, for: .touchUpInside)
