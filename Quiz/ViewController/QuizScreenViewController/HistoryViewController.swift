@@ -19,7 +19,6 @@ final class HistoryViewController: UIViewController {
         return historyView
     }()
     
-    private var realm: Realm?
     private var historyModel: Results<HistoryModel>!
     
     

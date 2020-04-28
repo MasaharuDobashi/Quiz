@@ -13,9 +13,6 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    /// Realmのインスタンス
-    private var realm:Realm?
-    
     /// クイズのカテゴリを格納
     private var quizTypeModel: Results<QuizCategoryModel>?
 
@@ -68,22 +65,8 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     /// quizTypeModelに格納する
     fileprivate func setUpModel() {
-         do {
-             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-         } catch {
-             AlertManager().alertAction( self,
-                                        title: nil,
-                                        message: R.string.error.errorMessage,
-                                        handler: { _ in
-                 return
-             })
-             return
-         }
-         
         quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
         selectCategory = QuizCategoryModel.findSelectQuizCategoryModel(self)
-        
-        
      }
     
     

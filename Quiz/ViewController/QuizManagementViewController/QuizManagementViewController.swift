@@ -242,7 +242,10 @@ extension QuizManagementViewController: ManagementProtocol {
     /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
         AlertManager().alertAction(self, message: "削除しますか?", handler1: { [weak self] action in
-            QuizModel.deleteQuiz(self!, id: (self?.quizModel?[indexPath.row].id)!, createTime: self?.quizModel?[indexPath.row].createTime)
+            QuizModel.deleteQuiz(self!,
+                                 id: (self?.quizModel?[indexPath.row].id)!,
+                                 createTime: self?.quizModel?[indexPath.row].createTime
+            )
             self?.modelAppend()
             
             }) {_ -> Void in}

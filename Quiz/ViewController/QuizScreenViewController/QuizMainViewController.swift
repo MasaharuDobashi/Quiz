@@ -37,20 +37,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction( self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
-        }
-        
         setNotificationCenter()
-        
         view.addSubview(quizMainView)
     }
     
@@ -59,10 +46,9 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        quizMainView.isActiveQuiz = realm?.objects(QuizModel.self).count != 0 ? true : false
-        quizMainView.isQuizType = realm?.objects(QuizCategoryModel.self).count != 0 ? true : false
-        quizMainView.isHistory = realm?.objects(HistoryModel.self).count != 0 ? true : false
-        
+        quizMainView.isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true)?.count != 0 ? true : false
+        quizMainView.isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self)?.count != 0 ? true : false
+        quizMainView.isHistory = HistoryModel.allFindHistory(self)?.count != 0 ? true : false
     }
     
     
@@ -87,7 +73,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
             pushTransition(QuizTypeSelectTableViewController())
             
         } else {
-            presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
+            presentModalView(QuizTypeEditViewController(typeid: nil, createTime: nil, mode: .add))
             
         }
     }

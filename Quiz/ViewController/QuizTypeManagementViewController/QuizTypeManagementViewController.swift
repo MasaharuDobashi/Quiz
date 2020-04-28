@@ -56,7 +56,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     override func rightButtonAction() {
-        presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
+        presentModalView(QuizTypeEditViewController(typeid: nil, createTime: nil, mode: .add))
     }
     
     
@@ -126,7 +126,10 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     
     
     func detailAction(indexPath: IndexPath) {
-        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: quizTypeModel?[indexPath.row].id, mode: .detail)
+        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: quizTypeModel?[indexPath.row].id,
+                                                                                   createTime: quizTypeModel?[indexPath.row].createTime,
+                                                                                   mode: .detail
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -205,7 +208,9 @@ extension QuizTypeManagementViewController {
             (action, indexPath) in
             
             self?.editAction(self!,
-                             editViewController: QuizTypeEditViewController(typeid: self?.quizTypeModel?[indexPath.row].id, mode: .edit
+                             editViewController: QuizTypeEditViewController(typeid: self?.quizTypeModel?[indexPath.row].id,
+                                                                            createTime: self?.quizTypeModel?[indexPath.row].createTime,
+                                                                            mode: .edit
                 )
             )
         }

@@ -13,8 +13,6 @@ final class ResultScreenViewController: UIViewController {
     
     // MARK: Properties
     
-    private var realm: Realm?
-    
     /// 履歴を格納する
     private var historyModel: Results<HistoryModel>!
     

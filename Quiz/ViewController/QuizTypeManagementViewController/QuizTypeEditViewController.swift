@@ -15,10 +15,7 @@ import RealmSwift
 final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
-    
-    private var realm: Realm?
-    private let config = Realm.Configuration(schemaVersion: 1)
-    
+        
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
     
@@ -43,25 +40,13 @@ final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Init
     
-    convenience init(typeid: String?, mode: ModeEnum){
+    convenience init(typeid: String?, createTime: String?, mode: ModeEnum){
         self.init()
         self.mode = mode
         
-        do {
-              realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-          } catch {
-              AlertManager().alertAction( self,
-                                         title: nil,
-                                         message: R.string.error.errorMessage,
-                                         handler: { _ in
-                  return
-              })
-              return
-          }
-          
-        
-        if let _typeid = typeid {
-            filter = self.realm?.objects(QuizCategoryModel.self).filter("id == '\(String(describing: _typeid))'").first!
+        if let _typeid = typeid,
+        let _createTime = createTime {
+            filter = QuizCategoryModel.findQuizCategoryModel(self, id: _typeid, createTime: _createTime)
         }
     }
     
@@ -71,7 +56,6 @@ final class QuizTypeEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        realm = try! Realm(configuration: config)
         
         view.backgroundColor = R.color.cellWhite
         

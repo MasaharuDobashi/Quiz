@@ -20,9 +20,6 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         return view
     }()
     
-    /// realmのインスタンス
-    private var realm:Realm?
-    
     /// クイズを格納する配列
     private var quizModel:Results<QuizModel>!
     
@@ -95,15 +92,14 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     ///
     /// 開始できない場合はモーダルを閉じる
     private func quizActiveCheck() {
+        view.backgroundColor = .white
         
         if quizModel.count > 10 {
-            self.view.backgroundColor = .white
             AlertManager().alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
                 self.leftButtonAction()
             })
             
         } else {
-            self.view.backgroundColor = .white
             
             switch quizSelect {
             case .select, .zero:

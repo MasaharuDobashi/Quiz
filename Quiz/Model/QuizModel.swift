@@ -54,7 +54,7 @@ class QuizModel: Object {
     // MARK: Function
     
     /// クイズの全件検索
-    class func allFindQuiz(_ vc: UIViewController, isSort: Bool) -> Results<QuizModel>? {
+    class func allFindQuiz(_ vc: UIViewController, isSort: Bool = true) -> Results<QuizModel>? {
         guard let realm = RealmManager.initRealm(vc) else { return nil }
         
         if isSort {
