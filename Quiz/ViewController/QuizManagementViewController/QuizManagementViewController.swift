@@ -10,18 +10,12 @@ import UIKit
 import RealmSwift
 
 /// Realmで登録したクイズの確認、編集、削除を行うためのViewController
-final class QuizManagementViewController: UITableViewController, ManagementProtocol {
+final class QuizManagementViewController: UITableViewController {
     
     // MARK: Properties
     
-    /// Realmのスキームバージョンを設定
-    var config = Realm.Configuration(schemaVersion: realmConfig)
-    
-    /// Realmのインスタンス
-    var realm: Realm?
-    
     /// クイズのリストを格納する
-    private var quizModel:[QuizModel]? {
+    private var quizModel: Results<QuizModel>? {
         didSet {
             tableView.reloadData()
         }
@@ -33,15 +27,6 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
         
         setUPTableView()
         setBarButtonItem()
@@ -60,35 +45,16 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     
     
     
-    /// TableView
+    // MARK: Private Func
     
     /// テーブルビューをセットする
-    fileprivate func setUPTableView() {
+    private func setUPTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInset = .zero
         tableView.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
     }
     
-    
-    
-    // MARK: Private Func
-    
-    /// 配列にRealmで保存したデータを追加する
-    func modelAppend(){
-        quizModel = [QuizModel]()
-        
-        
-//        let quizModelCount:Int = realm.objects(QuizModel.self).count
-        for model in (realm?.objects(QuizModel.self))! {
-            quizModel?.append(model)
-            
-            quizModel?.sort {
-                $0.id < $1.id
-            }
-            
-        }
-    }
     
     
     
@@ -104,35 +70,45 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
     /// デバッグ用でデータベースを削除する
     @objc override func leftButtonAction(){
         
-        AlertManager().alertAction(viewController: self,
+        AlertManager().alertAction(self,
                                    title: "データベースの削除",
                                    message: "作成した問題や履歴を全件削除します",
                                    handler1: { [weak self]  (action) in
-                                    
-                                    do {
-                                        try self?.realm?.write {
-                                            self?.realm?.deleteAll()
-                                        }
-                                    } catch {
-                                        AlertManager().alertAction(viewController: self!,
-                                                                   title: nil,
-                                                                   message: R.string.error.errorMessage,
-                                                                   handler: { _ in
-                                            return
-                                        })
-                                        return
+                                    RealmManager().allModelDelete(self!) {
+                                        self?.modelAppend()
+                                        self?.tabBarController?.selectedIndex = 0
+                                        NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
                                     }
-                                    
-                                    self?.modelAppend()
-                                    self?.tabBarController?.selectedIndex = 0
-                                    
-                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
         }){ (action) in return }
         
     }
     
     
     
+    
+    // MARK: Other func
+    
+    
+    private func setNotificationCenter() {
+        /// quizModelをアップデート
+        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
+        
+    }
+    
+    /// クイズを更新する
+    @objc func quizUpdate(notification: Notification) {
+        modelAppend()
+    }
+    
+}
+
+
+
+
+
+
+/// UITableViewDelegate, UITableViewDataSourceの必須メソッド追加
+extension QuizManagementViewController {
     
     // MARK: UITableViewDelegate, UITableViewDataSource
     
@@ -202,7 +178,9 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
             (action, indexPath) in
             
             self?.editAction(self!,
-                             editViewController: QuizEditViewController(quzi_id: indexPath.row, mode: .edit)
+                             editViewController: QuizEditViewController(quzi_id: (self?.quizModel?[indexPath.row].id)!,
+                                                                         createTime: (self?.quizModel?[indexPath.row].createTime)!,
+                                                                        mode: .edit)
             )
         }
         edit.backgroundColor = UIColor.orange
@@ -227,18 +205,30 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
         return true
     }
     
-    
-    
-    
-    
-    
-    
+}
+
+
+
+
+
+
+/// ManagementProtocolを拡張
+extension QuizManagementViewController: ManagementProtocol {
+
     // MARK: QuizManagementViewDelegate Func
+    
+     /// 配列にRealmで保存したデータを追加する
+     func modelAppend() {
+         quizModel = QuizModel.allFindQuiz(self, isSort: true)
+     }
     
     
     /// 指定したクイズの詳細を開く
     func detailAction(indexPath: IndexPath) {
-        pushTransition(QuizEditViewController(quzi_id: indexPath.row, mode: ModeEnum.detail))
+        pushTransition(QuizEditViewController(quzi_id: (quizModel?[indexPath.row].id)!,
+                                              createTime: (quizModel?[indexPath.row].createTime)!,
+                                              mode: ModeEnum.detail)
+        )
     }
     
     
@@ -247,84 +237,21 @@ final class QuizManagementViewController: UITableViewController, ManagementProto
         presentModalView(editVC)
     }
     
-    
-    /// 指定したクイズを削除する
-    private func deleteRealm(indexPath: IndexPath){
-        guard let rquizModel = realm?.objects(QuizModel.self)[indexPath.row] else { return }
-        
-        
-        
-        do {
-            try realm?.write() {
-                realm?.delete(rquizModel)
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
-        
-    }
-    
-    
+
     
     /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
-        AlertManager().alertAction(viewController: self, title: nil, message: "削除しますか?", handler1: {[weak self] action in
-            self?.deleteRealm(indexPath: indexPath)
-            self?.quizModel?.removeAll()
+        AlertManager().alertAction(self, message: "削除しますか?", handler1: { [weak self] action in
+            QuizModel.deleteQuiz(self!,
+                                 id: (self?.quizModel?[indexPath.row].id)!,
+                                 createTime: self?.quizModel?[indexPath.row].createTime
+            )
             self?.modelAppend()
             
-            }, handler2: {_ -> Void in})
-        
-        
-    }
-    
-    
-    
-    
-    
-    // MARK: Other func
-    
-    
-    func setNotificationCenter() {
-        /// quizModelをアップデート
-        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
-        
-        
-        /// iOS13のモーダルを開きクイズを新規作成、編集をしてモーダルを閉じた時に
-        /// viewWillAppearを呼び出す処理をセットする
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.ViewUpdate), object: nil)
-        }
+            }) {_ -> Void in}
         
     }
     
-    
-    /// Debug時にデータベースのデータを削除用のボタンをセット
-    func setBarButtonItem() {
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        
-        #if DEBUG
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
-        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
-        #endif
-    }
-    
-    
-    /// クイズを更新する
-    @objc func quizUpdate(notification: Notification) {
-        modelAppend()
-    }
-    
-    
-    /// Quizの作成、編集した後にテーブル更新の為にviewWillAppearを呼ぶ
-    @objc @available(iOS 13.0, *)
-    func callViewWillAppear(notification: Notification) {
-        self.viewWillAppear(true)
-    }
+ 
     
 }
-

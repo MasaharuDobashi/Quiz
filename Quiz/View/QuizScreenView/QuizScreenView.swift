@@ -165,10 +165,8 @@ class QuizScreenView: UIView {
             quizModel.falseAnswer3,
         ]
         
-        var numbers = [0,1,2,3]
-        
         for i in 0..<buttons.count {
-            let num:Int = Int(arc4random_uniform(UInt32(numbers.count)))
+            let num:Int = Int(arc4random_uniform(UInt32(stringArray.count)))
             buttons[i].setButton(title: stringArray[num],
                                  backgroundColor: R.color.Geranium,
                                  font: UIFont.boldSystemFont(ofSize: 18),
@@ -177,12 +175,8 @@ class QuizScreenView: UIView {
             )
             
             buttons[i].buttonHeight(multiplier: 0.06, cornerRadius: 8)
-            buttons[i].layer.shadowOpacity = 0.4
-            buttons[i].layer.shadowOffset = CGSize(width: 1, height: 1)
-            buttons[i].clipsToBounds = false
+            buttons[i].highlightAction()
             
-            
-            numbers.remove(at: num)
             stringArray.remove(at: num)
             
             

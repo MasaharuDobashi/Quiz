@@ -15,12 +15,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 
     // MARK: Properties
     
-    var config = Realm.Configuration(schemaVersion: realmConfig)
-    
-    var realm: Realm?
-    
-    
-    var quizTypeModel: [QuizTypeModel]? {
+    var quizTypeModel: Results<QuizCategoryModel>? {
         didSet {
             tableView.reloadData()
         }
@@ -32,29 +27,9 @@ final class QuizTypeManagementViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-        } catch {
-            AlertManager().alertAction(viewController: self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
-        }
-        tableView.separatorInset = .zero
-        tableView.delegate = self
-        tableView.dataSource = self
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
         
-        
-        setDeleteBarButtonItem()
-        
+        setBarButtonItem()
     }
     
     
@@ -68,70 +43,42 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     
-    
-    
-    /// 配列にRealmで保存したデータを追加する
-    func modelAppend() {
-        quizTypeModel = [QuizTypeModel]()
-        
-        let quizTypeModelCount:Int = (realm?.objects(QuizTypeModel.self).count)!
-        for i in 0..<quizTypeModelCount {
-            quizTypeModel?.append((realm?.objects(QuizTypeModel.self)[i])!)
-        }
+    /// テーブルビューをセットする
+    private func setUPTableView() {
+        tableView.separatorInset = .zero
+        tableView.delegate = self
+        tableView.dataSource = self
     }
+    
+    
+    
     
     
     
     override func rightButtonAction() {
-        presentModalView(QuizTypeEditViewController(typeid: nil, mode: .add))
+        presentModalView(QuizTypeEditViewController(typeid: nil, createTime: nil, mode: .add))
     }
     
     
     @objc func updateQuizTypeUpdate(notification: Notification) {
-        quizTypeModel?.removeAll()
         modelAppend()
     }
     
-
-    /// Debug時にデータベースのデータを削除用のボタンをセット
-    func setDeleteBarButtonItem() {
-        #if DEBUG
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
-        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
-        #endif
-    }
-    
-    
-    
     /// デバッグ用でデータベースを削除する
-    @objc override func leftButtonAction(){
-        
-        AlertManager().alertAction(viewController: self,
-                                   title: "データベースの削除",
-                                   message: "作成した問題や履歴を全件削除します",
-                                   handler1: { [weak self]  (action) in
-                                    
-                                    do {
-                                        try self?.realm?.write {
-                                            self?.realm?.deleteAll()
-                                        }
-                                    } catch {
-                                        AlertManager().alertAction(viewController: self!,
-                                                                   title: nil,
-                                                                   message: R.string.error.errorMessage,
-                                                                   handler: { _ in
-                                            return
-                                        })
-                                        return
-                                    }
-                                    
-                                    self?.modelAppend()
-                                    self?.tabBarController?.selectedIndex = 0
-                                    
-                                    NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
-        }){ (action) in return }
-        
-    }
+       @objc override func leftButtonAction(){
+           
+           AlertManager().alertAction(self,
+                                      title: "データベースの削除",
+                                      message: "作成した問題や履歴を全件削除します",
+                                      handler1: { [weak self]  (action) in
+                                       RealmManager().allModelDelete(self!) {
+                                           self?.modelAppend()
+                                           self?.tabBarController?.selectedIndex = 0
+                                           NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
+                                       }
+           }){ (action) in return }
+           
+       }
     
     
 }
@@ -153,6 +100,13 @@ final class QuizTypeManagementViewController: UITableViewController {
 /// QuizTypeManagementViewControllerにManagementViewDelegateを拡張
 extension QuizTypeManagementViewController: ManagementProtocol {
     
+    
+    /// 配列にRealmで保存したデータを追加する
+    func modelAppend() {
+        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
+    }
+    
+    
     func editAction(_ tableViewController: UITableViewController, editViewController editVC: UIViewController) {
         presentModalView(editVC)
     }
@@ -161,30 +115,25 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     
     
     func deleteAction(indexPath: IndexPath) {
-        guard let rquizModel = realm?.objects(QuizTypeModel.self)[indexPath.row] else { return }
         
-        do {
-            try realm?.write() {
-                realm?.delete(rquizModel)
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self,
-                                       title: nil,
-                                       message: R.string.error.errorMessage,
-                                       handler: { _ in
-                return
-            })
-            return
+        QuizCategoryModel().deleteQuizCategoryModel(self, id: (quizTypeModel?[indexPath.row].id)!, createTime: (quizTypeModel?[indexPath.row].createTime)!) {
+            
+            NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
         }
         
-        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
+
     }
     
     
     func detailAction(indexPath: IndexPath) {
-        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: quizTypeModel?[indexPath.row].id, mode: .detail)
+        let viewController:QuizTypeEditViewController = QuizTypeEditViewController(typeid: quizTypeModel?[indexPath.row].id,
+                                                                                   createTime: quizTypeModel?[indexPath.row].createTime,
+                                                                                   mode: .detail
+        )
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    
     
     
 
@@ -259,7 +208,9 @@ extension QuizTypeManagementViewController {
             (action, indexPath) in
             
             self?.editAction(self!,
-                             editViewController: QuizTypeEditViewController(typeid: self?.quizTypeModel?[indexPath.row].id, mode: .edit
+                             editViewController: QuizTypeEditViewController(typeid: self?.quizTypeModel?[indexPath.row].id,
+                                                                            createTime: self?.quizTypeModel?[indexPath.row].createTime,
+                                                                            mode: .edit
                 )
             )
         }

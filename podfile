@@ -10,5 +10,11 @@ target 'Quiz' do
   pod 'R.swift','5.1.0'
   # Pods for Quiz
 
+    target 'QuizTests' do
+      inherit! :search_paths
+      pod 'RealmSwift','4.3.2'
+    end
+  
+  
 
 end

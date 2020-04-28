@@ -17,7 +17,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler: 「閉じる」ボタンのハンドラー
-    func alertAction(viewController:UIViewController, title: String?, message: String, handler: @escaping (UIAlertAction) -> ()){
+    func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, handler: @escaping (UIAlertAction) -> ()){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
@@ -40,7 +40,7 @@ struct AlertManager {
     ///   - message: メッセージ
     ///   - handler1: 「削除」ボタンのハンドラー
     ///   - handler2: 「閉じる」ボタンのハンドラー
-    func alertAction(viewController:UIViewController, title: String?, message: String, handler1: @escaping (UIAlertAction)->(),handler2: @escaping (UIAlertAction) -> ()){
+    func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, handler1: @escaping (UIAlertAction)->(),handler2: @escaping (UIAlertAction) -> ()){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
@@ -67,7 +67,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler1: 「はい」ボタンのハンドラー
-    func alertAction(viewController:UIViewController, title: String?, message: String, handler1: @escaping (UIAlertAction)->()){
+    func alertAction(_ viewController:UIViewController, title: String?, message: String, handler1: @escaping (UIAlertAction)->()){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert

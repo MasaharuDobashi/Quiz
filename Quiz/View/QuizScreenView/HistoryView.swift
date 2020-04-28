@@ -8,6 +8,7 @@
 
 import UIKit
 import LineGraphView
+import RealmSwift
 
 
 
@@ -16,7 +17,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     // MARK: Properties
     
     private let screenWidth = UIScreen.main.bounds.width
-    private var historyModel: [HistoryModel]!
+    private var historyModel: Results<HistoryModel>!
     private var trueCounts:[Int]!
     
     
@@ -50,12 +51,10 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         backgroundColor = R.color.Beige
-
     }
     
-    convenience init(frame: CGRect, historyModel model: [HistoryModel]) {
+    convenience init(frame: CGRect, historyModel model: Results<HistoryModel>!) {
         self.init(frame: frame)
         historyModel = model
         trueCounts = [Int]()
@@ -154,7 +153,20 @@ fileprivate final class HistoryCell: UITableViewCell {
     /// セルのテキストをセットする
     /// - Parameter listValue: title: 日付, value: 正解数
     func setValue(listValue: ListValue){
-        textLabel?.text = listValue.title
+        textLabel?.text = delete_sec(listValue.title)
         detailTextLabel?.text = listValue.value + "問"
+    }
+    
+    
+    
+    /// 秒数の部分を削除する
+    private func delete_sec(_ str: String) -> String {
+        /// 履歴の時間を秒数までの保存に変更したが、表示するのは分までなので秒数を削って表示する
+        if str.count == "yyyy/MM/dd HH:mm:ss".count {
+            return String(str.prefix(str.count - 3))
+        } else {
+            return str
+        }
+        
     }
 }

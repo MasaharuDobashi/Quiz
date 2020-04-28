@@ -19,8 +19,7 @@ final class HistoryViewController: UIViewController {
         return historyView
     }()
     
-    private var realm: Realm?
-    private var historyModel: [HistoryModel]!
+    private var historyModel: Results<HistoryModel>!
     
     
     // MARK: Lifecycle
@@ -30,24 +29,8 @@ final class HistoryViewController: UIViewController {
         
         navigationController?.navigationBar.backgroundColor = R.color.cellWhite
         
-        historyModel = [HistoryModel]()
-        do {
-            realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-            
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
+        historyModel = HistoryModel.allFindHistory(self)
         
-        for i in 0..<(realm?.objects(HistoryModel.self).count)! {
-            historyModel.append((realm?.objects(HistoryModel.self)[i])!)
-            
-            historyModel.sort{
-                $0.date < $1.date
-            }
-        }
         
         view.addSubview(historyView)
     

@@ -15,17 +15,14 @@ import RealmSwift
 final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Properties
-    
-    private var realm: Realm?
-    private let config = Realm.Configuration(schemaVersion: 1)
-    
+        
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum = ModeEnum.add
     
     /// クイズのカテゴリのID
     private var typeid: String?
     
-    private var filter: QuizTypeModel?
+    private var filter: QuizCategoryModel?
     
     /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
@@ -43,25 +40,13 @@ final class QuizTypeEditViewController: UIViewController {
     
     // MARK: Init
     
-    convenience init(typeid: String?, mode: ModeEnum){
+    convenience init(typeid: String?, createTime: String?, mode: ModeEnum){
         self.init()
         self.mode = mode
         
-        do {
-              realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-          } catch {
-              AlertManager().alertAction(viewController: self,
-                                         title: nil,
-                                         message: R.string.error.errorMessage,
-                                         handler: { _ in
-                  return
-              })
-              return
-          }
-          
-        
-        if let _typeid = typeid {
-            filter = self.realm?.objects(QuizTypeModel.self).filter("id == '\(String(describing: _typeid))'").first!
+        if let _typeid = typeid,
+        let _createTime = createTime {
+            filter = QuizCategoryModel.findQuizCategoryModel(self, id: _typeid, createTime: _createTime)
         }
     }
     
@@ -71,7 +56,6 @@ final class QuizTypeEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        realm = try! Realm(configuration: config)
         
         view.backgroundColor = R.color.cellWhite
         
@@ -104,19 +88,16 @@ final class QuizTypeEditViewController: UIViewController {
         
         if mode == .add {
             addRealm()
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
+            AlertManager().alertAction( self, title: nil, message: "問題を作成しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
         } else if mode == .edit {
             updateRealm()
-            AlertManager().alertAction(viewController: self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
+            AlertManager().alertAction( self, title: nil, message: "問題を更新しました", handler: { [weak self] Void in
                 self?.leftButtonAction()
             })
         }
         
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
-        }
         
         
         NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
@@ -125,41 +106,16 @@ final class QuizTypeEditViewController: UIViewController {
     
     /// Realmに新規追加
     private func addRealm(){
-        let quizTypeModel = QuizTypeModel()
-        realm = try! Realm(configuration: config)
-        
-        guard let id: Int = realm?.objects(QuizTypeModel.self).count else { return }
-        
-        quizTypeModel.id = String(id)
-        quizTypeModel.quizTypeTitle = quizTypeEditView.typeTextField.text!
-        
-        do {
-            try realm?.write() {
-                realm?.add(quizTypeModel)
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
+        QuizCategoryModel.addQuizCategoryModel(self, categorytitle: quizTypeEditView.typeTextField.text!)
         
     }
     
     
     /// アップデート
-    private func updateRealm(){
+    private func updateRealm() {
         
-        do {
-            try realm?.write() {
-                filter?.quizTypeTitle = quizTypeEditView.typeTextField.text!
-            }
-        } catch {
-            AlertManager().alertAction(viewController: self, title: nil, message: R.string.error.errorMessage, handler: { _ in
-                return
-            })
-            return
-        }
+        QuizCategoryModel.updateQuizCategoryModel(self, id: filter!.id, createTime: filter?.createTime, categorytitle: quizTypeEditView.typeTextField.text!)
+        
         
     }
 }

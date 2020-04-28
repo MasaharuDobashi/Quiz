@@ -13,14 +13,13 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     // MARK: Properties
     
-    /// Realmのインスタンス
-    private var realm:Realm?
-    
     /// クイズのカテゴリを格納
-    private var quizTypeModel: [QuizTypeModel]?
+    private var quizTypeModel: Results<QuizCategoryModel>?
 
     /// 選択されたクイズのカテゴリを格納
-    var checkID: QuizTypeModel?
+    var selectCategory: QuizCategoryModel?
+    
+    var firstCheck = false
     
     
     // MARK: LifeCycle
@@ -41,34 +40,12 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     /// 選択したクイズを登録
     override func rightButtonAction() {
-        AlertManager().alertAction(viewController: self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
-            
-            /// チャックマークのついたセルのIDを格納
-            guard let id: String = self?.checkID?.id else { return }
-            
-            /// チェックマークのついたIDと同じIDのクイズタイプを格納
-            guard let filter: QuizTypeModel = (self?.realm?.objects(QuizTypeModel.self).filter("id == '\(id)'").first) else { return }
-            
-            /// isSelectが"1"になっていたクイズタイプを格納
-            let afilter: QuizTypeModel? = (self?.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first)
-            
-            do {
-                try self?.realm?.write() {
-                    filter.isSelect = "1"
-                    afilter?.isSelect = "0"
-                }
-                self?.navigationController?.popViewController(animated: true)
-                
-            } catch {
-                AlertManager().alertAction(viewController: self!,
-                                           title: nil,
-                                           message: R.string.error.errorMessage,
-                                           handler: { _ in
-                    return
-                })
-                return
-            }}
-            
+        
+        QuizCategoryModel.updateisSelect(self, selectCategory: (self.selectCategory)!)
+        
+        AlertManager().alertAction(self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
+            self?.navigationController?.popToRootViewController(animated: true)
+            }
         )
     }
     
@@ -88,28 +65,8 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     /// quizTypeModelに格納する
     fileprivate func setUpModel() {
-         do {
-             realm = try Realm(configuration: Realm.Configuration(schemaVersion: realmConfig))
-         } catch {
-             AlertManager().alertAction(viewController: self,
-                                        title: nil,
-                                        message: R.string.error.errorMessage,
-                                        handler: { _ in
-                 return
-             })
-             return
-         }
-         
-         quizTypeModel = [QuizTypeModel]()
-         
-         for type in (realm?.objects(QuizTypeModel.self))! {
-             quizTypeModel?.append(type)
-         }
-        
-        if let filter = (self.realm?.objects(QuizTypeModel.self).filter("isSelect == '1'").first) {
-            checkID = filter
-        }
-        
+        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
+        selectCategory = QuizCategoryModel.findSelectQuizCategoryModel(self)
      }
     
     
@@ -169,21 +126,27 @@ extension QuizTypeSelectTableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
         
+        if firstCheck == false {
+            for i in 0..<quizTypeModel!.count {
+                let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0))
+                cell?.accessoryType = .none
+            }
+            firstCheck = true
+        }
+        
         /// すでにチェック付いていたらチェックを外す
-        let id: Int = Int(checkID?.id ?? "0") ?? 0
-        let selectCell = tableView.cellForRow(at: IndexPath(row: id, section: 0))
+        let selectCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 0))
+        selectCategory = quizTypeModel?[indexPath.row]
         selectCell?.accessoryType = .none
         selectCell?.isSelected = false
-        
-        
         cell?.accessoryType = .checkmark
-        checkID = self.realm?.objects(QuizTypeModel.self).filter("id == '\(String(describing: indexPath.row))'").first
     }
     
     
     /// チェックマークの選択解除
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath)
+        
         cell?.accessoryType = .none
     }
     
