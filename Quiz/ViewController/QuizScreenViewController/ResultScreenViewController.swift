@@ -59,7 +59,7 @@ final class ResultScreenViewController: UIViewController {
         
         
         if #available(iOS 13.0, *) {
-            NotificationCenter.default.post(name: Notification.Name(R.notification.ViewUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.string.notifications.viewUpdate()), object: nil)
         }
         
     }

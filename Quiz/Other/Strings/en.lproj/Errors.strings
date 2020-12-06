@@ -1,0 +1,8 @@
+/* 
+  Errors.strings
+  Quiz
+
+  Created by 土橋正晴 on 2020/12/06.
+  Copyright © 2020 m.dobashi. All rights reserved.
+*/
+"errorMessage" = "エラーが発生しました";

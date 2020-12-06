@@ -34,7 +34,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     private lazy var lineGraphView:LineGraphView = {
         let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts,
                                                lineOptions: .init(strokeWidth: 3,
-                                                                  strokeColor: R.color.Rubyred),
+                                                                  strokeColor: Rubyred),
                                                lineAnimationOptions: .init(isAnime: true, duration: Double(trueCounts.count) / 10)
         )
         
@@ -51,7 +51,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = R.color.Beige
+        backgroundColor = Beige
     }
     
     convenience init(frame: CGRect, historyModel model: Results<HistoryModel>!) {
@@ -141,7 +141,7 @@ fileprivate final class HistoryCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = R.color.cellWhite
+        backgroundColor = cellWhite
         selectionStyle = .none
     }
     

@@ -57,7 +57,7 @@ class HistoryModel: Object {
                 realm.add(historyModel)
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
                 return
             })
             return
@@ -92,7 +92,7 @@ class HistoryModel: Object {
                 realm.delete(historyModel.first!)
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
                 return
             })
             return

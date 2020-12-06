@@ -201,7 +201,7 @@ final class QuizEditViewController: UIViewController {
     
     
     private func postNotificationCenter() {
-        NotificationCenter.default.post(name: Notification.Name(R.notification.QuizUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizUpdate()), object: nil)
     }
     
     

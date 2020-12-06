@@ -121,7 +121,7 @@ class QuizModel: Object {
             }
         }
         catch {
-            AlertManager().alertAction(vc, message: R.string.error.errorMessage) { _ in
+            AlertManager().alertAction(vc, message: R.string.errors.errorMessage()) { _ in
                                         return
             }
         }
@@ -163,14 +163,14 @@ class QuizModel: Object {
                     
                 }
             } catch {
-                AlertManager().alertAction(vc, title: nil, message: R.string.error.errorMessage, handler: { _ in
+                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
                     return
                 })
                 return
             }
             
         } else {
-            AlertManager().alertAction(vc, title: nil, message: R.string.error.errorMessage, handler: { _ in
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
                 return
             })
         }
@@ -191,7 +191,7 @@ class QuizModel: Object {
                     realm.delete(quizModel)
                 }
             } catch {
-                AlertManager().alertAction(vc, title: nil, message: R.string.error.errorMessage, handler: { _ in
+                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
                     return
                 })
                 return

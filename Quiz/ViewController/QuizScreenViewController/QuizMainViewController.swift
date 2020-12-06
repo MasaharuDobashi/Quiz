@@ -8,7 +8,6 @@
 
 import UIKit
 import RealmSwift
-import Rswift
 
 // MARK: - QuizMainViewController
 
@@ -90,13 +89,13 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     func setNotificationCenter() {
         #if DEBUG
         /// QuizManagementViewControllerでallDeleteがpostされたら履歴ボタンを更新する
-        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: R.notification.AllDelete), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.allDelete()), object: nil)
         #endif
         
         
         /// R.notification.ViewUpdate、R.notification.QuizUpdateがpostされたらViewWillAppearを呼ぶ
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.notification.ViewUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.quizUpdate()), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.viewUpdate()), object: nil)
     }
     
     
