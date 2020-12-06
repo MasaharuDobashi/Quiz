@@ -57,7 +57,7 @@ final class QuizTypeEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = R.color.cellWhite
+        view.backgroundColor = cellWhite
         
         if mode != .detail {
             navigationItemAction()
@@ -100,7 +100,7 @@ final class QuizTypeEditViewController: UIViewController {
         
         
         
-        NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizTypeUpdate()), object: nil)
     }
     
     

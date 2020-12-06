@@ -43,7 +43,7 @@ class RealmManager {
             
         } catch {
             AlertManager().alertAction(vc,
-                                        message: R.string.error.errorMessage,
+                                        message: R.string.errors.errorMessage(),
                                         handler: { _ in
                                             return
             })

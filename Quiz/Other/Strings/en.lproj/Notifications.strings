@@ -1,0 +1,21 @@
+/* 
+  Notifications.strings
+  Quiz
+
+  Created by 土橋正晴 on 2020/12/06.
+  Copyright © 2020 m.dobashi. All rights reserved.
+*/
+
+
+
+/// QuizManagementViewControllerの更新
+"QuizUpdate" = "quizUpdate";
+
+/// データベース内のデータ全削除
+"AllDelete" = "allDelete";
+
+/// iOS13以降でモーダルを閉じた時にViewWillAppearを呼ぶ
+"ViewUpdate" = "viewUpdate";
+
+/// QuizTypeManagementViewControllerの更新
+"quizTypeUpdate" = "quizTypeUpdate";

@@ -151,7 +151,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
-        cell.backgroundColor = R.color.cellWhite
+        cell.backgroundColor = cellWhite
         
         guard let rowEditValue:RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
         
@@ -192,7 +192,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
             displaySwitch.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textLabel?.text = rowEditValue.placeholder
             
-            cell.addSubview(displaySwitch)
+            cell.contentView.addSubview(displaySwitch)
             displaySwitch.translatesAutoresizingMaskIntoConstraints = false
             displaySwitch.trailingAnchor.constraint(equalTo: cell.trailingAnchor, constant: -20).isActive = true
             displaySwitch.centerYAnchor.constraint(equalTo: cell.centerYAnchor).isActive = true
@@ -304,7 +304,7 @@ final class QuizEditView: UITableView, UITableViewDelegate, UITableViewDataSourc
         textField.inputAccessoryView = toolBar
         textField.delegate = self
         textField.textAlignment = .left
-        cell.addSubview(textField)
+        cell.contentView.addSubview(textField)
         
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true

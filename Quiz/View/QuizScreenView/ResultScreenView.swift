@@ -44,7 +44,7 @@ final class ResultScreenView: UIView {
         let label:UILabel = UILabel(title: "",
             font: UIFont.boldSystemFont(ofSize: 18),
             textColor: .white,
-            backgroundColor:R.color.Rose,
+            backgroundColor:Rose,
             textAlignment: .left,
             numberOfLines: 0
         )
@@ -61,7 +61,7 @@ final class ResultScreenView: UIView {
     override init(frame: CGRect) {
         super.init(frame:frame)
         
-        backgroundColor = R.color.Beige
+        backgroundColor = Beige
     }
     
     

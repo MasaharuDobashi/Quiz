@@ -27,7 +27,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.notification.quizTypeUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateQuizTypeUpdate), name: NSNotification.Name(rawValue: R.string.notifications.quizTypeUpdate()), object: nil)
         
         setBarButtonItem()
     }
@@ -74,7 +74,7 @@ final class QuizTypeManagementViewController: UITableViewController {
                                        RealmManager().allModelDelete(self!) {
                                            self?.modelAppend()
                                            self?.tabBarController?.selectedIndex = 0
-                                           NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
+                                        NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
                                        }
            }){ (action) in return }
            
@@ -118,7 +118,7 @@ extension QuizTypeManagementViewController: ManagementProtocol {
         
         QuizCategoryModel().deleteQuizCategoryModel(self, id: (quizTypeModel?[indexPath.row].id)!, createTime: (quizTypeModel?[indexPath.row].createTime)!) {
             
-            NotificationCenter.default.post(name: Notification.Name(R.notification.quizTypeUpdate), object: nil)
+            NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizTypeUpdate()), object: nil)
         }
         
 

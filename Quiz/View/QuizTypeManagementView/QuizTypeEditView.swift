@@ -74,7 +74,7 @@ final class QuizTypeEditView: UITableView, UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
-        cell.addSubview(typeTextField)
+        cell.contentView.addSubview(typeTextField)
         
         typeTextField.translatesAutoresizingMaskIntoConstraints = false
         typeTextField.topAnchor.constraint(equalTo: cell.topAnchor).isActive = true

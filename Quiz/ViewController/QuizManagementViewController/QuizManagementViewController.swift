@@ -77,7 +77,7 @@ final class QuizManagementViewController: UITableViewController {
                                     RealmManager().allModelDelete(self!) {
                                         self?.modelAppend()
                                         self?.tabBarController?.selectedIndex = 0
-                                        NotificationCenter.default.post(name: Notification.Name(R.notification.AllDelete), object: nil)
+                                        NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
                                     }
         }){ (action) in return }
         
@@ -91,7 +91,7 @@ final class QuizManagementViewController: UITableViewController {
     
     private func setNotificationCenter() {
         /// quizModelをアップデート
-        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: R.notification.QuizUpdate), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(quizUpdate(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.quizUpdate()), object: nil)
         
     }
     

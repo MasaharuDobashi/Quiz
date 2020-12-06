@@ -101,7 +101,7 @@ final class QuizListCell: UITableViewCell {
             if displaySwitch == "1" {
                 self.backgroundColor = .lightGray
             } else {
-                self.backgroundColor = R.color.cellWhite
+                self.backgroundColor = cellWhite
             }
         }
         
@@ -115,7 +115,7 @@ final class QuizListCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .value2, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = R.color.cellWhite
+        backgroundColor = cellWhite
         
         setConstraint()
     }
@@ -132,7 +132,7 @@ final class QuizListCell: UITableViewCell {
     /// 制約をセットする
     private func setConstraint() {
         
-        addSubview(quizNoLabel)
+        contentView.addSubview(quizNoLabel)
         quizNoLabel.translatesAutoresizingMaskIntoConstraints = false
         quizNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
         quizNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
@@ -161,7 +161,7 @@ final class QuizListCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         
-        backgroundColor = R.color.cellWhite
+        backgroundColor = cellWhite
     }
     
 }

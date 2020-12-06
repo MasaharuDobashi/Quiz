@@ -7,17 +7,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "479FBFD5-0F94-4114-B7C4-CF2A326F974E"
-            shouldBeEnabled = "No"
+            uuid = "D268CFDB-AC2F-4E8C-907F-1A63516C10C0"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "QuizTests/HistoryModelTests.swift"
+            filePath = "Quiz/ViewController/QuizManagementViewController/QuizManagementViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "HistoryModelTests"
-            landmarkType = "3">
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
