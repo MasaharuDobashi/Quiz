@@ -132,7 +132,7 @@ final class QuizListCell: UITableViewCell {
     /// 制約をセットする
     private func setConstraint() {
         
-        addSubview(quizNoLabel)
+        contentView.addSubview(quizNoLabel)
         quizNoLabel.translatesAutoresizingMaskIntoConstraints = false
         quizNoLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
         quizNoLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true

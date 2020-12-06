@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 // MARK: - QuizMainViewController
 
@@ -15,11 +14,7 @@ import RealmSwift
 class QuizMainViewController: UIViewController, QuizMainViewDelegate {
     
     // MARK: Properties
-    
-    /// Realmのスキームバージョンを設定
-    private var realm:Realm?
-    
-    
+
     /// スタートボタンや履歴ボタンを表示する画面
     private lazy var quizMainView:QuizMainView = {
         let quizMainView: QuizMainView = QuizMainView(frame: frame_Size(self))
