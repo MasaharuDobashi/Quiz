@@ -43,7 +43,7 @@ class HistoryModel: Object {
         
         let historyModel = HistoryModel()
         historyModel.quizTrueCount = String(count)
-        historyModel.date = String().nowDate_sec()
+        historyModel.date = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
         
         
         #if DEBUG

@@ -113,7 +113,7 @@ class QuizModel: Object {
         if let _quizTypeModel = quiztype {
             quizModel.quizTypeModel = _quizTypeModel
         }
-        quizModel.createTime = String().nowDate_sec()
+        quizModel.createTime = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
         
         do {
             try realm.write() {
@@ -158,7 +158,7 @@ class QuizModel: Object {
                     
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
                     if quizModel.createTime!.isEmpty {
-                        quizModel.createTime = String().nowDate_sec()
+                        quizModel.createTime = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
                     }
                     
                 }
