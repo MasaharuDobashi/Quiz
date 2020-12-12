@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class HistoryViewController: UIViewController {
     
@@ -19,7 +18,7 @@ final class HistoryViewController: UIViewController {
         return historyView
     }()
     
-    private var historyModel: Results<HistoryModel>!
+    private var historyModel: [HistoryModel]!
     
     
     // MARK: Lifecycle

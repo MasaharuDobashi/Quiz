@@ -42,7 +42,7 @@ class QuizMainViewController: UIViewController, QuizMainViewDelegate {
         
         quizMainView.isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true)?.count != 0 ? true : false
         quizMainView.isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self)?.count != 0 ? true : false
-        quizMainView.isHistory = HistoryModel.allFindHistory(self)?.count != 0 ? true : false
+        quizMainView.isHistory = HistoryModel.allFindHistory(self).isEmpty ? false : true
     }
     
     

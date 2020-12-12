@@ -26,9 +26,21 @@ class HistoryModel: Object {
     
     
     /// 履歴の全件検索
-    class func allFindHistory(_ vc: UIViewController) -> Results<HistoryModel>? {
-        guard let realm = RealmManager.initRealm(vc) else { return nil }
-        return realm.objects(HistoryModel.self).sorted(byKeyPath: "date")
+    class func allFindHistory(_ vc: UIViewController) -> [HistoryModel] {
+        guard let realm = RealmManager.initRealm(vc) else { return [] }
+        let results = realm.objects(HistoryModel.self).sorted(byKeyPath: "date")
+        
+        guard !results.isEmpty else {
+            print("HistoryModelが0件")
+            return []
+        }
+        
+        var returnModel:[HistoryModel] = [HistoryModel]()
+        results.forEach { value in
+            returnModel.append(value)
+        }
+        
+        return returnModel
     }
     
     
