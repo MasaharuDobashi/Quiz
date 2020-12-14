@@ -70,7 +70,7 @@ class QuizCategoryModel: Object {
         quizCategoryModel.id = String(realm.objects(QuizCategoryModel.self).count + 1)
         quizCategoryModel.isSelect = "0"
         quizCategoryModel.quizTypeTitle = categorytitle
-        quizCategoryModel.createTime = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
+        quizCategoryModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
         
         do {
             try realm.write() {
@@ -98,7 +98,7 @@ class QuizCategoryModel: Object {
 
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
                     if quizCategoryModel.createTime!.isEmpty {
-                        quizCategoryModel.createTime = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
+                        quizCategoryModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
                     }
                     
                 }
