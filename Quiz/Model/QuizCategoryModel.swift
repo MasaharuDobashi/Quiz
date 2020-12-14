@@ -77,10 +77,7 @@ class QuizCategoryModel: Object {
                 realm.add(quizCategoryModel)
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
-            return
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
     
     }
@@ -103,16 +100,11 @@ class QuizCategoryModel: Object {
                     
                 }
             } catch {
-                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                    return
-                })
-                return
+                AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
             }
             
         } else {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
     }
@@ -132,10 +124,7 @@ class QuizCategoryModel: Object {
                 selectedCategory?.isSelect = "1"
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
-            return
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
     }
     
@@ -154,12 +143,9 @@ class QuizCategoryModel: Object {
                 completeHandler()
             }
         } catch {
-            AlertManager().alertAction(vc,
+            AlertManager.alertAction(vc,
                                        message: R.string.errors.errorMessage(),
-                                       handler: { _ in
-                return
-            })
-            return
+                                       didTapCloseButton: nil)
         }
     }
     

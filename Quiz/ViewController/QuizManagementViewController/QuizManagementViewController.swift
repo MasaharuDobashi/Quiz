@@ -70,10 +70,10 @@ final class QuizManagementViewController: UITableViewController {
     /// デバッグ用でデータベースを削除する
     @objc override func leftButtonAction(){
         
-        AlertManager().alertAction(self,
+        AlertManager.alertAction(self,
                                    title: "データベースの削除",
                                    message: "作成した問題や履歴を全件削除します",
-                                   handler1: { [weak self]  (action) in
+                                   didTapDeleteButton: { [weak self]  (action) in
                                     RealmManager().allModelDelete(self!) {
                                         self?.modelAppend()
                                         self?.tabBarController?.selectedIndex = 0
@@ -241,7 +241,7 @@ extension QuizManagementViewController: ManagementProtocol {
     
     /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
-        AlertManager().alertAction(self, message: "削除しますか?", handler1: { [weak self] action in
+        AlertManager.alertAction(self, message: "削除しますか?", didTapDeleteButton: { [weak self] action in
             QuizModel.deleteQuiz(self!,
                                  id: (self?.quizModel?[indexPath.row].id)!,
                                  createTime: self?.quizModel?[indexPath.row].createTime

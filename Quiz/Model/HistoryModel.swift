@@ -69,10 +69,7 @@ class HistoryModel: Object {
                 realm.add(historyModel)
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
-            return
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
         
         if (realm.objects(HistoryModel.self).count) > 30 {
@@ -104,9 +101,7 @@ class HistoryModel: Object {
                 realm.delete(historyModel.first!)
             }
         } catch {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
             return
         }
         
