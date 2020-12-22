@@ -8,16 +8,15 @@
 
 import UIKit
 import LineGraphView
-import RealmSwift
 
-
-
-final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
+final class HistoryView: UIView {
     
     // MARK: Properties
     
     private let screenWidth = UIScreen.main.bounds.width
-    private var historyModel: Results<HistoryModel>!
+    
+    private var historyModel: [HistoryModel]!
+    
     private var trueCounts:[Int]!
     
     
@@ -54,7 +53,7 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
         backgroundColor = Beige
     }
     
-    convenience init(frame: CGRect, historyModel model: Results<HistoryModel>!) {
+    convenience init(frame: CGRect, historyModel model: [HistoryModel]) {
         self.init(frame: frame)
         historyModel = model
         trueCounts = [Int]()
@@ -104,7 +103,14 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    // MARK: UITableViewDelegate, UITableViewDataSource
+    
+}
+
+
+
+// MARK: - UITableViewDelegate, UITableViewDataSource
+
+extension HistoryView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return historyModel.count
@@ -113,7 +119,9 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let historyCell: HistoryCell = tableView.dequeueReusableCell(withIdentifier: "historyCell") as! HistoryCell
         
-        historyCell.setValue(listValue: ListValue(title: historyModel[indexPath.row].date, value: historyModel[indexPath.row].quizTrueCount))
+        historyCell.setValue(date: historyModel[indexPath.row].date,
+                             count: historyModel[indexPath.row].quizTrueCount
+        )
         return historyCell
     }
     
@@ -121,52 +129,6 @@ final class HistoryView: UIView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         return nil
     }
+
     
-}
-
-
-
-
-
-
-
-
-
-// MARK: - HistoryCell
-
-fileprivate final class HistoryCell: UITableViewCell {
-    
-    // MARK: Init
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
-        backgroundColor = cellWhite
-        selectionStyle = .none
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
-    /// セルのテキストをセットする
-    /// - Parameter listValue: title: 日付, value: 正解数
-    func setValue(listValue: ListValue){
-        textLabel?.text = delete_sec(listValue.title)
-        detailTextLabel?.text = listValue.value + "問"
-    }
-    
-    
-    
-    /// 秒数の部分を削除する
-    private func delete_sec(_ str: String) -> String {
-        /// 履歴の時間を秒数までの保存に変更したが、表示するのは分までなので秒数を削って表示する
-        if str.count == "yyyy/MM/dd HH:mm:ss".count {
-            return String(str.prefix(str.count - 3))
-        } else {
-            return str
-        }
-        
-    }
 }

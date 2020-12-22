@@ -95,7 +95,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         view.backgroundColor = .white
         
         if quizModel.count > 10 {
-            AlertManager().alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", handler: { _ in
+            AlertManager.alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", didTapCloseButton: { _ in
                 self.leftButtonAction()
             })
             
@@ -106,12 +106,12 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
                 view.addSubview(quizScreenView)
                 
             case .notSelect:
-                AlertManager().alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", handler: {_ in
+                AlertManager.alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", didTapCloseButton: {_ in
                     self.leftButtonAction()
                     
                 })
             case .none:
-                AlertManager().alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", handler: {_ in
+                AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: {_ in
                     self.leftButtonAction()
                     
                 })

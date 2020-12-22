@@ -113,7 +113,7 @@ class QuizModel: Object {
         if let _quizTypeModel = quiztype {
             quizModel.quizTypeModel = _quizTypeModel
         }
-        quizModel.createTime = String().nowDate_sec()
+        quizModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
         
         do {
             try realm.write() {
@@ -121,9 +121,7 @@ class QuizModel: Object {
             }
         }
         catch {
-            AlertManager().alertAction(vc, message: R.string.errors.errorMessage()) { _ in
-                                        return
-            }
+            AlertManager.alertAction(vc, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
     
     }
@@ -158,21 +156,16 @@ class QuizModel: Object {
                     
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
                     if quizModel.createTime!.isEmpty {
-                        quizModel.createTime = String().nowDate_sec()
+                        quizModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
                     }
                     
                 }
             } catch {
-                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                    return
-                })
-                return
+                AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
             }
             
         } else {
-            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
-                return
-            })
+            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
     }
@@ -191,7 +184,7 @@ class QuizModel: Object {
                     realm.delete(quizModel)
                 }
             } catch {
-                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), handler: { _ in
+                AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: { _ in
                     return
                 })
                 return

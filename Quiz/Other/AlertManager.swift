@@ -17,7 +17,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler: 「閉じる」ボタンのハンドラー
-    func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, handler: @escaping (UIAlertAction) -> ()){
+    static func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, didTapCloseButton: ((UIAlertAction) -> ())?){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
@@ -25,7 +25,7 @@ struct AlertManager {
         
         controller.addAction(UIAlertAction(title: "閉じる",
                                            style: .default,
-                                           handler: handler)
+                                           handler: didTapCloseButton)
         )
         viewController.present(controller, animated: true, completion: nil)
     }
@@ -40,7 +40,7 @@ struct AlertManager {
     ///   - message: メッセージ
     ///   - handler1: 「削除」ボタンのハンドラー
     ///   - handler2: 「閉じる」ボタンのハンドラー
-    func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, handler1: @escaping (UIAlertAction)->(),handler2: @escaping (UIAlertAction) -> ()){
+    static func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, didTapDeleteButton: ((UIAlertAction) -> ())?,didTapCancelButton: ((UIAlertAction) -> ())?){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
@@ -48,12 +48,12 @@ struct AlertManager {
         
         controller.addAction(UIAlertAction(title: "削除",
                                            style: .destructive,
-                                           handler: handler1)
+                                           handler: didTapDeleteButton)
         )
         
         controller.addAction(UIAlertAction(title: "閉じる",
                                            style: .default,
-                                           handler: handler2)
+                                           handler: didTapCancelButton)
         )
         viewController.present(controller, animated: true, completion: nil)
     }
@@ -67,7 +67,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler1: 「はい」ボタンのハンドラー
-    func alertAction(_ viewController:UIViewController, title: String?, message: String, handler1: @escaping (UIAlertAction)->()){
+    static func alertAction(_ viewController:UIViewController, title: String?, message: String, didTapYesButton: ((UIAlertAction) -> ())?, didTapNoButton: ((UIAlertAction) -> ())?){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
@@ -75,12 +75,12 @@ struct AlertManager {
         
         controller.addAction(UIAlertAction(title: "はい",
                                            style: .default,
-                                           handler: handler1)
+                                           handler: didTapYesButton)
         )
         
         controller.addAction(UIAlertAction(title: "いいえ",
                                            style: .default,
-                                           handler: nil)
+                                           handler: didTapNoButton)
         )
         viewController.present(controller, animated: true, completion: nil)
     }

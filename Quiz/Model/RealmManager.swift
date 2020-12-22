@@ -21,7 +21,7 @@ class RealmManager {
             return realm
         }
         catch {
-            AlertManager().alertAction(vc, message: "エラーが発生しました") { _ in
+            AlertManager.alertAction(vc, message: "エラーが発生しました") { _ in
                                         return
             }
         }
@@ -42,9 +42,9 @@ class RealmManager {
             completion()
             
         } catch {
-            AlertManager().alertAction(vc,
+            AlertManager.alertAction(vc,
                                         message: R.string.errors.errorMessage(),
-                                        handler: { _ in
+                                        didTapCloseButton: { _ in
                                             return
             })
             return

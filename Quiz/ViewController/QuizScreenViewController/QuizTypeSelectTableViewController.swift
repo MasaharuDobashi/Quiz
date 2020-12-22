@@ -43,7 +43,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
         
         QuizCategoryModel.updateisSelect(self, selectCategory: (self.selectCategory)!)
         
-        AlertManager().alertAction(self, title: nil, message: "クイズを選択しました", handler: { [weak self] _ in
+        AlertManager.alertAction(self, title: nil, message: "クイズを選択しました", didTapCloseButton: { [weak self] _ in
             self?.navigationController?.popToRootViewController(animated: true)
             }
         )

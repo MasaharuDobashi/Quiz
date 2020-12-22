@@ -28,8 +28,8 @@ class HistoryModelTests: XCTestCase {
         
         let historyModel = HistoryModel.allFindHistory(UIViewController())
         
-        XCTAssert(historyModel?[0].quizTrueCount == "5", "設定した値が入っていない")
-        XCTAssertNotNil(historyModel?[0].date, "日時が入っていない")
+        XCTAssert(historyModel[0].quizTrueCount == "5", "設定した値が入っていない")
+        XCTAssertNotNil(historyModel[0].date, "日時が入っていない")
     }
     
     
@@ -41,7 +41,7 @@ class HistoryModelTests: XCTestCase {
         }
         
         let historyModel = HistoryModel.allFindHistory(UIViewController())
-        XCTAssertTrue(historyModel?.count == 30, "30件以上登録されている")
+        XCTAssertTrue(historyModel.count == 30, "30件以上登録されている")
     }
 
 }
