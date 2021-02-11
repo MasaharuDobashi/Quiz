@@ -78,6 +78,8 @@ class QuizCategoryModel: Object {
             try realm.write() {
                 realm.add(quizCategoryModel)
             }
+            
+            NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizUpdate()), object: nil)
         } catch {
             AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
