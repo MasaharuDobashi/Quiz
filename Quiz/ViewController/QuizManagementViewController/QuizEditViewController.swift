@@ -28,7 +28,7 @@ final class QuizEditViewController: UIViewController {
     private var quizModel: QuizModel!
     
     ///  カテゴリを格納
-    private var quizCategoryModel: Results<QuizCategoryModel>!
+    private var quizCategoryModel: [QuizCategoryModel]!
     
     
     

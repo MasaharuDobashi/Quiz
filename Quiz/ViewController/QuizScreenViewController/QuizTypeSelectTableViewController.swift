@@ -7,30 +7,26 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class QuizTypeSelectTableViewController: UITableViewController {
     
     // MARK: Properties
     
     /// クイズのカテゴリを格納
-    private var quizTypeModel: Results<QuizCategoryModel>?
+    private var quizTypeModel: [QuizCategoryModel]?
 
     /// 選択されたクイズのカテゴリを格納
-    var selectCategory: QuizCategoryModel?
+    private var selectCategory: QuizCategoryModel?
     
-    var firstCheck = false
+    private var firstCheck = false
     
     
     // MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        
         setUpModel()
-        
         setUpTableView()
     }
 
@@ -40,20 +36,19 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     /// 選択したクイズを登録
     override func rightButtonAction() {
-        
-        QuizCategoryModel.updateisSelect(self, selectCategory: (self.selectCategory)!)
+        guard let _selectCategory = selectCategory else { return }
+        QuizCategoryModel.updateisSelect(self, selectCategory: _selectCategory)
         
         AlertManager.alertAction(self, title: nil, message: "クイズを選択しました", didTapCloseButton: { [weak self] _ in
             self?.navigationController?.popToRootViewController(animated: true)
-            }
-        )
+        })
     }
     
     
     
     
     /// tableViewをセットする
-    fileprivate func setUpTableView() {
+    private func setUpTableView() {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInset = .zero
@@ -64,25 +59,13 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     
     /// quizTypeModelに格納する
-    fileprivate func setUpModel() {
+    private func setUpModel() {
         quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
-        selectCategory = QuizCategoryModel.findSelectQuizCategoryModel(self)
      }
     
     
     
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -103,7 +86,7 @@ extension QuizTypeSelectTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return quizTypeModel!.count
+        return quizTypeModel?.count ?? 0
     }
 
 
@@ -127,18 +110,14 @@ extension QuizTypeSelectTableViewController {
         let cell = tableView.cellForRow(at: indexPath)
         
         if firstCheck == false {
+            /// 画面描画時にチェックマークについていたチェックマークが消えないため、初回は全部チェックマークを消す
             for i in 0..<quizTypeModel!.count {
                 let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0))
                 cell?.accessoryType = .none
             }
             firstCheck = true
         }
-        
-        /// すでにチェック付いていたらチェックを外す
-        let selectCell = tableView.cellForRow(at: IndexPath(row: indexPath.row, section: 0))
         selectCategory = quizTypeModel?[indexPath.row]
-        selectCell?.accessoryType = .none
-        selectCell?.isSelected = false
         cell?.accessoryType = .checkmark
     }
     

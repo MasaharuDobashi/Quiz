@@ -15,7 +15,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 
     // MARK: Properties
     
-    var quizTypeModel: Results<QuizCategoryModel>? {
+    var quizTypeModel: [QuizCategoryModel]? {
         didSet {
             tableView.reloadData()
         }

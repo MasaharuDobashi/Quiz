@@ -34,9 +34,11 @@ class QuizCategoryModel: Object {
     
     
     /// カテゴリの全件検索
-    class func findAllQuizCategoryModel(_ vc: UIViewController) -> Results<QuizCategoryModel>? {
+    class func findAllQuizCategoryModel(_ vc: UIViewController) -> [QuizCategoryModel]? {
         guard let realm = RealmManager.initRealm(vc) else { return nil }
-        return realm.objects(QuizCategoryModel.self)
+        var returnModel = [QuizCategoryModel]()
+        realm.objects(QuizCategoryModel.self).forEach { returnModel.append($0) }
+        return returnModel
     }
     
     
