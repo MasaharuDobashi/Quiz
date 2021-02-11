@@ -19,11 +19,9 @@ class MainTabViewController: UITabBarController {
         let quizCreateViewController:QuizManagementViewController = QuizManagementViewController(style: .grouped)
         let quizTypeManagementViewController: QuizTypeManagementViewController = QuizTypeManagementViewController(style: .grouped)
         
-        quizMainViewController.tabBarItem = UITabBarItem(title: "メイン", image: UIImage(), tag: 0)
-        quizCreateViewController.tabBarItem = UITabBarItem(title: "クイズ", image: UIImage(), tag: 1)
-        quizTypeManagementViewController.tabBarItem = UITabBarItem(title: "カテゴリ", image: UIImage(), tag: 2)
-//        quizMainViewController.tabBarItem.title = "メイン"
-//        quizCreateViewController.tabBarItem.title = "管理"
+        quizMainViewController.tabBarItem = UITabBarItem(title: "メイン", image: UIImage(systemName: "gamecontroller"), tag: 0)
+        quizCreateViewController.tabBarItem = UITabBarItem(title: "クイズ", image: UIImage(systemName: "list.dash"), tag: 1)
+        quizTypeManagementViewController.tabBarItem = UITabBarItem(title: "カテゴリ", image: UIImage(systemName: "list.dash"), tag: 2)
         
         viewControllers.append(quizMainViewController)
         viewControllers.append(quizCreateViewController)
