@@ -171,30 +171,26 @@ extension QuizManagementViewController {
     
     
     /// スワイプしたセルに「編集」「削除」の項目を表示する
-    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         /// 編集
-        let edit = UITableViewRowAction(style: .normal, title: "編集") { [weak self]
-            (action, indexPath) in
-            
+        let edit = UIContextualAction(style: .normal, title: "編集") { [weak self] _, _, _ in
             self?.editAction(self!,
                              editViewController: QuizEditViewController(quzi_id: (self?.quizModel?[indexPath.row].id)!,
-                                                                         createTime: (self?.quizModel?[indexPath.row].createTime)!,
+                                                                        createTime: (self?.quizModel?[indexPath.row].createTime)!,
                                                                         mode: .edit)
             )
         }
         edit.backgroundColor = UIColor.orange
         
-        
         /// 削除
-        let del = UITableViewRowAction(style: .destructive, title: "削除") { [weak self]
-            (action, indexPath) in
-            
+        let del = UIContextualAction(style: .destructive, title: "削除") { [weak self] _, _, _ in
             self?.deleteAction(indexPath: indexPath)
         }
-        
-        return [edit, del]
+
+        return UISwipeActionsConfiguration(actions: [edit, del])
     }
+    
     
     
     /// クイズが0件の時はセルのスワイプをしない
