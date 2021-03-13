@@ -17,7 +17,7 @@ final class HistoryCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = cellWhite
+        backgroundColor = R.color.cellWhite()
         selectionStyle = .none
     }
     

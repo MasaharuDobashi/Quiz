@@ -57,7 +57,7 @@ final class QuizTypeEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = cellWhite
+        view.backgroundColor = R.color.cellWhite()
         
         if mode != .detail {
             navigationItemAction()

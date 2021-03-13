@@ -13,9 +13,11 @@ import UIKit
 extension UIButton {
     
     
-    func setButton(title: String, backgroundColor: UIColor, font: UIFont ,target: Any?, action: Selector?) {
+    func setButton(title: String? = nil, backgroundColor: UIColor? = nil, font: UIFont ,target: Any?, action: Selector?) {
         setTitle(title, for: .normal)
-        self.backgroundColor = backgroundColor
+        if let _backgroundColor = backgroundColor{
+            self.backgroundColor = _backgroundColor
+        }
         titleLabel?.font = font
         isExclusiveTouch = true;
         

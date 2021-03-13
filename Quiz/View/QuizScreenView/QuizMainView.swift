@@ -34,9 +34,9 @@ final class QuizMainView: UIView {
         let button = UIButton()
         button.accessibilityIdentifier = "quizStartButton"
         button.setButton(title: "",
-                                  backgroundColor: Geranium,
-                                  font: UIFont.boldSystemFont(ofSize: 18),
-                                  target: self, action: #selector(quizStartButtonTapAction)
+                         backgroundColor: R.color.geranium(),
+                         font: UIFont.boldSystemFont(ofSize: 18),
+                         target: self, action: #selector(quizStartButtonTapAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         button.highlightAction()
@@ -44,7 +44,7 @@ final class QuizMainView: UIView {
         return button
     }()
     
-
+    
     
     /// 履歴ボタン
     ///
@@ -54,9 +54,9 @@ final class QuizMainView: UIView {
         let button = UIButton()
         button.accessibilityIdentifier = "historyButton"
         button.setButton(title: "履歴",
-                                backgroundColor: Rose,
-                                font: UIFont.boldSystemFont(ofSize: 18),
-                                target: self, action: #selector(historyButtonAction)
+                         backgroundColor: R.color.rose(),
+                         font: UIFont.boldSystemFont(ofSize: 18),
+                         target: self, action: #selector(historyButtonAction)
         )
         button.buttonHeight(multiplier: 0.06, cornerRadius: 8)
         button.highlightAction()
@@ -73,7 +73,7 @@ final class QuizMainView: UIView {
         let button = UIButton()
         button.accessibilityIdentifier = "typeButton"
         button.setButton(title: "",
-                         backgroundColor: Geranium,
+                         backgroundColor: R.color.geranium(),
                          font: UIFont.boldSystemFont(ofSize: 18),
                          target: self, action: #selector(quizTypeButtonAction)
         )
@@ -129,7 +129,7 @@ final class QuizMainView: UIView {
     override init(frame: CGRect) {
         super.init(frame:frame)
         
-        backgroundColor = Beige
+        backgroundColor = R.color.beige()
         setConstraint()
     }
     
@@ -187,10 +187,10 @@ final class QuizMainView: UIView {
     func startButtonColorChange(){
         if isActiveQuiz == false {
             quizStartButton.setTitle("クイズを作成", for: .normal)
-            quizStartButton.backgroundColor = Dawnpink
+            quizStartButton.backgroundColor = R.color.dawnpink()
         } else {
             quizStartButton.setTitle("クイズスタート", for: .normal)
-            quizStartButton.backgroundColor = Geranium
+            quizStartButton.backgroundColor = R.color.geranium()
         }
     }
     
@@ -221,10 +221,10 @@ final class QuizMainView: UIView {
     func typeButtonColorChange(){
         if isQuizType == true {
             quizTypeButton.setTitle("カテゴリの選択", for: .normal)
-            quizTypeButton.backgroundColor = Geranium
+            quizTypeButton.backgroundColor = R.color.geranium()
         } else {
             quizTypeButton.setTitle("クイズのカテゴリを作成", for: .normal)
-            quizTypeButton.backgroundColor = Dawnpink
+            quizTypeButton.backgroundColor = R.color.dawnpink()
         }
     }
     

@@ -33,7 +33,7 @@ final class HistoryView: UIView {
     private lazy var lineGraphView:LineGraphView = {
         let view:LineGraphView = LineGraphView(graphHeight: 290, values: trueCounts,
                                                lineOptions: .init(strokeWidth: 3,
-                                                                  strokeColor: Rubyred),
+                                                                  strokeColor: R.color.rubyred() ?? .red),
                                                lineAnimationOptions: .init(isAnime: true, duration: Double(trueCounts.count) / 10)
         )
         
@@ -50,7 +50,7 @@ final class HistoryView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = Beige
+        backgroundColor = R.color.beige()
     }
     
     convenience init(frame: CGRect, historyModel model: [HistoryModel]) {

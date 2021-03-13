@@ -24,7 +24,7 @@ final class HistoryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.backgroundColor = cellWhite
+        navigationController?.navigationBar.backgroundColor = R.color.cellWhite()
         
         setHistoryView()
     }
