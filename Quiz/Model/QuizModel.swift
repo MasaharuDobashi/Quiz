@@ -54,14 +54,18 @@ class QuizModel: Object {
     // MARK: Function
     
     /// クイズの全件検索
-    class func allFindQuiz(_ vc: UIViewController, isSort: Bool = true) -> Results<QuizModel>? {
+    class func allFindQuiz(_ vc: UIViewController, isSort: Bool = true) -> [QuizModel]? {
         guard let realm = RealmManager.initRealm(vc) else { return nil }
+        var returnModel = [QuizModel]()
+        var model: Results<QuizModel>
         
         if isSort {
-            return realm.objects(QuizModel.self).sorted(byKeyPath: "id")
-            
+            model = realm.objects(QuizModel.self).sorted(byKeyPath: "id")
+        } else {
+            model = realm.objects(QuizModel.self)
         }
-        return realm.objects(QuizModel.self)
+        model.forEach { returnModel.append($0) }
+        return returnModel
     }
     
     

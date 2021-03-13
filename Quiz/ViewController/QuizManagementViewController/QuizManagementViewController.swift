@@ -15,7 +15,7 @@ final class QuizManagementViewController: UITableViewController {
     // MARK: Properties
     
     /// クイズのリストを格納する
-    private var quizModel: Results<QuizModel>? {
+    private var quizModel: [QuizModel]? {
         didSet {
             tableView.reloadData()
         }
@@ -52,7 +52,9 @@ final class QuizManagementViewController: UITableViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInset = .zero
-        tableView.register(QuizListCell.self, forCellReuseIdentifier: "quizCell")
+        tableView.estimatedRowHeight = 5
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.register(R.nib.quizListCell)
     }
     
     
@@ -138,12 +140,8 @@ extension QuizManagementViewController {
         }
         
         /// モデルに格納されたクイズのタイトルを表示する
-        let quizCell: QuizListCell = tableView.dequeueReusableCell(withIdentifier: "quizCell") as! QuizListCell
-        quizCell.quizNoText = "問題\(indexPath.row + 1)"
-        quizCell.quizTitleText = (quizModel?[indexPath.row].quizTitle)!
-        quizCell.quizTypeText = quizModel?[indexPath.row].quizTypeModel?.quizTypeTitle
-        quizCell.displaySwitch = (quizModel?[indexPath.row].displayFlag)
-        
+        let quizCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizListCell.identifier) as! QuizListCell
+        quizCell.setValue(row: indexPath.row, model: quizModel?[indexPath.row])
         return quizCell
     }
     
@@ -157,7 +155,7 @@ extension QuizManagementViewController {
     
     
     
-    /// クイズが0件の時はセルをえ選択させない
+    /// クイズが0件の時はセルを選択させない
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if quizModel?.count == 0 {
             return nil

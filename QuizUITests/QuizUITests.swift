@@ -204,7 +204,7 @@ class QuizUITests: XCTestCase {
         
         
         app.tabBars.buttons["クイズ"].tap()
-        app.tables.staticTexts["問題1"].swipeLeft()
+        app.tables.staticTexts["問題1:"].swipeLeft()
         app.tables.buttons["編集"].tap()
         
         
@@ -257,9 +257,9 @@ class QuizUITests: XCTestCase {
         let app = XCUIApplication()
         app.tabBars.buttons["クイズ"].tap()
         
-        XCTAssert(app.tables.staticTexts["問題1"].exists, "問題が作成されていない")
+        XCTAssert(app.tables.staticTexts["問題1:"].exists, "問題が作成されていない")
         
-        app.tables.staticTexts["問題1"].swipeLeft()
+        app.tables.staticTexts["問題1:"].swipeLeft()
         app.tables.buttons["削除"].tap()
         app.alerts.buttons["削除"].tap()
         
