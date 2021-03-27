@@ -30,10 +30,10 @@ final class QuizListCell: UITableViewCell {
     /// 表示・非表示のフラグでセルの色を変更
     private var displaySwitch: String? {
         didSet {
-            if displaySwitch == "1" {
-                self.backgroundColor = .lightGray
-            } else {
+            if displaySwitch == DisplayFlg.indicated.rawValue {
                 self.backgroundColor = R.color.cellWhite()
+            } else {
+                self.backgroundColor = .lightGray
             }
         }
         
@@ -51,15 +51,6 @@ final class QuizListCell: UITableViewCell {
         quizTitleLabel.sizeToFit()
         quizTypeLable.sizeToFit()
         detailHeight.constant = quizTitleLabel.frame.height + quizTypeLable.frame.height
-    }
-    
-    // MARK: Reuse
-    
-    /// セルを再利用するときはセルの背景色を白に戻す
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        backgroundColor = R.color.cellWhite()
     }
     
 }

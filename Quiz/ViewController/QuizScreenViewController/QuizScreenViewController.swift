@@ -50,6 +50,10 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if quizModel.count == 0 {
+            return
+        }
   
         debugPrint(object: quizModel[quizNum])
         
@@ -93,6 +97,13 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     /// 開始できない場合はモーダルを閉じる
     private func quizActiveCheck() {
         view.backgroundColor = .white
+        if quizModel.count == 0 {
+            AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: { _ in
+                self.leftButtonAction()
+            })
+            return
+        }
+        
         
         if quizModel.count > 10 {
             AlertManager.alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", didTapCloseButton: { _ in

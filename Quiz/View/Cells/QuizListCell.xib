@@ -5,7 +5,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,7 +36,6 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstItem="PdE-C4-3yB" firstAttribute="leading" secondItem="5gw-uE-RhV" secondAttribute="leading" id="4Tq-yf-AUx"/>
                                                     <constraint firstItem="PdE-C4-3yB" firstAttribute="top" secondItem="5gw-uE-RhV" secondAttribute="top" id="R9j-WH-qWl"/>
@@ -84,7 +82,6 @@
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="N4E-y2-Gwm" secondAttribute="trailing" id="97z-hb-zsI"/>
                                                     <constraint firstItem="N4E-y2-Gwm" firstAttribute="top" secondItem="4XE-Z9-z4e" secondAttribute="top" id="EEe-1E-fTp"/>
@@ -115,7 +112,6 @@
                         </constraints>
                     </view>
                 </subviews>
-                <color key="backgroundColor" name="CellWhite"/>
                 <constraints>
                     <constraint firstItem="ZqA-lq-lPo" firstAttribute="top" secondItem="OjW-tj-oTg" secondAttribute="top" constant="10" id="3Iy-eb-1rI"/>
                     <constraint firstAttribute="trailing" secondItem="ZqA-lq-lPo" secondAttribute="trailing" constant="20" id="VjB-at-Xse"/>
@@ -137,8 +133,5 @@
         <namedColor name="CellWhite">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

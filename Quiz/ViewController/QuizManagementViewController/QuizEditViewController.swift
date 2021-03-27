@@ -7,14 +7,10 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class QuizEditViewController: UIViewController {
     
     // MARK: Properties
-    
-    private let config = Realm.Configuration(schemaVersion: 1)
-    private var realm:Realm?
     
     /// クイズのID
     private var quzi_id: String?
@@ -66,7 +62,7 @@ final class QuizEditViewController: UIViewController {
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    } 
+    }
     
     
     /// add Init
