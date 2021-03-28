@@ -26,7 +26,7 @@ final class QuizTypeEditViewController: UIViewController {
     
     /// クイズのカテゴリのビュー
     lazy var quizTypeEditView: QuizTypeEditView = {
-        let view: QuizTypeEditView = QuizTypeEditView(frame: frame_Size(self), style: .grouped, mode: self.mode)
+        let view: QuizTypeEditView = QuizTypeEditView(frame: frame, style: .grouped, mode: self.mode)
         
         if self.mode != .add {
             view.typeTextField.text = filter?.quizTypeTitle
@@ -70,11 +70,6 @@ final class QuizTypeEditViewController: UIViewController {
     
     
     // MARK: NavigationItem Func
-    
-    override func navigationItemAction() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-    }
     
     override func rightButtonAction(){
         realmAction()

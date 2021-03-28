@@ -13,7 +13,7 @@ final class QuizEditViewController: UIViewController {
     // MARK: Properties
     
     /// クイズのID
-    private var quzi_id: String?
+    private var quiz_id: String?
     
     private var createTime: String?
     
@@ -28,32 +28,18 @@ final class QuizEditViewController: UIViewController {
     
     
     
-    private lazy var quizEditView:QuizEditView = {
-        
+    private lazy var quizEditView: QuizEditView = {
         switch mode {
         case .add:
-            navigationItemAction()
-            let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped, mode: mode)
-            quizEditView.quizTypeModel = quizCategoryModel
+            let quizEditView = QuizEditView(frame: frame, style: .grouped, mode: mode)
             return quizEditView
-        case .edit:
-            navigationItemAction()
-            quizModelAppend(quiz_id: quzi_id!)
-            let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
+        case .edit, .detail:
+            quizModelAppend()
+            let quizEditView = QuizEditView(frame: frame, style: .grouped, quizModel: quizModel, mode: mode)
             quizEditView.quizTypeModel = quizCategoryModel
             debugPrint(object: quizModel)
-            
             return quizEditView
-        case .detail:
-            quizModelAppend(quiz_id: quzi_id!)
-            let quizEditView = QuizEditView(frame: frame_Size(self), style: .grouped,quizModel: quizModel, mode: mode)
-            quizEditView.quizTypeModel = quizCategoryModel
-            debugPrint(object: quizModel)
-            
-            return quizEditView
-            
         }
-        
     }()
     
     
@@ -75,7 +61,7 @@ final class QuizEditViewController: UIViewController {
     /// edit,detail Init
     convenience init(quzi_id: String, createTime: String, mode: ModeEnum){
         self.init(nibName: nil, bundle: nil)
-        self.quzi_id = quzi_id
+        self.quiz_id = quzi_id
         self.createTime = createTime
         self.mode = mode
     }
@@ -89,21 +75,40 @@ final class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        quizCategoryModel = QuizCategoryModel.findAllQuizCategoryModel(self)
-        view.addSubview(quizEditView)
-        
-        
+        navigationItemAction()
+        initQuizEditView()
     }
     
+    
+    
+    /// QuizEditViewの初期化
+    private func initQuizEditView() {
+        switch mode {
+        case .add:
+            quizEditView = QuizEditView(frame: frame, style: .grouped, mode: mode)
+        case .edit, .detail:
+            quizModelAppend()
+            quizEditView = QuizEditView(frame: frame, style: .grouped, quizModel: quizModel, mode: mode)
+            debugPrint(object: quizModel)
+        }
+        quizEditView.quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
+        view.addSubview(quizEditView)
+    }
     
     
     // MARK: NavigationItem Func
     
     override func navigationItemAction() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        self.navigationItem.leftBarButtonItem = leftNaviButton
+        
+        switch mode {
+        case .add, .edit:
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        case .detail:
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(detailRightButtonAction))
+        }
+        
+        
     }
     
     
@@ -115,6 +120,29 @@ final class QuizEditViewController: UIViewController {
             postNotificationCenter()
         }
     }
+    
+    
+    override func leftButtonAction() {
+        if self.navigationController?.viewControllers.count ?? 0 > 1 {
+            self.navigationController?.popViewController(animated: true)
+        } else {
+            super.leftButtonAction()
+        }
+    }
+    
+    
+    @objc func detailRightButtonAction() {
+        AlertManager.createActionSheet(self, message: "このクイズをどうしますか？", didTapEditButton: { [weak self] _ in
+            self?.pushTransition(QuizEditViewController(quzi_id: self?.quizModel.id ?? "", createTime: self?.quizModel.createTime ?? "", mode: .edit))
+            
+        }, didTapDeleteButton: { _ in
+            self.deleteQuiz { [weak self] in
+                self?.leftButtonAction()
+            }
+        })
+    }
+    
+    
     
     
     
@@ -149,20 +177,27 @@ final class QuizEditViewController: UIViewController {
     
     
     /// アップデート
-    private func updateRealm(_ parameters: [String:Any], completion: () ->Void) {
-        QuizModel.updateQuiz(self, parameters: parameters, id: quzi_id! , createTime: createTime)
+    private func updateRealm(_ parameters: [String:Any], completion: () -> Void) {
+        QuizModel.updateQuiz(self, parameters: parameters, id: quiz_id! , createTime: createTime)
         completion()
+    }
+    
+    
+    /// クイズの削除
+    private func deleteQuiz(completion: () -> Void) {
+        QuizModel.deleteQuiz(self, id: quizModel.id, createTime: quizModel.createTime ?? "")
+        completion()
+    }
+    
+    /// クイズを一件取得
+    private func quizModelAppend() {
+        quizModel = QuizModel.findQuiz(self, quizid: quiz_id ?? "", createTime: createTime)
     }
     
     
     // MARK: Other 
     
-    private func quizModelAppend(quiz_id: String){
-        quizModel = QuizModel.findQuiz(self, quizid: quiz_id, createTime: createTime)
-    }
-    
-    
-    
+
     /// 各項目のバリデーションを実施
     func validate(parameters:[String:Any]) -> Bool {
         
@@ -180,7 +215,7 @@ final class QuizEditViewController: UIViewController {
         if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: "不正解3が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer3] as! String, message: "不正解3が未入力です。") == false {
             return false
         }
         

@@ -6,29 +6,35 @@
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import UIKit
-import RealmSwift
-
 
 extension UIViewController {
     
-    func frame_Size(_ viewController:UIViewController) -> CGRect {
-        
-        return CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+    var frame: CGRect {
+        get {
+            return UIScreen.main.bounds
+        }
     }
     
-    
-    
-    
     @objc func navigationItemAction() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        self.navigationItem.leftBarButtonItem = leftNaviButton
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
     }
     
     
+    var leftNaviButton: UIBarButtonItem? {
+        get {
+            if self.navigationController?.viewControllers.count ?? 0 <= 1 {
+                return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+            }
+            return nil
+        }
+    }
     
-    @objc func leftButtonAction(){
+    
+    
+    
+    @objc func leftButtonAction() {
         self.dismiss(animated: true, completion: nil)
     }
     

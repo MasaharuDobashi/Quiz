@@ -21,7 +21,7 @@ final class ResultScreenViewController: UIViewController {
     
     
     private lazy var resultScreenView:ResultScreenView = {
-        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame_Size(self))
+        let resultScreenView:ResultScreenView = ResultScreenView(frame: frame)
         resultScreenView.correctString = String(self.trueConunt)
         
         return resultScreenView

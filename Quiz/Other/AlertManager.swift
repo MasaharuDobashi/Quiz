@@ -23,7 +23,7 @@ struct AlertManager {
                                                              preferredStyle: .alert
         )
         
-        controller.addAction(UIAlertAction(title: "閉じる",
+        controller.addAction(UIAlertAction(title: R.string.button.close(),
                                            style: .default,
                                            handler: didTapCloseButton)
         )
@@ -40,18 +40,18 @@ struct AlertManager {
     ///   - message: メッセージ
     ///   - handler1: 「削除」ボタンのハンドラー
     ///   - handler2: 「閉じる」ボタンのハンドラー
-    static func alertAction(_ viewController:UIViewController, title: String? = nil, message: String, didTapDeleteButton: ((UIAlertAction) -> ())?,didTapCancelButton: ((UIAlertAction) -> ())?){
+    static func alertAction(_ viewController: UIViewController, title: String? = nil, message: String, didTapDeleteButton: ((UIAlertAction) -> ())?,didTapCancelButton: ((UIAlertAction) -> ())?){
         let controller:UIAlertController = UIAlertController(title: title,
                                                              message: message,
                                                              preferredStyle: .alert
         )
         
-        controller.addAction(UIAlertAction(title: "削除",
+        controller.addAction(UIAlertAction(title: R.string.button.delete(),
                                            style: .destructive,
                                            handler: didTapDeleteButton)
         )
         
-        controller.addAction(UIAlertAction(title: "閉じる",
+        controller.addAction(UIAlertAction(title: R.string.button.close(),
                                            style: .default,
                                            handler: didTapCancelButton)
         )
@@ -73,14 +73,42 @@ struct AlertManager {
                                                              preferredStyle: .alert
         )
         
-        controller.addAction(UIAlertAction(title: "はい",
+        controller.addAction(UIAlertAction(title: R.string.button.yes(),
                                            style: .default,
                                            handler: didTapYesButton)
         )
         
-        controller.addAction(UIAlertAction(title: "いいえ",
+        controller.addAction(UIAlertAction(title: R.string.button.no(),
                                            style: .default,
                                            handler: didTapNoButton)
+        )
+        viewController.present(controller, animated: true, completion: nil)
+    }
+    
+    
+    
+    
+    
+    /// 「編集」「削除」ボタンが付いたアクションシート
+    static func createActionSheet(_ viewController: UIViewController, title: String? = nil, message: String, didTapEditButton: ((UIAlertAction) -> ())?, didTapDeleteButton: ((UIAlertAction) -> ())?){
+        let controller:UIAlertController = UIAlertController(title: title,
+                                                             message: message,
+                                                             preferredStyle: .actionSheet
+        )
+        
+        controller.addAction(UIAlertAction(title: R.string.button.edit(),
+                                           style: .default,
+                                           handler: didTapEditButton)
+        )
+        
+        controller.addAction(UIAlertAction(title: R.string.button.delete(),
+                                           style: .destructive,
+                                           handler: didTapDeleteButton)
+        )
+        
+        controller.addAction(UIAlertAction(title: R.string.button.cancel(),
+                                           style: .cancel,
+                                           handler: didTapDeleteButton)
         )
         viewController.present(controller, animated: true, completion: nil)
     }

@@ -10,6 +10,7 @@
 		9A5E6D0FDD9E8F2731AA5983 /* Pods_QuizTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A108C30EBC1B529743AF96F /* Pods_QuizTests.framework */; };
 		D000711D2287F01400898310 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D000711C2287F01400898310 /* LaunchScreen.storyboard */; };
 		D00B95F5227A8F2B00CD60F3 /* UIButtonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */; };
+		D014AE8E26102ACF00634CCF /* Button.strings in Resources */ = {isa = PBXBuildFile; fileRef = D014AE8D26102ACF00634CCF /* Button.strings */; };
 		D01C2668231A4FE40057708B /* QuizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01C2667231A4FE40057708B /* QuizUITests.swift */; };
 		D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA1F21F9FC6D00AF1266 /* QuizMainViewController.swift */; };
 		D01CEA2221F9FC8E00AF1266 /* QuizScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D01CEA2121F9FC8E00AF1266 /* QuizScreenViewController.swift */; };
@@ -103,6 +104,7 @@
 		C4F748B74DA03903E708401A /* Pods-Quiz.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quiz.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quiz/Pods-Quiz.release.xcconfig"; sourceTree = "<group>"; };
 		D000711C2287F01400898310 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D00B95F4227A8F2B00CD60F3 /* UIButtonExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIButtonExtension.swift; sourceTree = "<group>"; };
+		D014AE8D26102ACF00634CCF /* Button.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Button.strings; sourceTree = "<group>"; };
 		D01C2665231A4FE40057708B /* QuizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuizUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D01C2667231A4FE40057708B /* QuizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUITests.swift; sourceTree = "<group>"; };
 		D01C2669231A4FE40057708B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 			children = (
 				D0DCE701257CF3420018A4BA /* Notifications.strings */,
 				D0DCE70B257CF3B00018A4BA /* Errors.strings */,
+				D014AE8D26102ACF00634CCF /* Button.strings */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 			files = (
 				D0517EC725F39D3B008FCD42 /* QuizMainViewController.storyboard in Resources */,
 				D07D27E125F4C69900612365 /* QuizTypeManagementViewController.storyboard in Resources */,
+				D014AE8E26102ACF00634CCF /* Button.strings in Resources */,
 				D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */,
 				D0540B1925FCCBCC00029F11 /* QuizListCell.xib in Resources */,
 				D0DCE6FF257CF3420018A4BA /* Notifications.strings in Resources */,

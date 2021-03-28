@@ -15,7 +15,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     // MARK: Properties
     
     private lazy var quizScreenView:QuizScreenView = {
-        let view: QuizScreenView = QuizScreenView(frame: frame_Size(self), quizModel: quizModel[quizNum])
+        let view: QuizScreenView = QuizScreenView(frame: frame, quizModel: quizModel[quizNum])
         view.delagate = self
         return view
     }()

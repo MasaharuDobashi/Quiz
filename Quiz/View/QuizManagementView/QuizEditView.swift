@@ -16,7 +16,7 @@ final class QuizEditView: UITableView {
     private var quizModel: QuizModel?
     
     /// クイズタイプを格納する
-    var quizTypeModel: [QuizCategoryModel]!
+    var quizTypeModel: [QuizCategoryModel]?
     
     /// クイズのカテゴリのIDを格納する
     private var typeid: String?
@@ -24,34 +24,28 @@ final class QuizEditView: UITableView {
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum!
     
-    /// タイトル入力テキストフィールド
+    /// タイトル
     private var title_text: String?
     
-    /// 正解入力テキストフィールド
+    /// 正解
     private var true_text: String?
     
-    /// 不正解1入力テキストフィールド
+    /// 不正解1
     private var false1_text: String?
     
-    /// 不正解2入力テキストフィールド
+    /// 不正解2
     private var false2_text: String?
     
-    /// 不正解3入力テキストフィールド
+    /// 不正解3
     private var false3_text: String?
     
+    /// カテゴリ
+    private var quizTypeTitle: String?
+    
     /// クイズの表示フラグ
-    private var isDisplay = false
+    private var isDisplay = true
     
-    /// カテゴリ入力テキストフィールド
-    private lazy var quizTypeTextField: UITextField = {
-        let textField: UITextField = UITextField()
-        textField.inputView = quizTypePicker
-        
-        return textField
-    }()
     
-    /// カテゴリ選択Picker
-    private var quizTypePicker: UIPickerView?
     
     
     /// テキストフィールドに乗せるToolbar
@@ -72,7 +66,6 @@ final class QuizEditView: UITableView {
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         initTableView()
-        initPickerView()
     }
     
     
@@ -92,6 +85,8 @@ final class QuizEditView: UITableView {
         self.false1_text = quizModel?.falseAnswer1
         self.false2_text = quizModel?.falseAnswer2
         self.false3_text = quizModel?.falseAnswer3
+        self.quizTypeTitle = quizModel?.quizTypeModel?.quizTypeTitle
+        self.typeid = quizModel?.quizTypeModel?.id
         self.isDisplay = quizModel?.displayFlag == DisplayFlg.indicated.rawValue ? true : false
         self.mode = mode
     }
@@ -209,9 +204,19 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             }
             return cell
         case .quizType:
-            if quizTypeModel?.count == 0 { return UITableViewCell() }
-            quizTypeTextField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
-            quizTypeTextField.placeholder = rowEditValue.placeholder
+            guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
+                return UITableViewCell()
+            }
+            cell.setTextFieldValue(text: quizTypeTitle, placeholder: rowEditValue.placeholder, toolBar: toolBar)
+            cell.setPickerView(quizTypeModel: quizTypeModel ?? [])
+            cell.categoryDelegate = self
+            cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
+            cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
+            cell.textField.delegate = self
+            if mode == .detail {
+                cell.isUserInteractionEnabled = false
+            }
+            return cell
         case .showHide:
             guard let cell: QuizSwitchCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizSwitchCell.identifier) as? QuizSwitchCell else {
                 return UITableViewCell()
@@ -313,7 +318,7 @@ extension QuizEditView: UITextFieldDelegate {
         case InputType.incorrectAnswer3.rowEditValue.accessibilityIdentifier:
             false3_text = textField.text ?? ""
         case InputType.quizType.rowEditValue.accessibilityIdentifier:
-            typeid = textField.text
+            break
         default:
             break
         }
@@ -324,36 +329,10 @@ extension QuizEditView: UITextFieldDelegate {
 
 
 
-
-// MARK: - UIPickerViewDelegate, UIPickerViewDataSource
-
-extension QuizEditView: UIPickerViewDelegate, UIPickerViewDataSource {
-    
-    private func initPickerView() {
-        quizTypePicker = UIPickerView()
-        quizTypePicker?.delegate = self
+extension QuizEditView: QuizInputCellCategoryDeleagte {
+    func categoryChange(category_id: String) {
+        typeid = category_id
     }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return quizTypeModel!.count
-    }
-    
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return quizTypeModel?[row].quizTypeTitle
-    }
-    
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        quizTypeTextField.text = quizTypeModel?[row].quizTypeTitle
-        typeid = (quizTypeModel?[row].id)!
-    }
-    
     
     
 }
