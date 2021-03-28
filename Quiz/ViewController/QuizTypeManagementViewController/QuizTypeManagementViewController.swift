@@ -8,8 +8,6 @@
 
 
 import UIKit
-import RealmSwift
-
 
 final class QuizTypeManagementViewController: UITableViewController {
 

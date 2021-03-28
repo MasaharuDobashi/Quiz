@@ -6,10 +6,7 @@
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import UIKit
-import RealmSwift
-
 
 /// クイズのカテゴリのVC
 final class QuizTypeEditViewController: UIViewController {

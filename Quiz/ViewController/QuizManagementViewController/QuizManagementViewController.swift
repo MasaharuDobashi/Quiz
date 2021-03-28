@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 /// Realmで登録したクイズの確認、編集、削除を行うためのViewController
 final class QuizManagementViewController: UITableViewController {
