@@ -53,7 +53,7 @@ final class ResultScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftNaviBarButtonAction))
         
         view.addSubview(resultScreenView)
         
@@ -70,6 +70,11 @@ final class ResultScreenViewController: UIViewController {
         super.viewDidAppear(animated)
         
         resultScreenView.animation()
+    }
+    
+    
+    override func leftNaviBarButtonAction() {
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

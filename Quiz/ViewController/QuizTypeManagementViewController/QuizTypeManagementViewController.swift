@@ -53,7 +53,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     
     
     
-    override func rightButtonAction() {
+    override func rightNaviBarButtonAction() {
         presentModalView(QuizTypeEditViewController(typeid: nil, createTime: nil, mode: .add))
     }
     
@@ -63,7 +63,7 @@ final class QuizTypeManagementViewController: UITableViewController {
     }
     
     /// デバッグ用でデータベースを削除する
-       @objc override func leftButtonAction(){
+       @objc override func leftNaviBarButtonAction(){
            
            AlertManager.alertAction(self,
                                       title: "データベースの削除",

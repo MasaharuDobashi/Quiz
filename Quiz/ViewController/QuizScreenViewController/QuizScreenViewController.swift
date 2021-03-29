@@ -41,7 +41,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftNaviBarButtonAction))
         quizModelAppend()
         quizActiveCheck()
     }
@@ -99,7 +99,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         view.backgroundColor = .white
         if quizModel.count == 0 {
             AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: { _ in
-                self.leftButtonAction()
+                self.leftNaviBarButtonAction()
             })
             return
         }
@@ -107,7 +107,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
         
         if quizModel.count > 10 {
             AlertManager.alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", didTapCloseButton: { _ in
-                self.leftButtonAction()
+                self.leftNaviBarButtonAction()
             })
             
         } else {
@@ -118,12 +118,12 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
                 
             case .notSelect:
                 AlertManager.alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", didTapCloseButton: {_ in
-                    self.leftButtonAction()
+                    self.leftNaviBarButtonAction()
                     
                 })
             case .none:
                 AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: {_ in
-                    self.leftButtonAction()
+                    self.leftNaviBarButtonAction()
                     
                 })
             }

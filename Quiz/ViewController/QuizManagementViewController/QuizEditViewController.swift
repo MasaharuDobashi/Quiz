@@ -75,7 +75,7 @@ final class QuizEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItemAction()
+        setNavigationBarItem()
         initQuizEditView()
     }
     
@@ -98,35 +98,20 @@ final class QuizEditViewController: UIViewController {
     
     // MARK: NavigationItem Func
     
-    override func navigationItemAction() {
-        self.navigationItem.leftBarButtonItem = leftNaviButton
-        
-        switch mode {
-        case .add, .edit:
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        case .detail:
+    override func setNavigationBarItem() {
+        super.setNavigationBarItem()
+        if mode == .detail {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(detailRightButtonAction))
         }
-        
-        
     }
     
     
-    override func rightButtonAction(){
+    override func rightNaviBarButtonAction(){
         let parameters: [String:Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
         
         realmAction(parameters: parameters) {
             postNotificationCenter()
-        }
-    }
-    
-    
-    override func leftButtonAction() {
-        if self.navigationController?.viewControllers.count ?? 0 > 1 {
-            self.navigationController?.popViewController(animated: true)
-        } else {
-            super.leftButtonAction()
         }
     }
     
@@ -137,7 +122,7 @@ final class QuizEditViewController: UIViewController {
             
         }, didTapDeleteButton: { _ in
             self.deleteQuiz { [weak self] in
-                self?.leftButtonAction()
+                self?.leftNaviBarButtonAction()
             }
         })
     }
@@ -153,13 +138,13 @@ final class QuizEditViewController: UIViewController {
         if mode == .add {
             addRealm(parameters) {
                 AlertManager.alertAction( self, title: nil, message: "問題を作成しました", didTapCloseButton: { [weak self] Void in
-                    self?.leftButtonAction()
+                    self?.leftNaviBarButtonAction()
                 })
             }
         } else if mode == .edit {
             updateRealm(parameters) {
                 AlertManager.alertAction(self, title: nil, message: "問題を更新しました", didTapCloseButton: { [weak self] Void in
-                    self?.leftButtonAction()
+                    self?.leftNaviBarButtonAction()
                 })
             }
         }

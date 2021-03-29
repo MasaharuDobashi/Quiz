@@ -57,7 +57,7 @@ final class QuizTypeEditViewController: UIViewController {
         view.backgroundColor = R.color.cellWhite()
         
         if mode != .detail {
-            navigationItemAction()
+            setNavigationBarItem()
         }
         
         view.addSubview(quizTypeEditView)
@@ -68,7 +68,7 @@ final class QuizTypeEditViewController: UIViewController {
     
     // MARK: NavigationItem Func
     
-    override func rightButtonAction(){
+    override func rightNaviBarButtonAction(){
         realmAction()
     }
     
@@ -81,12 +81,12 @@ final class QuizTypeEditViewController: UIViewController {
         if mode == .add {
             addRealm()
             AlertManager.alertAction( self, title: nil, message: "問題を作成しました", didTapCloseButton: { [weak self] Void in
-                self?.leftButtonAction()
+                self?.leftNaviBarButtonAction()
             })
         } else if mode == .edit {
             updateRealm()
             AlertManager.alertAction( self, title: nil, message: "問題を更新しました", didTapCloseButton: { [weak self] Void in
-                self?.leftButtonAction()
+                self?.leftNaviBarButtonAction()
             })
         }
         

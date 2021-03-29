@@ -62,14 +62,14 @@ final class QuizManagementViewController: UITableViewController {
     // MARK: Navigation Action
     
     /// クイズを作成するモーダルを表示
-    override func rightButtonAction() {
+    override func rightNaviBarButtonAction() {
         presentModalView(QuizEditViewController(mode: .add))
     }
     
     
     
     /// デバッグ用でデータベースを削除する
-    @objc override func leftButtonAction(){
+    @objc override func leftNaviBarButtonAction(){
         
         AlertManager.alertAction(self,
                                    title: "データベースの削除",
@@ -171,7 +171,7 @@ extension QuizManagementViewController {
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         /// 編集
-        let edit = UIContextualAction(style: .normal, title: "編集") { [weak self] _, _, _ in
+        let edit = UIContextualAction(style: .normal, title: R.string.button.edit()) { [weak self] _, _, _ in
             self?.editAction(self!,
                              editViewController: QuizEditViewController(quzi_id: (self?.quizModel?[indexPath.row].id)!,
                                                                         createTime: (self?.quizModel?[indexPath.row].createTime)!,
@@ -181,7 +181,7 @@ extension QuizManagementViewController {
         edit.backgroundColor = UIColor.orange
         
         /// 削除
-        let del = UIContextualAction(style: .destructive, title: "削除") { [weak self] _, _, _ in
+        let del = UIContextualAction(style: .destructive, title: R.string.button.delete()) { [weak self] _, _, _ in
             self?.deleteAction(indexPath: indexPath)
         }
 

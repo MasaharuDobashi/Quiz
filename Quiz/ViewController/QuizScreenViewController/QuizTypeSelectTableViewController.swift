@@ -25,7 +25,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightNaviBarButtonAction))
         setUpModel()
         setUpTableView()
     }
@@ -35,7 +35,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     
     
     /// 選択したクイズを登録
-    override func rightButtonAction() {
+    override func rightNaviBarButtonAction() {
         guard let _selectCategory = selectCategory else { return }
         QuizCategoryModel.updateisSelect(self, selectCategory: _selectCategory)
         

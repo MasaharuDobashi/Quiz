@@ -16,31 +16,49 @@ extension UIViewController {
         }
     }
     
-    @objc func navigationItemAction() {
+    @objc func setNavigationBarItem() {
         self.navigationItem.leftBarButtonItem = leftNaviButton
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        self.navigationItem.rightBarButtonItem = rightNaviButton
     }
     
     
+    /// モーダルの時は「X」ボタンのを設定する
+    ///
+    /// プッシュ遷移の時には何も設定せず、「<戻る」が表示されるはず
     var leftNaviButton: UIBarButtonItem? {
         get {
-            if self.navigationController?.viewControllers.count ?? 0 <= 1 {
-                return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
+            if isPresentModal {
+                return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftNaviBarButtonAction))
             }
             return nil
         }
     }
     
     
-    
-    
-    @objc func leftButtonAction() {
-        self.dismiss(animated: true, completion: nil)
+    /// 「+」NavigationButton
+    var rightNaviButton: UIBarButtonItem {
+        get {
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightNaviBarButtonAction))
+        }
     }
     
     
-    @objc func rightButtonAction() {}
     
+    @objc func leftNaviBarButtonAction() {
+        if isPresentModal {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    
+    @objc func rightNaviBarButtonAction() {}
+    
+    /// モーダル遷移か判定
+    private var isPresentModal: Bool {
+        return self.navigationController?.viewControllers.count ?? 0 <= 1
+    }
     
     
     func debugPrint(object: Any?){
@@ -89,10 +107,10 @@ extension UIViewController {
     
     /// ナビゲーションバーに「+」ボタンとRealmModelの全件削除用のボタン(debug時)を追加する
     func setBarButtonItem() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightNaviBarButtonAction))
         
         #if DEBUG
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftNaviBarButtonAction))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
         #endif
     }
