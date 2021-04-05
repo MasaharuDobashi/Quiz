@@ -26,22 +26,8 @@ final class QuizEditViewController: UIViewController {
     ///  カテゴリを格納
     private var quizCategoryModel: [QuizCategoryModel]!
     
-    
-    
-    private lazy var quizEditView: QuizEditView = {
-        switch mode {
-        case .add:
-            let quizEditView = QuizEditView(frame: frame, style: .grouped, mode: mode)
-            return quizEditView
-        case .edit, .detail:
-            quizModelAppend()
-            let quizEditView = QuizEditView(frame: frame, style: .grouped, quizModel: quizModel, mode: mode)
-            quizEditView.quizTypeModel = quizCategoryModel
-            debugPrint(object: quizModel)
-            return quizEditView
-        }
-    }()
-    
+    /// クイズの編集画面
+    private var quizEditView: QuizEditView!
     
     
     // MARK: Init
@@ -106,7 +92,7 @@ final class QuizEditViewController: UIViewController {
     }
     
     
-    override func rightNaviBarButtonAction(){
+    override func rightNaviBarButtonAction() {
         let parameters: [String:Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
         
@@ -117,7 +103,7 @@ final class QuizEditViewController: UIViewController {
     
     
     @objc func detailRightButtonAction() {
-        AlertManager.createActionSheet(self, message: "このクイズをどうしますか？", didTapEditButton: { [weak self] _ in
+        AlertManager.createActionSheet(self, message: R.string.messages.quizActionSheetMessage(), didTapEditButton: { [weak self] _ in
             self?.pushTransition(QuizEditViewController(quzi_id: self?.quizModel.id ?? "", createTime: self?.quizModel.createTime ?? "", mode: .edit))
             
         }, didTapDeleteButton: { _ in
@@ -137,13 +123,13 @@ final class QuizEditViewController: UIViewController {
         
         if mode == .add {
             addRealm(parameters) {
-                AlertManager.alertAction( self, title: nil, message: "問題を作成しました", didTapCloseButton: { [weak self] Void in
+                AlertManager.alertAction( self, title: nil, message: R.string.messages.quizAdd(), didTapCloseButton: { [weak self] Void in
                     self?.leftNaviBarButtonAction()
                 })
             }
         } else if mode == .edit {
             updateRealm(parameters) {
-                AlertManager.alertAction(self, title: nil, message: "問題を更新しました", didTapCloseButton: { [weak self] Void in
+                AlertManager.alertAction(self, title: nil, message: R.string.messages.quizEdit(), didTapCloseButton: { [weak self] Void in
                     self?.leftNaviBarButtonAction()
                 })
             }
@@ -184,29 +170,29 @@ final class QuizEditViewController: UIViewController {
     
 
     /// 各項目のバリデーションを実施
-    func validate(parameters:[String:Any]) -> Bool {
+    private func validate(parameters:[String:Any]) -> Bool {
         
         
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().title] as! String, message: "クイズのタイトルが未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().title] as! String, message: R.string.messages.validateTitle()) == false {
             return false
         }
         
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().correctAnswer] as! String, message: "正解が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().correctAnswer] as! String, message: R.string.messages.validateCorrectAnswer()) == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer1] as! String, message: "不正解1が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer1] as! String, message: R.string.messages.validateIncorrectAnswer("1")) == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: "不正解2が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: R.string.messages.validateIncorrectAnswer("2")) == false {
             return false
         }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer3] as! String, message: "不正解3が未入力です。") == false {
+        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer3] as! String, message: R.string.messages.validateIncorrectAnswer("3")) == false {
             return false
         }
         
         
         if (QuizCategoryModel.findAllQuizCategoryModel(self)?.count)! > 0 {
-            if emptyValidate(viewController: self, title: parameters[ParameterKey().quizType] as! String, message: "カテゴリが未選択です") == false {
+            if emptyValidate(viewController: self, title: parameters[ParameterKey().quizType] as! String, message: R.string.messages.validateCategory()) == false {
                 return false
             }
         }
