@@ -9,39 +9,33 @@
 import UIKit
 
 final class HistoryViewController: UIViewController {
-    
+
     // MARK: Properties
-    
+
     private var historyView: HistoryView?
-    
+
     private var historyModel: [HistoryModel]!
-    
+
     private let statusBarHeight = UIWindow().windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-    
-    
-    
+
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBar.backgroundColor = R.color.cellWhite()
-        
+
         setHistoryView()
     }
 
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint(object: historyModel)
-        
+
         historyView?.lineAnimetion()
     }
-    
-    
-    
-    
+
     // MARK: private func
-    
+
     private func setHistoryView() {
         historyModel = HistoryModel.allFindHistory(self)
         historyView = HistoryView(frame: CGRect(x: 0,
@@ -52,6 +46,5 @@ final class HistoryViewController: UIViewController {
         guard let _historyView = historyView else { return }
         view.addSubview(_historyView)
     }
-    
-    
+
 }

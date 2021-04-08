@@ -9,64 +9,58 @@
 import UIKit
 
 final class QuizEditViewController: UIViewController {
-    
+
     // MARK: Properties
-    
+
     /// クイズのID
     private var quiz_id: String?
-    
+
     private var createTime: String?
-    
+
     /// 新規追加、編集、詳細の判別
-    private var mode: ModeEnum = ModeEnum.add
-    
+    private var mode = ModeEnum.add
+
     /// クイズを格納
     private var quizModel: QuizModel!
-    
+
     ///  カテゴリを格納
     private var quizCategoryModel: [QuizCategoryModel]!
-    
+
     /// クイズの編集画面
     private var quizEditView: QuizEditView!
-    
-    
+
     // MARK: Init
-    
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
-    
+
     /// add Init
-    convenience init(mode: ModeEnum){
+    convenience init(mode: ModeEnum) {
         self.init(nibName: nil, bundle: nil)
         self.mode = mode
     }
-    
-    
+
     /// edit,detail Init
-    convenience init(quzi_id: String, createTime: String, mode: ModeEnum){
+    convenience init(quzi_id: String, createTime: String, mode: ModeEnum) {
         self.init(nibName: nil, bundle: nil)
         self.quiz_id = quzi_id
         self.createTime = createTime
         self.mode = mode
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarItem()
         initQuizEditView()
     }
-    
-    
-    
+
     /// QuizEditViewの初期化
     private func initQuizEditView() {
         switch mode {
@@ -80,103 +74,90 @@ final class QuizEditViewController: UIViewController {
         quizEditView.quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
         view.addSubview(quizEditView)
     }
-    
-    
+
     // MARK: NavigationItem Func
-    
+
     override func setNavigationBarItem() {
         super.setNavigationBarItem()
         if mode == .detail {
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipsis"), style: .plain, target: self, action: #selector(detailRightButtonAction))
         }
     }
-    
-    
+
     override func rightNaviBarButtonAction() {
-        let parameters: [String:Any] = quizEditView.getParameters()
+        let parameters: [String: Any] = quizEditView.getParameters()
         if validate(parameters: parameters) == false { return }
-        
+
         realmAction(parameters: parameters) {
             postNotificationCenter()
         }
     }
-    
-    
+
     @objc func detailRightButtonAction() {
         AlertManager.createActionSheet(self, message: R.string.messages.quizActionSheetMessage(), didTapEditButton: { [weak self] _ in
             self?.pushTransition(QuizEditViewController(quzi_id: self?.quizModel.id ?? "", createTime: self?.quizModel.createTime ?? "", mode: .edit))
-            
+
         }, didTapDeleteButton: { _ in
             self.deleteQuiz { [weak self] in
                 self?.leftNaviBarButtonAction()
             }
         })
     }
-    
-    
-    
-    
-    
+
     // MARK: Realm Func
-    
-    private func realmAction(parameters: [String: Any], completion: () ->Void) {
-        
+
+    private func realmAction(parameters: [String: Any], completion: () -> Void) {
+
         if mode == .add {
             addRealm(parameters) {
-                AlertManager.alertAction( self, title: nil, message: R.string.messages.quizAdd(), didTapCloseButton: { [weak self] Void in
+                AlertManager.alertAction( self, title: nil, message: R.string.messages.quizAdd(), didTapCloseButton: { [weak self] _ in
                     self?.leftNaviBarButtonAction()
                 })
             }
         } else if mode == .edit {
             updateRealm(parameters) {
-                AlertManager.alertAction(self, title: nil, message: R.string.messages.quizEdit(), didTapCloseButton: { [weak self] Void in
+                AlertManager.alertAction(self, title: nil, message: R.string.messages.quizEdit(), didTapCloseButton: { [weak self] _ in
                     self?.leftNaviBarButtonAction()
                 })
             }
         }
-        
+
         completion()
 
     }
-    
-    
+
     /// Realmに新規追加
-    private func addRealm(_ parameters: [String: Any], completion: () ->Void) {
+    private func addRealm(_ parameters: [String: Any], completion: () -> Void) {
         QuizModel.addQuiz(self, parameters: parameters)
         completion()
     }
-    
-    
+
     /// アップデート
-    private func updateRealm(_ parameters: [String:Any], completion: () -> Void) {
-        QuizModel.updateQuiz(self, parameters: parameters, id: quiz_id! , createTime: createTime)
+    private func updateRealm(_ parameters: [String: Any], completion: () -> Void) {
+        QuizModel.updateQuiz(self, parameters: parameters, id: quiz_id!, createTime: createTime)
         completion()
     }
-    
-    
+
     /// クイズの削除
     private func deleteQuiz(completion: () -> Void) {
         QuizModel.deleteQuiz(self, id: quizModel.id, createTime: quizModel.createTime ?? "")
         completion()
     }
-    
+
     /// クイズを一件取得
     private func quizModelAppend() {
         quizModel = QuizModel.findQuiz(self, quizid: quiz_id ?? "", createTime: createTime)
     }
-    
-    
-    // MARK: Other 
-    
+
+    // MARK: Other
 
     /// 各項目のバリデーションを実施
-    private func validate(parameters:[String:Any]) -> Bool {
-        
-        
+    private func validate(parameters: [String: Any]) -> Bool {
+
         if emptyValidate(viewController: self, title: parameters[ParameterKey().title] as! String, message: R.string.messages.validateTitle()) == false {
             return false
         }
-        
+
         if emptyValidate(viewController: self, title: parameters[ParameterKey().correctAnswer] as! String, message: R.string.messages.validateCorrectAnswer()) == false {
             return false
         }
@@ -189,24 +170,18 @@ final class QuizEditViewController: UIViewController {
         if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer3] as! String, message: R.string.messages.validateIncorrectAnswer("3")) == false {
             return false
         }
-        
-        
+
         if (QuizCategoryModel.findAllQuizCategoryModel(self)?.count)! > 0 {
             if emptyValidate(viewController: self, title: parameters[ParameterKey().quizType] as! String, message: R.string.messages.validateCategory()) == false {
                 return false
             }
         }
-        
-        
+
         return true
     }
-    
-    
+
     private func postNotificationCenter() {
         NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizUpdate()), object: nil)
     }
-    
-    
-    
-}
 
+}

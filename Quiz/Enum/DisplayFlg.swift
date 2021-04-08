@@ -11,7 +11,7 @@ import Foundation
 enum DisplayFlg: String {
     /// 表示
     case indicated = "0"
-    
+
     /// 非表示
     case nonIndicated = "1"
 }

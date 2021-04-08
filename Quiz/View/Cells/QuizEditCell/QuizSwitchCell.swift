@@ -9,17 +9,15 @@
 import UIKit
 
 class QuizSwitchCell: UITableViewCell {
-    
+
     @IBOutlet weak var placeholderLabel: UILabel!
-    
+
     @IBOutlet weak var displaySwitch: UISwitch!
-    
+
     func setValue(label: String, isDisplay: Bool, accessibilityIdentifier: String) {
         placeholderLabel.text = label
         displaySwitch.isOn = isDisplay
         displaySwitch.accessibilityIdentifier = accessibilityIdentifier
     }
-    
+
 }
-
-

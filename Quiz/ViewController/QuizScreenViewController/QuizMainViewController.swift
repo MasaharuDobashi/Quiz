@@ -11,7 +11,7 @@ import UIKit
 // MARK: - QuizMainViewController
 
 final class QuizMainViewController: UIViewController {
-    
+
     // MARK: @IBOutlet
 
     /// クイズスタートボタン
@@ -25,9 +25,7 @@ final class QuizMainViewController: UIViewController {
             quizStartButton.highlightAction()
         }
     }
-    
 
-    
     /// クイズのカテゴリ
     ///
     /// - クイズのカテゴリがなければクイズのカテゴリ作成モーダルを表示する
@@ -39,9 +37,7 @@ final class QuizMainViewController: UIViewController {
             quizTypeButton.highlightAction()
         }
     }
-    
-    
-    
+
     /// 履歴ボタン
     ///
     /// - 履歴がなければ非表示
@@ -53,10 +49,9 @@ final class QuizMainViewController: UIViewController {
             historyButton.highlightAction()
         }
     }
-    
 
     // MARK: @IBAction
-    
+
     /// スタートボタンのタップアクション
     /// クイズが作成済みならクイズの画面をモーダルで表示する
     /// クイズがなければ作成画面をモーダル表示
@@ -67,8 +62,7 @@ final class QuizMainViewController: UIViewController {
             presentModalView(QuizEditViewController(mode: .add))
         }
     }
-    
-    
+
     /// カテゴリボタンのタップアクション
     /// カテゴリが作成済みならカテゴリの選択画面表示する
     /// カテゴリがなければ作成画面をモーダル表示
@@ -79,16 +73,14 @@ final class QuizMainViewController: UIViewController {
             presentModalView(QuizTypeEditViewController(typeid: nil, createTime: nil, mode: .add))
         }
     }
-    
-    
+
     /// 履歴画面に遷移する
     @IBAction func didTapHistoryButton(_ sender: UIButton) {
         pushTransition(HistoryViewController())
     }
-    
-    
+
     // MARK: Properties
-    
+
     /// クイズがあるかないかのフラグ
     ///
     /// - true: クイズがあればquizStartButtonをクイズスタートにする
@@ -98,8 +90,7 @@ final class QuizMainViewController: UIViewController {
             startButtonColorChange()
         }
     }
-    
-    
+
     /// 履歴があるかないかのフラグ
     ///
     /// - true:  historyButtonを表示する
@@ -109,8 +100,7 @@ final class QuizMainViewController: UIViewController {
             historyButtonColorChange()
         }
     }
-    
-    
+
     /// クイズのカテゴリがあるかないかのフラグ
     ///
     /// - true:  historyButtonを表示する
@@ -120,70 +110,57 @@ final class QuizMainViewController: UIViewController {
             typeButtonColorChange()
         }
     }
-    
-    
-    
+
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNotificationCenter()
     }
-    
 
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true)?.count != 0 ? true : false
         isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self)?.count != 0 ? true : false
         isHistory = HistoryModel.allFindHistory(self).isEmpty ? false : true
     }
-    
-    
+
     /// addObserverをセットする
     func setNotificationCenter() {
         #if DEBUG
         /// QuizManagementViewControllerでallDeleteがpostされたら履歴ボタンを更新する
         NotificationCenter.default.addObserver(self, selector: #selector(allDeleteFlag(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.allDelete()), object: nil)
         #endif
-        
+
         /// R.notification.ViewUpdate、R.notification.QuizUpdateがpostされたらViewWillAppearを呼ぶ
         NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.quizUpdate()), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(callViewWillAppear(notification:)), name: NSNotification.Name(rawValue: R.string.notifications.viewUpdate()), object: nil)
     }
-    
-    
-    
+
     // MARK: Notification Action
-    
+
     #if DEBUG
     /// viewWillAppearで各ボタンの表示フラグを切り替える
-    @objc func allDeleteFlag(notification: Notification){
+    @objc func allDeleteFlag(notification: Notification) {
         viewWillAppear(false)
     }
     #endif
-    
-    
-    
-    
+
     /// postViewWillAppearを呼ぶ
     /// - Parameter notification: ViewUpdate、QuizUpdateがpostされた時
     @objc func callViewWillAppear(notification: Notification) {
         self.viewWillAppear(true)
     }
-    
+
 }
-
-
-
 
 // MARK: - ButtonColorChange
 
 extension QuizMainViewController {
-        
+
     /// クイズスタートボタンの色を変える
-    func startButtonColorChange(){
+    func startButtonColorChange() {
         if isActiveQuiz == false {
             quizStartButton.setTitle("クイズを作成", for: .normal)
             quizStartButton.backgroundColor = R.color.dawnpink()
@@ -192,12 +169,12 @@ extension QuizMainViewController {
             quizStartButton.backgroundColor = R.color.geranium()
         }
     }
-    
+
     /// quizTypeButtonをaddSubViewする
     ///
     /// - isQuizType == true: クイズの選択ボタンをaddSubViewする
     /// - isQuizType == false: クイズの選択をremoveFromSuperviewする
-    func typeButtonColorChange(){
+    func typeButtonColorChange() {
         if isQuizType == true {
             quizTypeButton.setTitle("カテゴリの選択", for: .normal)
             quizTypeButton.backgroundColor = R.color.geranium()
@@ -206,14 +183,13 @@ extension QuizMainViewController {
             quizTypeButton.backgroundColor = R.color.dawnpink()
         }
     }
-    
-    
+
     /// 履歴ボタンをaddSubViewする
     ///
     /// - isHistory == true: 履歴ボタンをaddSubViewする
     /// - isHistory == false: 履歴ボタンをremoveFromSuperviewする
-    func historyButtonColorChange(){
+    func historyButtonColorChange() {
         historyButton.isHidden = !isHistory
     }
-    
+
 }

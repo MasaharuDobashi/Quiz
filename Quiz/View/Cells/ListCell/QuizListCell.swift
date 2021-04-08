@@ -8,25 +8,23 @@
 
 import UIKit
 
-
 // MARK: - QuizListCell
 
 /// クイズリストセル
 final class QuizListCell: UITableViewCell {
-    
+
     /// Noラベル
     @IBOutlet weak var quizNoLabel: UILabel!
-    
+
     /// クイズタイトルラベル
     @IBOutlet weak var quizTitleLabel: UILabel!
-    
+
     /// カテゴリラベル
     @IBOutlet weak var quizTypeLable: UILabel!
-    
+
     /// クイズタイトル、カテゴリラベル箇所stackViewの高さ
     @IBOutlet weak var detailHeight: NSLayoutConstraint!
 
-    
     /// 表示・非表示のフラグでセルの色を変更
     private var displaySwitch: String? {
         didSet {
@@ -36,10 +34,8 @@ final class QuizListCell: UITableViewCell {
                 self.backgroundColor = .lightGray
             }
         }
-        
+
     }
-    
-    
 
     func setValue(row: Int, model: QuizModel?) {
         guard let _model = model else { return }
@@ -47,11 +43,10 @@ final class QuizListCell: UITableViewCell {
         quizTitleLabel.text = _model.quizTitle
         quizTypeLable.text = _model.quizTypeModel?.quizTypeTitle
         displaySwitch = _model.displayFlag
-        
+
         quizTitleLabel.sizeToFit()
         quizTypeLable.sizeToFit()
         detailHeight.constant = quizTitleLabel.frame.height + quizTypeLable.frame.height
     }
-    
-}
 
+}

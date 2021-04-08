@@ -8,11 +8,13 @@ PODS:
   - Realm/Headers (10.2.0)
   - RealmSwift (10.2.0):
     - Realm (= 10.2.0)
+  - SwiftLint (0.43.0)
 
 DEPENDENCIES:
   - LineGraphView (= 1.0.4)
   - R.swift (= 5.4.0)
   - RealmSwift (= 10.2.0)
+  - SwiftLint (= 0.43.0)
 
 SPEC REPOS:
   trunk:
@@ -21,6 +23,7 @@ SPEC REPOS:
     - R.swift.Library
     - Realm
     - RealmSwift
+    - SwiftLint
 
 SPEC CHECKSUMS:
   LineGraphView: d3b25ac8e9e2a9b4384c1122dd55eeb75b61f417
@@ -28,7 +31,8 @@ SPEC CHECKSUMS:
   R.swift.Library: 0fc583cb55a99e28901299cc451614cad1161962
   Realm: d7914ebf66bb182469726f997c4c38eff286aab0
   RealmSwift: aad08b7dc8c732b7b5794286e9df83739bf834f1
+  SwiftLint: 0c645fdc6feed3e390c1701ab3cc669f88b42752
 
-PODFILE CHECKSUM: 03ed20268e48b8b825cf5fdf997b6e6acebb3820
+PODFILE CHECKSUM: 8099e7d821cd24bd6e73bdba3c89c3536e1ec410
 
 COCOAPODS: 1.10.1

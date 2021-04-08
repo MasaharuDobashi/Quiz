@@ -9,76 +9,69 @@
 import UIKit
 
 final class QuizEditView: UITableView {
-    
+
     // MARK: Properties
-    
+
     /// クイズを格納する
     private var quizModel: QuizModel?
-    
+
     /// クイズタイプを格納する
     var quizTypeModel: [QuizCategoryModel]?
-    
+
     /// クイズのカテゴリのIDを格納する
     private var typeid: String?
-    
+
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum!
-    
+
     /// タイトル
     private var title_text: String?
-    
+
     /// 正解
     private var true_text: String?
-    
+
     /// 不正解1
     private var false1_text: String?
-    
+
     /// 不正解2
     private var false2_text: String?
-    
+
     /// 不正解3
     private var false3_text: String?
-    
+
     /// カテゴリ
     private var quizTypeTitle: String?
-    
+
     /// クイズの表示フラグ
     private var isDisplay = true
-    
-    
-    
-    
+
     /// テキストフィールドに乗せるToolbar
     private let toolBar: UIToolbar = {
-        let toolBar: UIToolbar = UIToolbar()
-        let toolButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(toolBarButtonTapAction))
-        let spaceToolButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let toolBar = UIToolbar()
+        let toolButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(toolBarButtonTapAction))
+        let spaceToolButton = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolBar.bounds.size = CGSize(width: UIScreen.main.bounds.width, height: 50)
         toolBar.items = [spaceToolButton, spaceToolButton, toolButton]
-        
+
         return toolBar
     }()
-    
-    
-    
+
     // MARK: Init
-    
+
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         initTableView()
     }
-    
-    
+
     /// add Init
-    convenience init(frame: CGRect, style: UITableView.Style, mode:ModeEnum) {
+    convenience init(frame: CGRect, style: UITableView.Style, mode: ModeEnum) {
         self.init(frame: frame, style: style)
         self.quizModel = QuizModel()
         self.mode = mode
     }
-    
-    
+
     /// edit,detail Init
-    convenience init(frame: CGRect, style: UITableView.Style, quizModel: QuizModel?, mode:ModeEnum) {
+    convenience init(frame: CGRect, style: UITableView.Style, quizModel: QuizModel?, mode: ModeEnum) {
         self.init(frame: frame, style: style)
         self.title_text = quizModel?.quizTitle
         self.true_text = quizModel?.trueAnswer
@@ -91,57 +84,48 @@ final class QuizEditView: UITableView {
         self.mode = mode
     }
 
-    
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
+
     // MARK: Other
-    
+
     @objc func toolBarButtonTapAction(_: UIBarButtonItem) {
         endEditing(true)
     }
-    
-    
-}
 
+}
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
-    
-    
+
     private func initTableView() {
         self.delegate = self
         self.dataSource = self
         self.allowsSelection = false
-        
+
         register(R.nib.quizInputCell)
         register(R.nib.quizSwitchCell)
     }
-    
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
-        return InputType.allCases.count
+        InputType.allCases.count
     }
 
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        1
     }
-    
-    
+
     // MARK: Cell
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
         cell.backgroundColor = R.color.cellWhite()
-        
-        guard let rowEditValue:RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
-        
+
+        guard let rowEditValue: RowEditValue = InputType(rawValue: indexPath.section)?.rowEditValue else { return cell }
+
         switch InputType(rawValue: indexPath.section) {
         case .title:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
@@ -226,33 +210,31 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             if mode == .detail {
                 cell.isUserInteractionEnabled = false
             }
-            
+
             return cell
         default:
             break
         }
-        
+
         return cell
     }
-    
-    
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if InputType.quizType.rawValue == indexPath.section {
             if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
         }
-        
+
         return 50
     }
-    
+
     // MARK: Header
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView:UIView = UIView()
-        let headerLabel:UILabel = UILabel()
-        
+        let headerView = UIView()
+        let headerLabel = UILabel()
+
         guard let headerTitle = InputType(rawValue: section)?.rowEditValue else { return UIView() }
-        
+
         headerLabel.text = headerTitle.headerTitle
         headerLabel.accessibilityIdentifier = headerTitle.accessibilityIdentifier
         headerView.addSubview(headerLabel)
@@ -261,39 +243,33 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
         headerLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20).isActive = true
         headerLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor).isActive = true
         headerLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor).isActive = true
-        
+
         return headerView
     }
-    
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if InputType.quizType.rawValue == section {
             if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
         }
         return section == InputType.title.rawValue ? 40 : 30
     }
-    
-    
-    
+
     // MARK: Footer
-    
+
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
+
         if InputType.quizType.rawValue == section {
             if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
         }
-        
+
         return section == InputType.showHide.rawValue ? 400 : CGFloat.leastNormalMagnitude
     }
-    
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        UIView()
     }
-    
+
 }
-
-
-
 
 // MARK: - UITextFieldDelegate, UITextField
 
@@ -303,8 +279,7 @@ extension QuizEditView: UITextFieldDelegate {
         textField.endEditing(true)
         return true
     }
-    
-    
+
     @objc func textFieldChangeValue(textField: UITextField) {
         switch textField.accessibilityIdentifier {
         case InputType.title.rowEditValue.accessibilityIdentifier:
@@ -323,33 +298,25 @@ extension QuizEditView: UITextFieldDelegate {
             break
         }
     }
-    
-    
+
 }
-
-
 
 extension QuizEditView: QuizInputCellCategoryDeleagte {
     func categoryChange(category_id: String) {
         typeid = category_id
     }
-    
-    
-}
 
+}
 
 // MARK: - UISwitch
 
 extension QuizEditView {
-    
+
     @objc private func displaySwitch(_ sender: UISwitch) {
         isDisplay = sender.isOn
     }
-    
+
 }
-
-
-
 
 // MARK: - RowEditValue
 
@@ -359,12 +326,10 @@ protocol RowEditValue {
     var headerTitle: String { get }
 }
 
-
-
 // MARK: - Other
 
 extension QuizEditView {
-    
+
     enum InputType: Int, CaseIterable {
         /// タイトル
         case title
@@ -380,8 +345,7 @@ extension QuizEditView {
         case quizType
         /// 表示フラグ
         case showHide
-        
-        
+
         var rowEditValue: RowEditValue {
             switch self {
             case .title:
@@ -400,63 +364,61 @@ extension QuizEditView {
                 return ShowHide()
             }
         }
-        
+
         private struct Title: RowEditValue {
             let placeholder: String = "クイズのタイトルを入力してください。"
             let accessibilityIdentifier: String = "title"
             let headerTitle: String = "タイトル"
         }
-        
+
         private struct CorrectAnswer: RowEditValue {
             let placeholder: String = "正解の回答を入力してください。"
             let accessibilityIdentifier: String = "correctAnswer"
             let headerTitle: String = "正解"
         }
-        
+
         private struct IncorrectAnswer1: RowEditValue {
             let placeholder: String = "不正解の回答を入力してください。"
-            let accessibilityIdentifier: String  = "incorrectAnswer1"
+            let accessibilityIdentifier: String = "incorrectAnswer1"
             let headerTitle: String = "不正解1"
         }
-        
+
         private struct IncorrectAnswer2: RowEditValue {
             var placeholder: String = "不正解の回答を入力してください。"
-            var accessibilityIdentifier: String  = "incorrectAnswer2"
+            var accessibilityIdentifier: String = "incorrectAnswer2"
             var headerTitle: String = "不正解2"
         }
-        
+
         private struct IncorrectAnswer3: RowEditValue {
             let placeholder: String = "不正解の回答を入力してください。"
-            let accessibilityIdentifier: String  = "incorrectAnswer3"
+            let accessibilityIdentifier: String = "incorrectAnswer3"
             let headerTitle: String = "不正解3"
         }
-        
+
         private struct QuizType: RowEditValue {
             let placeholder: String = " クイズのカテゴリを選択してください"
             let accessibilityIdentifier: String = "quizType"
             let headerTitle: String = "クイズのカテゴリ"
         }
-        
+
         private struct ShowHide: RowEditValue {
             let placeholder: String = " 表示・非表示"
             let accessibilityIdentifier: String = "showHide"
             let headerTitle: String = "表示"
         }
     }
-    
-    
+
     func getParameters() -> [String: Any] {
-        return [ParameterKey().title: title_text ?? "",
-                ParameterKey().correctAnswer: true_text ?? "",
-                ParameterKey().incorrectAnswer1: false1_text ?? "",
-                ParameterKey().incorrectAnswer2: false2_text ?? "",
-                ParameterKey().incorrectAnswer3: false3_text ?? "",
-                ParameterKey().quizType: typeid ?? "",
-                ParameterKey().displayFlag: isDisplay ? DisplayFlg.indicated.rawValue : DisplayFlg.nonIndicated.rawValue
+        [ParameterKey().title: title_text ?? "",
+         ParameterKey().correctAnswer: true_text ?? "",
+         ParameterKey().incorrectAnswer1: false1_text ?? "",
+         ParameterKey().incorrectAnswer2: false2_text ?? "",
+         ParameterKey().incorrectAnswer3: false3_text ?? "",
+         ParameterKey().quizType: typeid ?? "",
+         ParameterKey().displayFlag: isDisplay ? DisplayFlg.indicated.rawValue : DisplayFlg.nonIndicated.rawValue
         ]
     }
 }
-
 
 struct ParameterKey {
     let title: String = "title"
