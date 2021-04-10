@@ -54,16 +54,16 @@ final class QuizTypeManagementViewController: UITableViewController {
     /// デバッグ用でデータベースを削除する
     @objc override func leftNaviBarButtonAction() {
 
-        AlertManager.alertAction(self,
-                                 title: R.string.messages.deleteDBTitle(),
-                                 message: R.string.messages.deleteDBMessage(),
-                                 didTapDeleteButton: { [weak self]  _ in
+        AlertManager().alertAction(self,
+                                   title: R.string.messages.deleteDBTitle(),
+                                   message: R.string.messages.deleteDBMessage(),
+                                   didTapDeleteButton: { [weak self]  _ in
                                     RealmManager().allModelDelete(self!) {
                                         self?.modelAppend()
                                         self?.tabBarController?.selectedIndex = 0
                                         NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
                                     }
-                                 }) { _ in
+                                   }) { _ in
         }
 
     }

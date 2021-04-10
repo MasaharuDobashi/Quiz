@@ -25,16 +25,14 @@ class QuizModelTest: XCTestCase {
     /// クイズの追加tテスト
     func test_addQuizModelTest() {
 
-        let parameters: [String: Any] = [ParameterKey().title: "UnitTest",
-                                         ParameterKey().correctAnswer: "correctAnswer",
-                                         ParameterKey().incorrectAnswer1: "incorrectAnswer1",
-                                         ParameterKey().incorrectAnswer2: "incorrectAnswer2",
-                                         ParameterKey().incorrectAnswer3: "incorrectAnswer3",
-                                         ParameterKey().displayFlag: "0",
-                                         ParameterKey().quizType: ""
-        ]
-
-        QuizModel.addQuiz(UIViewController(), parameters: parameters)
+        QuizModel.addQuiz(UIViewController(), title: "UnitTest",
+                          correctAnswer: "correctAnswer",
+                          incorrectAnswer1: "incorrectAnswer1",
+                          incorrectAnswer2: "incorrectAnswer2",
+                          incorrectAnswer3: "incorrectAnswer3",
+                          displayFlag: "0",
+                          quizType: ""
+        )
 
         let quizModel = QuizModel.findQuiz(UIViewController(), quizid: "1", createTime: nil)
 
@@ -60,21 +58,27 @@ class QuizModelTest: XCTestCase {
                                             ParameterKey().quizType: ""
         ]
 
-        QuizModel.addQuiz(UIViewController(), parameters: addparameters)
+        QuizModel.addQuiz(UIViewController(),
+                          title: "UnitTest",
+                          correctAnswer: "correctAnswer",
+                          incorrectAnswer1: "incorrectAnswer1",
+                          incorrectAnswer2: "incorrectAnswer2",
+                          incorrectAnswer3: "incorrectAnswer3",
+                          displayFlag: "0",
+                          quizType: ""
+        )
         let quizModel = QuizModel.findQuiz(UIViewController(), quizid: "1", createTime: nil)
 
-        let updateparameters: [String: Any] = [ParameterKey().title: "updateUnitTest",
-                                               ParameterKey().correctAnswer: "updatecorrectAnswer",
-                                               ParameterKey().incorrectAnswer1: "updateincorrectAnswer1",
-                                               ParameterKey().incorrectAnswer2: "updateincorrectAnswer2",
-                                               ParameterKey().incorrectAnswer3: "updateincorrectAnswer3",
-                                               ParameterKey().displayFlag: "0",
-                                               ParameterKey().quizType: ""
-        ]
-
-        QuizModel.updateQuiz(UIViewController(), parameters: updateparameters,
+        QuizModel.updateQuiz(UIViewController(),
                              id: quizModel!.id,
-                             createTime: quizModel?.createTime
+                             createTime: quizModel?.createTime,
+                             title: "updateUnitTest",
+                             correctAnswer: "updatecorrectAnswer",
+                             incorrectAnswer1: "updateincorrectAnswer1",
+                             incorrectAnswer2: "updateincorrectAnswer2",
+                             incorrectAnswer3: "updateincorrectAnswer3",
+                             displayFlag: "0",
+                             quizType: ""
         )
 
         XCTAssert(quizModel?.quizTitle == "updateUnitTest", "タイトルが違う")
@@ -87,18 +91,15 @@ class QuizModelTest: XCTestCase {
     }
 
     /// クイズ削除テスト
-    func test_deleteQuizModelTest() {
-
-        let parameters: [String: Any] = [ParameterKey().title: "UnitTest",
-                                         ParameterKey().correctAnswer: "correctAnswer",
-                                         ParameterKey().incorrectAnswer1: "incorrectAnswer1",
-                                         ParameterKey().incorrectAnswer2: "incorrectAnswer2",
-                                         ParameterKey().incorrectAnswer3: "incorrectAnswer3",
-                                         ParameterKey().displayFlag: "0",
-                                         ParameterKey().quizType: ""
-        ]
-
-        QuizModel.addQuiz(UIViewController(), parameters: parameters)
+    func test_deleteQuizModelTest() {        
+        QuizModel.addQuiz(UIViewController(), title: "UnitTest",
+                          correctAnswer: "correctAnswer",
+                          incorrectAnswer1: "incorrectAnswer1",
+                          incorrectAnswer2: "incorrectAnswer2",
+                          incorrectAnswer3: "incorrectAnswer3",
+                          displayFlag: "0",
+                          quizType: ""
+        )
 
         let quizModel = QuizModel.findQuiz(UIViewController(), quizid: "1", createTime: nil)
 
@@ -108,7 +109,7 @@ class QuizModelTest: XCTestCase {
         )
 
         let allquizModel = QuizModel.allFindQuiz(UIViewController(), isSort: true)
-        XCTAssert(allquizModel?.count == 0, "クイズが削除されていない")
+        XCTAssert(allquizModel.count == 0, "クイズが削除されていない")
 
     }
 
@@ -117,34 +118,46 @@ class QuizModelTest: XCTestCase {
 
         QuizCategoryModel.addQuizCategoryModel(UIViewController(), categorytitle: "カテゴリ1")
         QuizCategoryModel.updateisSelect(UIViewController(), selectCategory: QuizCategoryModel.findQuizCategoryModel(UIViewController(), id: "1", createTime: nil)!)
+        var title: String
+        var correctAnswer: String
+        var incorrectAnswer1: String
+        var incorrectAnswer2: String
+        var incorrectAnswer3: String
+        var displayFlag: String
+        var quizType: String
 
         for i in 0..<30 {
-            var parameters: [String: Any]
             if i % 2 == 0 {
-                parameters = [ParameterKey().title: "UnitTest\(String(i))",
-                              ParameterKey().correctAnswer: "correctAnswer",
-                              ParameterKey().incorrectAnswer1: "incorrectAnswer1",
-                              ParameterKey().incorrectAnswer2: "incorrectAnswer2",
-                              ParameterKey().incorrectAnswer3: "incorrectAnswer3",
-                              ParameterKey().displayFlag: "0",
-                              ParameterKey().quizType: "1"
-                ]
+                title = "UnitTest\(String(i))"
+                correctAnswer = "correctAnswer"
+                              incorrectAnswer1 = "incorrectAnswer1"
+                              incorrectAnswer2 = "incorrectAnswer2"
+                              incorrectAnswer3 = "incorrectAnswer3"
+                              displayFlag = "0"
+                              quizType = "1"
             } else {
-                parameters = [ParameterKey().title: "UnitTest\(String(i))",
-                              ParameterKey().correctAnswer: "correctAnswer",
-                              ParameterKey().incorrectAnswer1: "incorrectAnswer1",
-                              ParameterKey().incorrectAnswer2: "incorrectAnswer2",
-                              ParameterKey().incorrectAnswer3: "incorrectAnswer3",
-                              ParameterKey().displayFlag: "0",
-                              ParameterKey().quizType: ""
-                ]
+                title = "UnitTest\(String(i))"
+                correctAnswer = "correctAnswer"
+                              incorrectAnswer1 = "incorrectAnswer1"
+                              incorrectAnswer2 = "incorrectAnswer2"
+                              incorrectAnswer3 = "incorrectAnswer3"
+                              displayFlag = "0"
+                              quizType = ""
             }
             sleep(1)
-            QuizModel.addQuiz(UIViewController(), parameters: parameters)
+            QuizModel.addQuiz(UIViewController(),
+                              title: title,
+                              correctAnswer: correctAnswer,
+                              incorrectAnswer1: incorrectAnswer1,
+                              incorrectAnswer2: incorrectAnswer2,
+                              incorrectAnswer3: incorrectAnswer3,
+                              displayFlag: displayFlag,
+                              quizType: quizType
+            )
         }
         let quizModel = QuizModel.selectQuiz(UIViewController())
 
-        for quiz in quizModel! {
+        for quiz in quizModel {
             XCTAssert(quiz.quizTypeModel == QuizCategoryModel.findQuizCategoryModel(UIViewController(), id: "1", createTime: nil), "選択されたものが追加されていない")
         }
 

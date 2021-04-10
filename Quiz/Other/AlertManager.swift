@@ -16,7 +16,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler: 「閉じる」ボタンのハンドラー
-    static func alertAction(_ viewController: UIViewController, title: String? = nil, message: String, didTapCloseButton: ((UIAlertAction) -> Void)?) {
+    func alertAction(_ viewController: UIViewController, title: String? = nil, message: String, didTapCloseButton: ((UIAlertAction) -> Void)?) {
         let controller = UIAlertController(title: title,
                                            message: message,
                                            preferredStyle: .alert
@@ -36,7 +36,7 @@ struct AlertManager {
     ///   - message: メッセージ
     ///   - handler1: 「削除」ボタンのハンドラー
     ///   - handler2: 「閉じる」ボタンのハンドラー
-    static func alertAction(_ viewController: UIViewController, title: String? = nil, message: String, didTapDeleteButton: ((UIAlertAction) -> Void)?, didTapCancelButton: ((UIAlertAction) -> Void)?) {
+    func alertAction(_ viewController: UIViewController, title: String? = nil, message: String, didTapDeleteButton: ((UIAlertAction) -> Void)?, didTapCancelButton: ((UIAlertAction) -> Void)?) {
         let controller = UIAlertController(title: title,
                                            message: message,
                                            preferredStyle: .alert
@@ -60,7 +60,7 @@ struct AlertManager {
     ///   - title:タイトル
     ///   - message: メッセージ
     ///   - handler1: 「はい」ボタンのハンドラー
-    static func alertAction(_ viewController: UIViewController, title: String?, message: String, didTapYesButton: ((UIAlertAction) -> Void)?, didTapNoButton: ((UIAlertAction) -> Void)?) {
+    func alertAction(_ viewController: UIViewController, title: String?, message: String, didTapYesButton: ((UIAlertAction) -> Void)?, didTapNoButton: ((UIAlertAction) -> Void)?) {
         let controller = UIAlertController(title: title,
                                            message: message,
                                            preferredStyle: .alert
@@ -79,7 +79,7 @@ struct AlertManager {
     }
 
     /// 「編集」「削除」ボタンが付いたアクションシート
-    static func createActionSheet(_ viewController: UIViewController, title: String? = nil, message: String, didTapEditButton: ((UIAlertAction) -> Void)?, didTapDeleteButton: ((UIAlertAction) -> Void)?) {
+    func createActionSheet(_ viewController: UIViewController, title: String? = nil, message: String, didTapEditButton: ((UIAlertAction) -> Void)?, didTapDeleteButton: ((UIAlertAction) -> Void)?) {
         let controller = UIAlertController(title: title,
                                            message: message,
                                            preferredStyle: .actionSheet

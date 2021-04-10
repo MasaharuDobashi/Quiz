@@ -49,7 +49,7 @@ class HistoryModel: Object {
 
         let historyModel = HistoryModel()
         historyModel.quizTrueCount = String(count)
-        historyModel.date = Format.stringFromDate(date: Format.nowDateFormat(addSec: true))
+        historyModel.date = Format().stringFromDate(date: Format().nowDateFormat(addSec: true))
 
         #if DEBUG
         print("\nadd History Log Start -------------------------------------")
@@ -62,7 +62,7 @@ class HistoryModel: Object {
                 realm.add(historyModel)
             }
         } catch {
-            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
         if (realm.objects(HistoryModel.self).count) > 30 {
@@ -85,12 +85,17 @@ class HistoryModel: Object {
             }
         }
 
+        guard let historyModelFirst = historyModel.first else {
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            return
+        }
+
         do {
             try realm.write {
-                realm.delete(historyModel.first!)
+                realm.delete(historyModelFirst)
             }
         } catch {
-            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
             return
         }
 

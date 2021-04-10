@@ -14,7 +14,7 @@ final class QuizManagementViewController: UITableViewController {
     // MARK: Properties
 
     /// クイズのリストを格納する
-    private var quizModel: [QuizModel]? {
+    private var quizModel: [QuizModel] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -59,17 +59,19 @@ final class QuizManagementViewController: UITableViewController {
     /// デバッグ用でデータベースを削除する
     @objc override func leftNaviBarButtonAction() {
 
-        AlertManager.alertAction(self,
-                                 title: R.string.messages.deleteDBTitle(),
-                                 message: R.string.messages.deleteDBMessage(),
-                                 didTapDeleteButton: { [weak self]  _ in
+        AlertManager().alertAction(self,
+                                   title: R.string.messages.deleteDBTitle(),
+                                   message: R.string.messages.deleteDBMessage(),
+                                   didTapDeleteButton: { [weak self]  _ in
+                                    guard let weakSelf = self else {
+                                        return
+                                    }
                                     RealmManager().allModelDelete(self!) {
-                                        self?.modelAppend()
-                                        self?.tabBarController?.selectedIndex = 0
+                                        weakSelf.modelAppend()
+                                        weakSelf.tabBarController?.selectedIndex = 0
                                         NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
                                     }
-                                 }) { _ in
-        }
+                                   }, didTapCancelButton: { _ in })
 
     }
 
@@ -98,10 +100,10 @@ extension QuizManagementViewController {
     /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示するため１を返す
     /// - quizModelの件数を返す
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if quizModel?.count == 0 {
+        if quizModel.count == 0 {
             return 1
         }
-        return quizModel!.count
+        return quizModel.count
     }
 
     /// 表示するセルを設定する
@@ -109,7 +111,7 @@ extension QuizManagementViewController {
     /// - quizModelの件数が0件の場合: クイズが作成されていないことを表示する
     /// - クイズのタイトルを表示する
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if quizModel?.count == 0 {
+        if quizModel.count == 0 {
             /// "まだクイズが作成されていません"と表示する"
             let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
             cell.textLabel?.text = "まだクイズが作成されていません"
@@ -118,8 +120,10 @@ extension QuizManagementViewController {
         }
 
         /// モデルに格納されたクイズのタイトルを表示する
-        let quizCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizListCell.identifier) as! QuizListCell
-        quizCell.setValue(row: indexPath.row, model: quizModel?[indexPath.row])
+        guard let quizCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizListCell.identifier) as?  QuizListCell else {
+            return UITableViewCell()
+        }
+        quizCell.setValue(row: indexPath.row, model: quizModel[indexPath.row])
         return quizCell
     }
 
@@ -131,7 +135,7 @@ extension QuizManagementViewController {
 
     /// クイズが0件の時はセルを選択させない
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if quizModel?.count == 0 {
+        if quizModel.count == 0 {
             return nil
         }
 
@@ -143,9 +147,12 @@ extension QuizManagementViewController {
 
         /// 編集
         let edit = UIContextualAction(style: .normal, title: R.string.button.edit()) { [weak self] _, _, _ in
-            self?.editAction(self!,
-                             editViewController: QuizEditViewController(quzi_id: (self?.quizModel?[indexPath.row].id)!,
-                                                                        createTime: (self?.quizModel?[indexPath.row].createTime)!,
+            guard let weakSelf = self else {
+                return
+            }
+            self?.editAction(weakSelf,
+                             editViewController: QuizEditViewController(quzi_id: weakSelf.quizModel[indexPath.row].id,
+                                                                        createTime: weakSelf.quizModel[indexPath.row].createTime,
                                                                         mode: .edit)
             )
         }
@@ -161,7 +168,7 @@ extension QuizManagementViewController {
 
     /// クイズが0件の時はセルのスワイプをしない
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if quizModel?.count == 0 {
+        if quizModel.count == 0 {
             return false
         }
         return true
@@ -176,13 +183,13 @@ extension QuizManagementViewController: ManagementProtocol {
 
     /// 配列にRealmで保存したデータを追加する
     func modelAppend() {
-        quizModel = QuizModel.allFindQuiz(self, isSort: true)
+        quizModel = QuizModel.allFindQuiz(self, isSort: true) ?? []
     }
 
     /// 指定したクイズの詳細を開く
     func detailAction(indexPath: IndexPath) {
-        pushTransition(QuizEditViewController(quzi_id: (quizModel?[indexPath.row].id)!,
-                                              createTime: (quizModel?[indexPath.row].createTime)!,
+        pushTransition(QuizEditViewController(quzi_id: quizModel[indexPath.row].id,
+                                              createTime: quizModel[indexPath.row].createTime,
                                               mode: ModeEnum.detail)
         )
     }
@@ -194,15 +201,17 @@ extension QuizManagementViewController: ManagementProtocol {
 
     /// 指定したクイズの削除
     func deleteAction(indexPath: IndexPath) {
-        AlertManager.alertAction(self, message: "削除しますか?", didTapDeleteButton: { [weak self] _ in
-            QuizModel.deleteQuiz(self!,
-                                 id: (self?.quizModel?[indexPath.row].id)!,
-                                 createTime: self?.quizModel?[indexPath.row].createTime
+        AlertManager().alertAction(self, message: "削除しますか?", didTapDeleteButton: { [weak self] _ in
+            guard let weakSelf = self else {
+                return
+            }
+            QuizModel.deleteQuiz(weakSelf,
+                                 id: weakSelf.quizModel[indexPath.row].id,
+                                 createTime: weakSelf.quizModel[indexPath.row].createTime
             )
-            self?.modelAppend()
+            weakSelf.modelAppend()
 
-        }) {_ -> Void in
-        }
+        }, didTapCancelButton: { _ in })
 
     }
 

@@ -122,7 +122,7 @@ class QuizScreenView: UIView {
     // MARK: ButtonAction
 
     @objc private func buttonTapAction(sender: UIButton) {
-        if sender.titleLabel!.text == quizModel.trueAnswer {
+        if sender.titleLabel?.text == quizModel.trueAnswer {
             delagate?.trueConut()
         }
         delagate?.buttonTapAction()

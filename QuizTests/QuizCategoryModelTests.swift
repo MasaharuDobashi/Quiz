@@ -83,7 +83,7 @@ class QuizCategoryModelTests: XCTestCase {
         let quizCategoryModel = QuizCategoryModel.findQuizCategoryModel(UIViewController(), id: "1", createTime: nil)
 
         quizCategoryModel?.deleteQuizCategoryModel(UIViewController(), id: quizCategoryModel!.id, createTime: (quizCategoryModel?.createTime)!) {
-            XCTAssert(QuizCategoryModel.findAllQuizCategoryModel(UIViewController())?.count == 0, "削除されていない")
+            XCTAssert(QuizCategoryModel.findAllQuizCategoryModel(UIViewController()).count == 0, "削除されていない")
         }
 
     }

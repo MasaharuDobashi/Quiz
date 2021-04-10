@@ -13,7 +13,7 @@ final class QuizEditViewController: UIViewController {
     // MARK: Properties
 
     /// クイズのID
-    private var quiz_id: String?
+    private var quiz_id: String = ""
 
     private var createTime: String?
 
@@ -42,7 +42,7 @@ final class QuizEditViewController: UIViewController {
     }
 
     /// edit,detail Init
-    convenience init(quzi_id: String, createTime: String, mode: ModeEnum) {
+    convenience init(quzi_id: String, createTime: String?, mode: ModeEnum) {
         self.init(nibName: nil, bundle: nil)
         self.quiz_id = quzi_id
         self.createTime = createTime
@@ -85,16 +85,15 @@ final class QuizEditViewController: UIViewController {
     }
 
     override func rightNaviBarButtonAction() {
-        let parameters: [String: Any] = quizEditView.getParameters()
-        if validate(parameters: parameters) == false { return }
+        if validate() == false { return }
 
-        realmAction(parameters: parameters) {
+        realmAction {
             postNotificationCenter()
         }
     }
 
     @objc func detailRightButtonAction() {
-        AlertManager.createActionSheet(self, message: R.string.messages.quizActionSheetMessage(), didTapEditButton: { [weak self] _ in
+        AlertManager().createActionSheet(self, message: R.string.messages.quizActionSheetMessage(), didTapEditButton: { [weak self] _ in
             self?.pushTransition(QuizEditViewController(quzi_id: self?.quizModel.id ?? "", createTime: self?.quizModel.createTime ?? "", mode: .edit))
 
         }, didTapDeleteButton: { _ in
@@ -106,17 +105,17 @@ final class QuizEditViewController: UIViewController {
 
     // MARK: Realm Func
 
-    private func realmAction(parameters: [String: Any], completion: () -> Void) {
+    private func realmAction(completion: () -> Void) {
 
         if mode == .add {
-            addRealm(parameters) {
-                AlertManager.alertAction( self, title: nil, message: R.string.messages.quizAdd(), didTapCloseButton: { [weak self] _ in
+            addRealm {
+                AlertManager().alertAction( self, title: nil, message: R.string.messages.quizAdd(), didTapCloseButton: { [weak self] _ in
                     self?.leftNaviBarButtonAction()
                 })
             }
         } else if mode == .edit {
-            updateRealm(parameters) {
-                AlertManager.alertAction(self, title: nil, message: R.string.messages.quizEdit(), didTapCloseButton: { [weak self] _ in
+            updateRealm {
+                AlertManager().alertAction(self, title: nil, message: R.string.messages.quizEdit(), didTapCloseButton: { [weak self] _ in
                     self?.leftNaviBarButtonAction()
                 })
             }
@@ -127,14 +126,32 @@ final class QuizEditViewController: UIViewController {
     }
 
     /// Realmに新規追加
-    private func addRealm(_ parameters: [String: Any], completion: () -> Void) {
-        QuizModel.addQuiz(self, parameters: parameters)
+    private func addRealm(completion: () -> Void) {
+        QuizModel.addQuiz(self,
+                          title: quizEditView.title_text,
+                          correctAnswer: quizEditView.true_text,
+                          incorrectAnswer1: quizEditView.false1_text,
+                          incorrectAnswer2: quizEditView.false2_text,
+                          incorrectAnswer3: quizEditView.false3_text,
+                          displayFlag: quizEditView.isDisplay ? DisplayFlg.indicated.rawValue : DisplayFlg.nonIndicated.rawValue,
+                          quizType: quizEditView.typeid ?? ""
+        )
         completion()
     }
 
     /// アップデート
-    private func updateRealm(_ parameters: [String: Any], completion: () -> Void) {
-        QuizModel.updateQuiz(self, parameters: parameters, id: quiz_id!, createTime: createTime)
+    private func updateRealm(completion: () -> Void) {
+        QuizModel.updateQuiz(self,
+                             id: quiz_id,
+                             createTime: createTime,
+                             title: quizEditView.title_text,
+                             correctAnswer: quizEditView.true_text,
+                             incorrectAnswer1: quizEditView.false1_text,
+                             incorrectAnswer2: quizEditView.false2_text,
+                             incorrectAnswer3: quizEditView.false3_text,
+                             displayFlag: quizEditView.isDisplay ? DisplayFlg.indicated.rawValue : DisplayFlg.nonIndicated.rawValue,
+                             quizType: quizEditView.typeid ?? ""
+        )
         completion()
     }
 
@@ -146,37 +163,38 @@ final class QuizEditViewController: UIViewController {
 
     /// クイズを一件取得
     private func quizModelAppend() {
-        quizModel = QuizModel.findQuiz(self, quizid: quiz_id ?? "", createTime: createTime)
+        quizModel = QuizModel.findQuiz(self, quizid: quiz_id, createTime: createTime)
     }
 
     // MARK: Other
 
     /// 各項目のバリデーションを実施
-    private func validate(parameters: [String: Any]) -> Bool {
+    private func validate() -> Bool {
 
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().title] as! String, message: R.string.messages.validateTitle()) == false {
-            return false
-        }
-
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().correctAnswer] as! String, message: R.string.messages.validateCorrectAnswer()) == false {
-            return false
-        }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer1] as! String, message: R.string.messages.validateIncorrectAnswer("1")) == false {
-            return false
-        }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer2] as! String, message: R.string.messages.validateIncorrectAnswer("2")) == false {
-            return false
-        }
-        if emptyValidate(viewController: self, title: parameters[ParameterKey().incorrectAnswer3] as! String, message: R.string.messages.validateIncorrectAnswer("3")) == false {
+        if emptyValidate(viewController: self, title: quizEditView.title_text, message: R.string.messages.validateTitle()) == false {
             return false
         }
 
-        if (QuizCategoryModel.findAllQuizCategoryModel(self)?.count)! > 0 {
-            if emptyValidate(viewController: self, title: parameters[ParameterKey().quizType] as! String, message: R.string.messages.validateCategory()) == false {
+        if emptyValidate(viewController: self, title: quizEditView.true_text, message: R.string.messages.validateCorrectAnswer()) == false {
+            return false
+        }
+        if emptyValidate(viewController: self, title: quizEditView.false1_text, message: R.string.messages.validateIncorrectAnswer("1")) == false {
+            return false
+        }
+        if emptyValidate(viewController: self, title: quizEditView.false2_text, message: R.string.messages.validateIncorrectAnswer("2")) == false {
+            return false
+        }
+        if emptyValidate(viewController: self, title: quizEditView.false3_text, message: R.string.messages.validateIncorrectAnswer("3")) == false {
+            return false
+        }
+
+        if QuizCategoryModel.findAllQuizCategoryModel(self).count > 0 {
+            if emptyValidate(viewController: self,
+                             title: quizEditView.typeid ?? "",
+                             message: R.string.messages.validateCategory()) == false {
                 return false
             }
         }
-
         return true
     }
 

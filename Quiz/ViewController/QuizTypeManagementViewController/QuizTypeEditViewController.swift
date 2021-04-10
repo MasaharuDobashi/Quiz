@@ -71,12 +71,12 @@ final class QuizTypeEditViewController: UIViewController {
 
         if mode == .add {
             addRealm()
-            AlertManager.alertAction( self, title: nil, message: "問題を作成しました", didTapCloseButton: { [weak self] _ in
+            AlertManager().alertAction( self, title: nil, message: "問題を作成しました", didTapCloseButton: { [weak self] _ in
                 self?.leftNaviBarButtonAction()
             })
         } else if mode == .edit {
             updateRealm()
-            AlertManager.alertAction( self, title: nil, message: "問題を更新しました", didTapCloseButton: { [weak self] _ in
+            AlertManager().alertAction( self, title: nil, message: "問題を更新しました", didTapCloseButton: { [weak self] _ in
                 self?.leftNaviBarButtonAction()
             })
         }

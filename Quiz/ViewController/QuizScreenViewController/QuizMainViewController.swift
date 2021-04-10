@@ -18,7 +18,7 @@ final class QuizMainViewController: UIViewController {
     ///
     /// - クイズがなければクイズ作成モーダルを表示する
     /// - クイズを開始する
-    @IBOutlet weak var quizStartButton: UIButton! {
+    @IBOutlet private weak var quizStartButton: UIButton! {
         didSet {
             quizStartButton.accessibilityIdentifier = "quizStartButton"
             quizStartButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
@@ -30,7 +30,7 @@ final class QuizMainViewController: UIViewController {
     ///
     /// - クイズのカテゴリがなければクイズのカテゴリ作成モーダルを表示する
     /// - クイズのカテゴリ選択画面に遷移する
-    @IBOutlet weak var quizTypeButton: UIButton! {
+    @IBOutlet private weak var quizTypeButton: UIButton! {
         didSet {
             quizTypeButton.accessibilityIdentifier = "typeButton"
             quizTypeButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
@@ -42,7 +42,7 @@ final class QuizMainViewController: UIViewController {
     ///
     /// - 履歴がなければ非表示
     /// - 履歴がなければ表示
-    @IBOutlet weak var historyButton: UIButton! {
+    @IBOutlet private weak var historyButton: UIButton! {
         didSet {
             historyButton.accessibilityIdentifier = "historyButton"
             historyButton.buttonHeight(multiplier: 0.06, cornerRadius: 8)
@@ -55,7 +55,7 @@ final class QuizMainViewController: UIViewController {
     /// スタートボタンのタップアクション
     /// クイズが作成済みならクイズの画面をモーダルで表示する
     /// クイズがなければ作成画面をモーダル表示
-    @IBAction func didTapQuizStartButton(_ sender: UIButton) {
+    @IBAction private func didTapQuizStartButton(_ sender: UIButton) {
         if isActiveQuiz {
             presentModalView(QuizScreenViewController())
         } else {
@@ -66,7 +66,7 @@ final class QuizMainViewController: UIViewController {
     /// カテゴリボタンのタップアクション
     /// カテゴリが作成済みならカテゴリの選択画面表示する
     /// カテゴリがなければ作成画面をモーダル表示
-    @IBAction func didTapQuizTypeButton(_ sender: UIButton) {
+    @IBAction private func didTapQuizTypeButton(_ sender: UIButton) {
         if isQuizType {
             pushTransition(QuizTypeSelectTableViewController())
         } else {
@@ -75,7 +75,7 @@ final class QuizMainViewController: UIViewController {
     }
 
     /// 履歴画面に遷移する
-    @IBAction func didTapHistoryButton(_ sender: UIButton) {
+    @IBAction private func didTapHistoryButton(_ sender: UIButton) {
         pushTransition(HistoryViewController())
     }
 
@@ -121,8 +121,8 @@ final class QuizMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true)?.count != 0 ? true : false
-        isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self)?.count != 0 ? true : false
+        isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true).count != 0 ? true : false
+        isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self).count != 0 ? true : false
         isHistory = HistoryModel.allFindHistory(self).isEmpty ? false : true
     }
 

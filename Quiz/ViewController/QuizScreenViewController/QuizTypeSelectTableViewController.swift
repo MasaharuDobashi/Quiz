@@ -13,7 +13,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
     // MARK: Properties
 
     /// クイズのカテゴリを格納
-    private var quizTypeModel: [QuizCategoryModel]?
+    private var quizTypeModel: [QuizCategoryModel] = []
 
     /// 選択されたクイズのカテゴリを格納
     private var selectCategory: QuizCategoryModel?
@@ -34,7 +34,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
         guard let _selectCategory = selectCategory else { return }
         QuizCategoryModel.updateisSelect(self, selectCategory: _selectCategory)
 
-        AlertManager.alertAction(self, title: nil, message: "クイズを選択しました", didTapCloseButton: { [weak self] _ in
+        AlertManager().alertAction(self, title: nil, message: "クイズを選択しました", didTapCloseButton: { [weak self] _ in
             self?.navigationController?.popToRootViewController(animated: true)
         })
     }
@@ -49,7 +49,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
 
     /// quizTypeModelに格納する
     private func setUpModel() {
-        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
+        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self) ?? []
     }
 
 }
@@ -66,16 +66,16 @@ extension QuizTypeSelectTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        quizTypeModel?.count ?? 0
+        quizTypeModel.count
     }
 
     /// セルの設定
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = quizTypeModel?[indexPath.row].quizTypeTitle
+        cell.textLabel?.text = quizTypeModel[indexPath.row].quizTypeTitle
         cell.selectionStyle = .none
 
-        if quizTypeModel?[indexPath.row].isSelect == "1" {
+        if quizTypeModel[indexPath.row].isSelect == "1" {
             cell.accessoryType = .checkmark
             cell.isSelected = true
         }
@@ -89,13 +89,13 @@ extension QuizTypeSelectTableViewController {
 
         if firstCheck == false {
             /// 画面描画時にチェックマークについていたチェックマークが消えないため、初回は全部チェックマークを消す
-            for i in 0..<quizTypeModel!.count {
+            for i in 0..<quizTypeModel.count {
                 let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0))
                 cell?.accessoryType = .none
             }
             firstCheck = true
         }
-        selectCategory = quizTypeModel?[indexPath.row]
+        selectCategory = quizTypeModel[indexPath.row]
         cell?.accessoryType = .checkmark
     }
 

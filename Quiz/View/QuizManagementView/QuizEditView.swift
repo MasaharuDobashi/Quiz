@@ -19,31 +19,31 @@ final class QuizEditView: UITableView {
     var quizTypeModel: [QuizCategoryModel]?
 
     /// クイズのカテゴリのIDを格納する
-    private var typeid: String?
+    var typeid: String?
 
     /// 新規追加、編集、詳細の判別
     private var mode: ModeEnum!
 
     /// タイトル
-    private var title_text: String?
+    var title_text: String = ""
 
     /// 正解
-    private var true_text: String?
+    var true_text: String = ""
 
     /// 不正解1
-    private var false1_text: String?
+    var false1_text: String = ""
 
     /// 不正解2
-    private var false2_text: String?
+    var false2_text: String = ""
 
     /// 不正解3
-    private var false3_text: String?
+    var false3_text: String = ""
 
     /// カテゴリ
     private var quizTypeTitle: String?
 
     /// クイズの表示フラグ
-    private var isDisplay = true
+    var isDisplay = true
 
     /// テキストフィールドに乗せるToolbar
     private let toolBar: UIToolbar = {
@@ -71,16 +71,16 @@ final class QuizEditView: UITableView {
     }
 
     /// edit,detail Init
-    convenience init(frame: CGRect, style: UITableView.Style, quizModel: QuizModel?, mode: ModeEnum) {
+    convenience init(frame: CGRect, style: UITableView.Style, quizModel: QuizModel, mode: ModeEnum) {
         self.init(frame: frame, style: style)
-        self.title_text = quizModel?.quizTitle
-        self.true_text = quizModel?.trueAnswer
-        self.false1_text = quizModel?.falseAnswer1
-        self.false2_text = quizModel?.falseAnswer2
-        self.false3_text = quizModel?.falseAnswer3
-        self.quizTypeTitle = quizModel?.quizTypeModel?.quizTypeTitle
-        self.typeid = quizModel?.quizTypeModel?.id
-        self.isDisplay = quizModel?.displayFlag == DisplayFlg.indicated.rawValue ? true : false
+        self.title_text = quizModel.quizTitle
+        self.true_text = quizModel.trueAnswer
+        self.false1_text = quizModel.falseAnswer1
+        self.false2_text = quizModel.falseAnswer2
+        self.false3_text = quizModel.falseAnswer3
+        self.quizTypeTitle = quizModel.quizTypeModel?.quizTypeTitle
+        self.typeid = quizModel.quizTypeModel?.id
+        self.isDisplay = quizModel.displayFlag == DisplayFlg.indicated.rawValue ? true : false
         self.mode = mode
     }
 

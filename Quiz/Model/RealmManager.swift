@@ -20,7 +20,7 @@ class RealmManager {
 
             return realm
         } catch {
-            AlertManager.alertAction(vc, message: "エラーが発生しました") { _ in
+            AlertManager().alertAction(vc, message: "エラーが発生しました") { _ in
             }
         }
         return nil
@@ -37,20 +37,22 @@ class RealmManager {
             completion()
 
         } catch {
-            AlertManager.alertAction(vc,
-                                     message: R.string.errors.errorMessage(),
-                                     didTapCloseButton: { _ in
-                                     })
+            AlertManager().alertAction(vc,
+                                       message: R.string.errors.errorMessage(),
+                                       didTapCloseButton: { _ in
+                                       })
             return
         }
 
     }
 
     /// Realmで保存したDB全件削除
+    ///
+    /// テスト時にしか使用しない
     func allDelete() {
         let realm = try? Realm()
 
-        try! realm?.write {
+        try? realm?.write {
             realm?.deleteAll()
         }
 

@@ -31,8 +31,8 @@ class QuizCategoryModel: Object {
     }
 
     /// カテゴリの全件検索
-    class func findAllQuizCategoryModel(_ vc: UIViewController) -> [QuizCategoryModel]? {
-        guard let realm = RealmManager.initRealm(vc) else { return nil }
+    class func findAllQuizCategoryModel(_ vc: UIViewController) -> [QuizCategoryModel] {
+        guard let realm = RealmManager.initRealm(vc) else { return [] }
         var returnModel = [QuizCategoryModel]()
         realm.objects(QuizCategoryModel.self).forEach { returnModel.append($0) }
         return returnModel
@@ -64,7 +64,7 @@ class QuizCategoryModel: Object {
         quizCategoryModel.id = String(realm.objects(QuizCategoryModel.self).count + 1)
         quizCategoryModel.isSelect = "0"
         quizCategoryModel.quizTypeTitle = categorytitle
-        quizCategoryModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
+        quizCategoryModel.createTime = Format().stringFromDate(date: Date(), addSec: true)
 
         do {
             try realm.write {
@@ -73,7 +73,7 @@ class QuizCategoryModel: Object {
 
             NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizUpdate()), object: nil)
         } catch {
-            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
     }
@@ -89,16 +89,16 @@ class QuizCategoryModel: Object {
 
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
                     if quizCategoryModel.createTime!.isEmpty {
-                        quizCategoryModel.createTime = Format.stringFromDate(date: Date(), addSec: true)
+                        quizCategoryModel.createTime = Format().stringFromDate(date: Date(), addSec: true)
                     }
 
                 }
             } catch {
-                AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+                AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
             }
 
         } else {
-            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
     }
@@ -116,7 +116,7 @@ class QuizCategoryModel: Object {
                 selectedCategory?.isSelect = "1"
             }
         } catch {
-            AlertManager.alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
+            AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
     }
 
@@ -133,9 +133,9 @@ class QuizCategoryModel: Object {
                 completeHandler()
             }
         } catch {
-            AlertManager.alertAction(vc,
-                                     message: R.string.errors.errorMessage(),
-                                     didTapCloseButton: nil)
+            AlertManager().alertAction(vc,
+                                       message: R.string.errors.errorMessage(),
+                                       didTapCloseButton: nil)
         }
     }
 

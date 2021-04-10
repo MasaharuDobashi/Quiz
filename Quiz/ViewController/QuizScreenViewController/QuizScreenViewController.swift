@@ -20,7 +20,7 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     }()
 
     /// クイズを格納する配列
-    private var quizModel: Results<QuizModel>!
+    private var quizModel: [QuizModel] = []
 
     /// 何問目かを格納
     var quizNum: Int = 0
@@ -59,14 +59,13 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     /// 表示するクイズを配列に格納する
     private func quizModelAppend() {
         quizModel = QuizModel.displayFindQuiz(self)
-
-        if QuizCategoryModel.findAllQuizCategoryModel(self)!.isEmpty {
+        if QuizCategoryModel.findAllQuizCategoryModel(self).isEmpty {
             /// カテゴリがなかった場合
             quizSelect = .zero
         } else {
             for _ in 0..<quizModel.count {
                 /// カテゴリが選択されている
-                if  QuizModel.selectQuiz(self)!.count > 0 && QuizModel.selectQuiz(self)!.count < 10 {
+                if  QuizModel.selectQuiz(self).count > 0 && QuizModel.selectQuiz(self).count < 10 {
                     quizModel = QuizModel.selectQuiz(self)
                     quizSelect = .select
                 } else {
@@ -87,14 +86,14 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
     private func quizActiveCheck() {
         view.backgroundColor = .white
         if quizModel.count == 0 {
-            AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: { _ in
+            AlertManager().alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: { _ in
                 self.leftNaviBarButtonAction()
             })
             return
         }
 
         if quizModel.count > 10 {
-            AlertManager.alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", didTapCloseButton: { _ in
+            AlertManager().alertAction(self, title: "利用可能なクイズが10問を超えています。", message: "編集からクイズを非表示または、削除をし１０問以下に減らして下さい。", didTapCloseButton: { _ in
                 self.leftNaviBarButtonAction()
             })
 
@@ -105,12 +104,12 @@ class QuizScreenViewController: UIViewController, QuizScreenViewDelagate {
                 view.addSubview(quizScreenView)
 
             case .notSelect:
-                AlertManager.alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", didTapCloseButton: {_ in
+                AlertManager().alertAction(self, title: nil, message: "選択されたクイズがありませんでした。", didTapCloseButton: {_ in
                     self.leftNaviBarButtonAction()
 
                 })
             case .none:
-                AlertManager.alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: {_ in
+                AlertManager().alertAction(self, title: nil, message: "利用可能なクイズがありませんでした。", didTapCloseButton: {_ in
                     self.leftNaviBarButtonAction()
 
                 })

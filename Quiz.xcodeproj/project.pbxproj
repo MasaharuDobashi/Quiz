@@ -52,7 +52,7 @@
 		D0E197DA21FDD1620062728F /* QuizManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197D921FDD1610062728F /* QuizManagementViewController.swift */; };
 		D0E197DC21FDD19F0062728F /* QuizListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E197DB21FDD19F0062728F /* QuizListCell.swift */; };
 		D0E5323323A129570076D4D1 /* QuizTypeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E5323223A129570076D4D1 /* QuizTypeTests.swift */; };
-		D0E82C432210091300960D7C /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E82C422210091300960D7C /* Enums.swift */; };
+		D0E82C432210091300960D7C /* ModeEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E82C422210091300960D7C /* ModeEnum.swift */; };
 		D0E8F9E024433A6000249654 /* HistoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8F9DF24433A6000249654 /* HistoryModel.swift */; };
 		D0E8F9E224433A7400249654 /* QuizCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E8F9E124433A7400249654 /* QuizCategoryModel.swift */; };
 		D0E94A1C21FF2DE80071DB64 /* QuizEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */; };
@@ -150,7 +150,7 @@
 		D0E197D921FDD1610062728F /* QuizManagementViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizManagementViewController.swift; sourceTree = "<group>"; };
 		D0E197DB21FDD19F0062728F /* QuizListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizListCell.swift; sourceTree = "<group>"; };
 		D0E5323223A129570076D4D1 /* QuizTypeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizTypeTests.swift; sourceTree = "<group>"; };
-		D0E82C422210091300960D7C /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
+		D0E82C422210091300960D7C /* ModeEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeEnum.swift; sourceTree = "<group>"; };
 		D0E8F9DF24433A6000249654 /* HistoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModel.swift; sourceTree = "<group>"; };
 		D0E8F9E124433A7400249654 /* QuizCategoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizCategoryModel.swift; sourceTree = "<group>"; };
 		D0E94A1B21FF2DE80071DB64 /* QuizEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizEditView.swift; sourceTree = "<group>"; };
@@ -417,7 +417,7 @@
 		D0E82C41221008FE00960D7C /* Enum */ = {
 			isa = PBXGroup;
 			children = (
-				D0E82C422210091300960D7C /* Enums.swift */,
+				D0E82C422210091300960D7C /* ModeEnum.swift */,
 				D0B40B6F26076C5000C8A430 /* DisplayFlg.swift */,
 			);
 			path = Enum;
@@ -749,7 +749,7 @@
 				D01CEA2021F9FC6D00AF1266 /* QuizMainViewController.swift in Sources */,
 				D0D3B38523EAFCE2004AF416 /* UIColorExtension.swift in Sources */,
 				D0B40B6A2607344000C8A430 /* QuizSwitchCell.swift in Sources */,
-				D0E82C432210091300960D7C /* Enums.swift in Sources */,
+				D0E82C432210091300960D7C /* ModeEnum.swift in Sources */,
 				D0EB043222AFE37F009DB116 /* HistoryViewController.swift in Sources */,
 				D0816C4E240807720015BFB0 /* R.generated.swift in Sources */,
 				D042DF8025836B63008838AB /* HistoryCell.swift in Sources */,
