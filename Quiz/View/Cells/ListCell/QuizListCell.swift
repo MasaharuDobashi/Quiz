@@ -14,16 +14,16 @@ import UIKit
 final class QuizListCell: UITableViewCell {
 
     /// Noラベル
-    @IBOutlet weak var quizNoLabel: UILabel!
+    @IBOutlet private weak var quizNoLabel: UILabel!
 
     /// クイズタイトルラベル
-    @IBOutlet weak var quizTitleLabel: UILabel!
+    @IBOutlet private weak var quizTitleLabel: UILabel!
 
     /// カテゴリラベル
-    @IBOutlet weak var quizTypeLable: UILabel!
+    @IBOutlet private weak var quizTypeLable: UILabel!
 
     /// クイズタイトル、カテゴリラベル箇所stackViewの高さ
-    @IBOutlet weak var detailHeight: NSLayoutConstraint!
+    @IBOutlet private weak var detailHeight: NSLayoutConstraint!
 
     /// 表示・非表示のフラグでセルの色を変更
     private var displaySwitch: String? {

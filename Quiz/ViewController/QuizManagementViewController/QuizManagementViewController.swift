@@ -66,7 +66,7 @@ final class QuizManagementViewController: UITableViewController {
                                     guard let weakSelf = self else {
                                         return
                                     }
-                                    RealmManager().allModelDelete(self!) {
+                                    RealmManager().allModelDelete(weakSelf) {
                                         weakSelf.modelAppend()
                                         weakSelf.tabBarController?.selectedIndex = 0
                                         NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
@@ -183,7 +183,7 @@ extension QuizManagementViewController: ManagementProtocol {
 
     /// 配列にRealmで保存したデータを追加する
     func modelAppend() {
-        quizModel = QuizModel.allFindQuiz(self, isSort: true) ?? []
+        quizModel = QuizModel.allFindQuiz(self, isSort: true)
     }
 
     /// 指定したクイズの詳細を開く

@@ -12,7 +12,7 @@ final class QuizTypeManagementViewController: UITableViewController {
 
     // MARK: Properties
 
-    var quizTypeModel: [QuizCategoryModel]? {
+    var quizTypeModel: [QuizCategoryModel] = [] {
         didSet {
             tableView.reloadData()
         }
@@ -58,13 +58,13 @@ final class QuizTypeManagementViewController: UITableViewController {
                                    title: R.string.messages.deleteDBTitle(),
                                    message: R.string.messages.deleteDBMessage(),
                                    didTapDeleteButton: { [weak self]  _ in
-                                    RealmManager().allModelDelete(self!) {
-                                        self?.modelAppend()
-                                        self?.tabBarController?.selectedIndex = 0
+                                    guard let weakSelf = self else { return }
+                                    RealmManager().allModelDelete(weakSelf) {
+                                        weakSelf.modelAppend()
+                                        weakSelf.tabBarController?.selectedIndex = 0
                                         NotificationCenter.default.post(name: Notification.Name(R.string.notifications.allDelete()), object: nil)
                                     }
-                                   }) { _ in
-        }
+                                   }, didTapCancelButton: { _ in })
 
     }
 
@@ -83,8 +83,9 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     }
 
     func deleteAction(indexPath: IndexPath) {
+        guard let createTime: String = quizTypeModel[indexPath.row].createTime else { return }
 
-        QuizCategoryModel().deleteQuizCategoryModel(self, id: (quizTypeModel?[indexPath.row].id)!, createTime: (quizTypeModel?[indexPath.row].createTime)!) {
+        QuizCategoryModel().deleteQuizCategoryModel(self, id: quizTypeModel[indexPath.row].id, createTime: createTime) {
 
             NotificationCenter.default.post(name: Notification.Name(R.string.notifications.quizTypeUpdate()), object: nil)
         }
@@ -92,8 +93,8 @@ extension QuizTypeManagementViewController: ManagementProtocol {
     }
 
     func detailAction(indexPath: IndexPath) {
-        let viewController = QuizTypeEditViewController(typeid: quizTypeModel?[indexPath.row].id,
-                                                        createTime: quizTypeModel?[indexPath.row].createTime,
+        let viewController = QuizTypeEditViewController(typeid: quizTypeModel[indexPath.row].id,
+                                                        createTime: quizTypeModel[indexPath.row].createTime,
                                                         mode: .detail
         )
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -107,17 +108,17 @@ extension QuizTypeManagementViewController {
     // MARK: UITableViewDelegate, UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if quizTypeModel?.count == 0 {
+        if quizTypeModel.count == 0 {
             return 1
         }
 
-        return quizTypeModel!.count
+        return quizTypeModel.count
 
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        if quizTypeModel?.count == 0 {
+        if quizTypeModel.count == 0 {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
             cell.textLabel?.text = "まだカテゴリが作成されていません"
             cell.selectionStyle = .none
@@ -125,7 +126,7 @@ extension QuizTypeManagementViewController {
         }
 
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-        cell.textLabel?.text = quizTypeModel?[indexPath.row].quizTypeTitle
+        cell.textLabel?.text = quizTypeModel[indexPath.row].quizTypeTitle
         return cell
     }
 
@@ -136,7 +137,7 @@ extension QuizTypeManagementViewController {
 
     /// クイズが0件の時はセルを選択させない
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if quizTypeModel?.count == 0 {
+        if quizTypeModel.count == 0 {
             return nil
         }
 
@@ -148,9 +149,10 @@ extension QuizTypeManagementViewController {
 
         /// 編集
         let edit = UIContextualAction(style: .normal, title: "編集") { [weak self] _, _, _ in
-            self?.editAction(self!,
-                             editViewController: QuizTypeEditViewController(typeid: self?.quizTypeModel?[indexPath.row].id,
-                                                                            createTime: self?.quizTypeModel?[indexPath.row].createTime,
+            guard let weakSelf = self else { return }
+            self?.editAction(weakSelf,
+                             editViewController: QuizTypeEditViewController(typeid: weakSelf.quizTypeModel[indexPath.row].id,
+                                                                            createTime: weakSelf.quizTypeModel[indexPath.row].createTime,
                                                                             mode: .edit
                              )
             )
@@ -159,7 +161,8 @@ extension QuizTypeManagementViewController {
 
         /// 削除
         let del = UIContextualAction(style: .destructive, title: "削除") { [weak self] _, _, _ in
-            self?.deleteAction(indexPath: indexPath)
+            guard let weakSelf = self else { return }
+            weakSelf.deleteAction(indexPath: indexPath)
         }
 
         return UISwipeActionsConfiguration(actions: [edit, del])
@@ -167,7 +170,7 @@ extension QuizTypeManagementViewController {
 
     /// クイズが0件の時はセルのスワイプをしない
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if quizTypeModel?.count == 0 {
+        if quizTypeModel.count == 0 {
             return false
         }
         return true

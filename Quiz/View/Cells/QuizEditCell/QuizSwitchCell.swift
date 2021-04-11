@@ -10,7 +10,7 @@ import UIKit
 
 class QuizSwitchCell: UITableViewCell {
 
-    @IBOutlet weak var placeholderLabel: UILabel!
+    @IBOutlet private weak var placeholderLabel: UILabel!
 
     @IBOutlet weak var displaySwitch: UISwitch!
 

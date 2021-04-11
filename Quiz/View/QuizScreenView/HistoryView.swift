@@ -15,7 +15,7 @@ final class HistoryView: UIView {
 
     private let screenWidth = UIScreen.main.bounds.width
 
-    private var historyModel: [HistoryModel]!
+    private var historyModel: [HistoryModel] = []
 
     private var trueCounts: [Int]!
 
@@ -54,8 +54,8 @@ final class HistoryView: UIView {
         historyModel = model
         trueCounts = [Int]()
 
-        for i in 0..<historyModel.count {
-            let count = Int(historyModel[i].quizTrueCount)!
+        historyModel.forEach {
+            let count = Int($0.quizTrueCount) ?? 0
             trueCounts.append(Int(count))
         }
         viewLoad()
@@ -106,7 +106,9 @@ extension HistoryView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let historyCell: HistoryCell = tableView.dequeueReusableCell(withIdentifier: "historyCell") as! HistoryCell
+        guard let historyCell: HistoryCell = tableView.dequeueReusableCell(withIdentifier: "historyCell") as? HistoryCell else {
+            return UITableViewCell()
+        }
 
         historyCell.setValue(date: historyModel[indexPath.row].date,
                              count: historyModel[indexPath.row].quizTrueCount

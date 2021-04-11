@@ -49,7 +49,7 @@ final class QuizTypeSelectTableViewController: UITableViewController {
 
     /// quizTypeModelに格納する
     private func setUpModel() {
-        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self) ?? []
+        quizTypeModel = QuizCategoryModel.findAllQuizCategoryModel(self)
     }
 
 }

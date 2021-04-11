@@ -20,7 +20,7 @@ class QuizInputCell: UITableViewCell {
     private var quizTypePicker: UIPickerView?
 
     /// クイズタイプを格納する
-    private var quizTypeModel: [QuizCategoryModel]?
+    private var quizTypeModel: [QuizCategoryModel] = []
 
     weak var categoryDelegate: QuizInputCellCategoryDeleagte!
 
@@ -32,7 +32,7 @@ class QuizInputCell: UITableViewCell {
 
     func setPickerView(quizTypeModel: [QuizCategoryModel]) {
         self.quizTypeModel = quizTypeModel
-        if self.quizTypeModel?.count == 0 {
+        if self.quizTypeModel.count == 0 {
             isUserInteractionEnabled = false
             return
         }
@@ -52,16 +52,16 @@ extension QuizInputCell: UIPickerViewDelegate, UIPickerViewDataSource {
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        quizTypeModel?.count ?? 0
+        quizTypeModel.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        quizTypeModel?[row].quizTypeTitle
+        quizTypeModel[row].quizTypeTitle
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        textField.text = quizTypeModel?[row].quizTypeTitle
-        categoryDelegate.categoryChange(category_id: quizTypeModel?[row].id ?? "")
+        textField.text = quizTypeModel[row].quizTypeTitle
+        categoryDelegate.categoryChange(category_id: quizTypeModel[row].id)
     }
 
 }

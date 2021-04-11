@@ -86,14 +86,15 @@ final class QuizTypeEditViewController: UIViewController {
 
     /// Realmに新規追加
     private func addRealm() {
-        QuizCategoryModel.addQuizCategoryModel(self, categorytitle: quizTypeEditView.typeTextField.text!)
+        QuizCategoryModel.addQuizCategoryModel(self, categorytitle: quizTypeEditView.typeTextField.text ?? "")
 
     }
 
     /// アップデート
     private func updateRealm() {
+        guard let filter: QuizCategoryModel = filter else { return }
 
-        QuizCategoryModel.updateQuizCategoryModel(self, id: filter!.id, createTime: filter?.createTime, categorytitle: quizTypeEditView.typeTextField.text!)
+        QuizCategoryModel.updateQuizCategoryModel(self, id: filter.id, createTime: filter.createTime, categorytitle: quizTypeEditView.typeTextField.text ?? "")
 
     }
 }

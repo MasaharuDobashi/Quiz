@@ -13,7 +13,7 @@ final class ResultScreenView: UIView {
     // MARK: Properties
 
     /// ラベルに表示するテキスト
-    private var trueCount: String? {
+    private var trueCount: String = "0" {
         /// セットされたらラベルにテキストをセットしてからラベルを表示する
         didSet {
             correctCountLabel.text = trueCount
@@ -26,7 +26,7 @@ final class ResultScreenView: UIView {
     /// ラベルに表示するテキストをセットする
     var correctString: String? {
         get {
-            trueCount!
+            trueCount
         }
 
         set(str) {

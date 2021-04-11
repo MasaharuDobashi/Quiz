@@ -45,7 +45,7 @@ class QuizCategoryModel: Object {
         if let _createTime = createTime {
             return (realm.objects(QuizCategoryModel.self).filter("createTime == '\(String(describing: _createTime))'").first)
         } else {
-            return (realm.objects(QuizCategoryModel.self).filter("id == '\(String(describing: id))'").first!)
+            return (realm.objects(QuizCategoryModel.self).filter("id == '\(String(describing: id))'").first)
         }
     }
 
@@ -88,7 +88,7 @@ class QuizCategoryModel: Object {
                     quizCategoryModel.quizTypeTitle = categorytitle
 
                     /// createTimeを追加する前のバージョンで作ったクイズの場合はcreateTimeを追加する
-                    if quizCategoryModel.createTime!.isEmpty {
+                    if quizCategoryModel.createTime == nil {
                         quizCategoryModel.createTime = Format().stringFromDate(date: Date(), addSec: true)
                     }
 
@@ -124,11 +124,16 @@ class QuizCategoryModel: Object {
     func deleteQuizCategoryModel(_ vc: UIViewController, id: String, createTime: String, completeHandler: () -> Void) {
         guard let realm = RealmManager.initRealm(vc) else { return }
 
-        let quizCategoryModel = QuizCategoryModel.findQuizCategoryModel(vc, id: id, createTime: createTime)
+        guard let quizCategoryModel = QuizCategoryModel.findQuizCategoryModel(vc, id: id, createTime: createTime) else {
+            AlertManager().alertAction(vc,
+                                       message: R.string.errors.errorMessage(),
+                                       didTapCloseButton: nil)
+            return
+        }
 
         do {
             try realm.write {
-                realm.delete(quizCategoryModel!)
+                realm.delete(quizCategoryModel)
 
                 completeHandler()
             }

@@ -39,7 +39,7 @@ final class HistoryViewController: UIViewController {
     private func setHistoryView() {
         historyModel = HistoryModel.allFindHistory(self)
         historyView = HistoryView(frame: CGRect(x: 0,
-                                                y: (navigationController?.navigationBar.bounds.height)! + statusBarHeight,
+                                                y: navigationController?.navigationBar.bounds.height ?? 0 + statusBarHeight,
                                                 width: view.frame.width,
                                                 height: view.frame.height),
                                   historyModel: historyModel)

@@ -16,7 +16,7 @@ final class QuizEditView: UITableView {
     private var quizModel: QuizModel?
 
     /// クイズタイプを格納する
-    var quizTypeModel: [QuizCategoryModel]?
+    var quizTypeModel: [QuizCategoryModel] = []
 
     /// クイズのカテゴリのIDを格納する
     var typeid: String?
@@ -119,6 +119,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
 
     // MARK: Cell
 
+    // swiftlint:disable function_body_length
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "Cell")
         cell.selectionStyle = .none
@@ -135,10 +136,9 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .correctAnswer:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
                 return UITableViewCell()
@@ -147,10 +147,9 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .incorrectAnswer1:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
                 return UITableViewCell()
@@ -159,10 +158,9 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .incorrectAnswer2:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
                 return UITableViewCell()
@@ -171,10 +169,9 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .incorrectAnswer3:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
                 return UITableViewCell()
@@ -183,35 +180,31 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .quizType:
             guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
                 return UITableViewCell()
             }
             cell.setTextFieldValue(text: quizTypeTitle, placeholder: rowEditValue.placeholder, toolBar: toolBar)
-            cell.setPickerView(quizTypeModel: quizTypeModel ?? [])
+            cell.setPickerView(quizTypeModel: quizTypeModel)
             cell.categoryDelegate = self
             cell.textField.addTarget(self, action: #selector(textFieldChangeValue), for: .editingChanged)
             cell.textField.accessibilityIdentifier = rowEditValue.accessibilityIdentifier
             cell.textField.delegate = self
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         case .showHide:
             guard let cell: QuizSwitchCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizSwitchCell.identifier) as? QuizSwitchCell else {
                 return UITableViewCell()
             }
             cell.setValue(label: rowEditValue.placeholder, isDisplay: isDisplay, accessibilityIdentifier: rowEditValue.accessibilityIdentifier)
             cell.displaySwitch.addTarget(self, action: #selector(displaySwitch(_:)), for: .valueChanged)
-            if mode == .detail {
-                cell.isUserInteractionEnabled = false
-            }
-
+            if mode == .detail { cell.isUserInteractionEnabled = false }
             return cell
+
         default:
             break
         }
@@ -221,7 +214,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if InputType.quizType.rawValue == indexPath.section {
-            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+            if quizTypeModel.count == 0 { return CGFloat.leastNormalMagnitude }
         }
 
         return 50
@@ -249,7 +242,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if InputType.quizType.rawValue == section {
-            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+            if quizTypeModel.count == 0 { return CGFloat.leastNormalMagnitude }
         }
         return section == InputType.title.rawValue ? 40 : 30
     }
@@ -259,7 +252,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 
         if InputType.quizType.rawValue == section {
-            if quizTypeModel?.count == 0 { return CGFloat.leastNormalMagnitude }
+            if quizTypeModel.count == 0 { return CGFloat.leastNormalMagnitude }
         }
 
         return section == InputType.showHide.rawValue ? 400 : CGFloat.leastNormalMagnitude
@@ -408,24 +401,4 @@ extension QuizEditView {
         }
     }
 
-    func getParameters() -> [String: Any] {
-        [ParameterKey().title: title_text ?? "",
-         ParameterKey().correctAnswer: true_text ?? "",
-         ParameterKey().incorrectAnswer1: false1_text ?? "",
-         ParameterKey().incorrectAnswer2: false2_text ?? "",
-         ParameterKey().incorrectAnswer3: false3_text ?? "",
-         ParameterKey().quizType: typeid ?? "",
-         ParameterKey().displayFlag: isDisplay ? DisplayFlg.indicated.rawValue : DisplayFlg.nonIndicated.rawValue
-        ]
-    }
-}
-
-struct ParameterKey {
-    let title: String = "title"
-    let correctAnswer: String = "correctAnswer"
-    let incorrectAnswer1: String = "incorrectAnswer1"
-    let incorrectAnswer2: String = "incorrectAnswer2"
-    let incorrectAnswer3: String = "incorrectAnswer3"
-    let quizType: String = "quizType"
-    let displayFlag: String = "displayFlag"
 }

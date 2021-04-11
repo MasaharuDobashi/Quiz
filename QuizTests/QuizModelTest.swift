@@ -49,15 +49,6 @@ class QuizModelTest: XCTestCase {
     /// クイズの編集テスト
     func test_updateQuizModelTest() {
 
-        let addparameters: [String: Any] = [ParameterKey().title: "UnitTest",
-                                            ParameterKey().correctAnswer: "correctAnswer",
-                                            ParameterKey().incorrectAnswer1: "incorrectAnswer1",
-                                            ParameterKey().incorrectAnswer2: "incorrectAnswer2",
-                                            ParameterKey().incorrectAnswer3: "incorrectAnswer3",
-                                            ParameterKey().displayFlag: "0",
-                                            ParameterKey().quizType: ""
-        ]
-
         QuizModel.addQuiz(UIViewController(),
                           title: "UnitTest",
                           correctAnswer: "correctAnswer",
