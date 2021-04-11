@@ -9,27 +9,26 @@
 import UIKit
 
 final class ResultScreenView: UIView {
-    
+
     // MARK: Properties
-    
+
     /// ラベルに表示するテキスト
-    private var trueCount: String? {
+    private var trueCount: String = "0" {
         /// セットされたらラベルにテキストをセットしてからラベルを表示する
         didSet {
             correctCountLabel.text = trueCount
-            
+
             setConstraint()
             animation()
         }
     }
-    
-    
+
     /// ラベルに表示するテキストをセットする
     var correctString: String? {
         get {
-            return trueCount!
+            trueCount
         }
-        
+
         set(str) {
             if let _str = str {
                 trueCount = "   あなたは\(_str)問正解しました"
@@ -38,51 +37,44 @@ final class ResultScreenView: UIView {
             }
         }
     }
-    
+
     /// 正解数を表示するラベル
     private var correctCountLabel: UILabel = {
-        let label:UILabel = UILabel(title: "",
-            font: UIFont.boldSystemFont(ofSize: 18),
-            textColor: .white,
-            backgroundColor:Rose,
-            textAlignment: .left,
-            numberOfLines: 0
+        let label = UILabel(title: "",
+                            font: UIFont.boldSystemFont(ofSize: 18),
+                            textColor: .white,
+                            backgroundColor: R.color.rose(),
+                            textAlignment: .left,
+                            numberOfLines: 0
         )
         label.labelHeight(height: 100, cornerRadius: 8)
-        
+
         return label
     }()
-    
-    
-    
-    
+
     // MARK: Init
-    
+
     override init(frame: CGRect) {
-        super.init(frame:frame)
-        
-        backgroundColor = Beige
+        super.init(frame: frame)
+
+        backgroundColor = R.color.beige()
     }
-    
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
-    
+
     // MARK: Animetion
-    
+
     /// ラベルを上から表示するアニメーション
-    func animation(){
+    func animation() {
         UIView.animate(withDuration: 1, delay: 1, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.7, options: [.curveLinear], animations: {[weak self] in
             self?.correctCountLabel.frame.origin.y = 100
-            }, completion: nil)
+        }, completion: nil)
     }
-    
-    
+
     // MARK: Constraint
-    
+
     /// 制約をセットする
     func setConstraint() {
         addSubview(correctCountLabel)
@@ -93,6 +85,5 @@ final class ResultScreenView: UIView {
         correctCountLabel.heightAnchor.constraint(equalToConstant: correctCountLabel.bounds.height).isActive = true
         correctCountLabel.layer.cornerRadius = correctCountLabel.bounds.height / 8
     }
-    
-}
 
+}

@@ -9,38 +9,42 @@
 import UIKit
 
 final class HistoryViewController: UIViewController {
-    
+
     // MARK: Properties
-    
-    private lazy var historyView: HistoryView = {
-        let historyView: HistoryView = HistoryView(frame: CGRect(x: 0, y: (self.navigationController?.navigationBar.bounds.height)! +  UIApplication.shared.statusBarFrame.size.height, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - ((self.navigationController?.navigationBar.bounds.height)! + UIApplication.shared.statusBarFrame.size.height)), historyModel: historyModel)
-        
-        return historyView
-    }()
-    
+
+    private var historyView: HistoryView?
+
     private var historyModel: [HistoryModel]!
-    
-    
+
+    private let statusBarHeight = UIWindow().windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+
     // MARK: Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationController?.navigationBar.backgroundColor = cellWhite
-        
-        historyModel = HistoryModel.allFindHistory(self)
-        
-        
-        view.addSubview(historyView)
-    
+        navigationController?.navigationBar.backgroundColor = R.color.cellWhite()
+
+        setHistoryView()
     }
 
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         debugPrint(object: historyModel)
-        
-        historyView.lineAnimetion()
+
+        historyView?.lineAnimetion()
     }
-    
+
+    // MARK: private func
+
+    private func setHistoryView() {
+        historyModel = HistoryModel.allFindHistory(self)
+        historyView = HistoryView(frame: CGRect(x: 0,
+                                                y: navigationController?.navigationBar.bounds.height ?? 0 + statusBarHeight,
+                                                width: view.frame.width,
+                                                height: view.frame.height),
+                                  historyModel: historyModel)
+        guard let _historyView = historyView else { return }
+        view.addSubview(_historyView)
+    }
+
 }

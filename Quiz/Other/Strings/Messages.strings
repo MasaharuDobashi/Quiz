@@ -1,0 +1,21 @@
+/* 
+  Messages.strings
+  Quiz
+
+  Created by 土橋正晴 on 2021/04/04.
+  Copyright © 2021 m.dobashi. All rights reserved.
+*/
+
+
+
+"DeleteDBTitle" = "データベースの削除";
+"DeleteDBMessage" = "作成した問題や履歴を全件削除します";
+
+
+"QuizAdd" = "問題を作成しました";
+"QuizEdit" = "問題を更新しました";
+"QuizActionSheetMessage" = "このクイズをどうしますか？";
+"ValidateTitle" = "クイズのタイトルが未入力です。";
+"ValidateCorrectAnswer" = "正解が未入力です。";
+"ValidateIncorrectAnswer" = "不正解%@が未入力です。";
+"ValidateCategory" = "カテゴリが未選択です。";

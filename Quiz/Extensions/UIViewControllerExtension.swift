@@ -6,38 +6,56 @@
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import UIKit
-import RealmSwift
-
 
 extension UIViewController {
-    
-    func frame_Size(_ viewController:UIViewController) -> CGRect {
-        
-        return CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+
+    var frame: CGRect {
+        get {
+            UIScreen.main.bounds
+        }
     }
-    
-    
-    
-    
-    @objc func navigationItemAction() {
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftButtonAction))
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
+
+    @objc func setNavigationBarItem() {
+        self.navigationItem.leftBarButtonItem = leftNaviButton
+        self.navigationItem.rightBarButtonItem = rightNaviButton
     }
-    
-    
-    
-    @objc func leftButtonAction(){
-        self.dismiss(animated: true, completion: nil)
+
+    /// モーダルの時は「X」ボタンのを設定する
+    ///
+    /// プッシュ遷移の時には何も設定せず、「<戻る」が表示されるはず
+    var leftNaviButton: UIBarButtonItem? {
+        get {
+            if isPresentModal {
+                return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(leftNaviBarButtonAction))
+            }
+            return nil
+        }
     }
-    
-    
-    @objc func rightButtonAction() {}
-    
-    
-    
-    func debugPrint(object: Any?){
+
+    /// 「+」NavigationButton
+    var rightNaviButton: UIBarButtonItem {
+        get {
+            UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightNaviBarButtonAction))
+        }
+    }
+
+    @objc func leftNaviBarButtonAction() {
+        if isPresentModal {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc func rightNaviBarButtonAction() {}
+
+    /// モーダル遷移か判定
+    private var isPresentModal: Bool {
+        self.navigationController?.viewControllers.count ?? 0 <= 1
+    }
+
+    func debugPrint(object: Any?) {
         #if DEBUG
         if let _object = object {
             print("\nObject Log Start -------------------------------------")
@@ -46,9 +64,7 @@ extension UIViewController {
         }
         #endif
     }
-    
-    
-    
+
     /// 文字数が0以上かどうかバリデーションチェック
     ///
     /// - Parameters:
@@ -57,40 +73,33 @@ extension UIViewController {
     /// - Returns: バリデーションの結果
     func emptyValidate(viewController: UIViewController, title: String, message: String) -> Bool {
         if title.isEmpty {
-            AlertManager.alertAction(viewController, title: nil, message: message, didTapCloseButton: {_ -> Void in})
+            AlertManager().alertAction(viewController, title: nil, message: message, didTapCloseButton: { _ -> Void in })
             return false
         }
         return true
     }
-    
-    
-    
+
     /// モーダル遷移
     /// - Parameter viewController: モーダル表示するViewController
     func presentModalView(_ viewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: viewController)
-        present(navigationController,animated: true, completion: nil)
+        present(navigationController, animated: true, completion: nil)
     }
-    
-    
+
     /// Push遷移
     /// - Parameter viewController: 遷移先のViewController
     func pushTransition(_ viewController: UIViewController) {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    
-    
+
     /// ナビゲーションバーに「+」ボタンとRealmModelの全件削除用のボタン(debug時)を追加する
     func setBarButtonItem() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightButtonAction))
-        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(rightNaviBarButtonAction))
+
         #if DEBUG
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftButtonAction))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(leftNaviBarButtonAction))
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "allDelete"
         #endif
     }
-    
-    
-}
 
+}

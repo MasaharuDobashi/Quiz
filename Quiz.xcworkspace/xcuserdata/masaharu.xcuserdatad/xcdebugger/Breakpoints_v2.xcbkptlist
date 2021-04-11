@@ -7,33 +7,188 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D268CFDB-AC2F-4E8C-907F-1A63516C10C0"
+            uuid = "F9D55567-D94D-4CC1-82D8-E8C3AC5C6A71"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Quiz/ViewController/QuizManagementViewController/QuizManagementViewController.swift"
+            filePath = "Quiz/ViewController/QuizManagementViewController/QuizEditViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "213"
-            endingLineNumber = "213"
-            landmarkName = "unknown"
-            landmarkType = "0">
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "rightNaviBarButtonAction()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5917A641-2C6E-4C09-86D3-1B3DA7D2A129"
+            uuid = "53ED5035-1275-47A7-946B-C22802C5A774"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Quiz/Model/QuizModel.swift"
+            filePath = "Quiz/View/QuizManagementView/QuizEditView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "addQuiz(_:parameters:)"
+            startingLineNumber = "309"
+            endingLineNumber = "309"
+            landmarkName = "unknown"
+            landmarkType = "0">
+            <Locations>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "111">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "350">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "1213">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "2106">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "3005">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "3904">
+               </Location>
+               <Location
+                  uuid = "53ED5035-1275-47A7-946B-C22802C5A774 - b286c5d194786678"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditView.textFieldChangeValue(textField: __C.UITextField) -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/View/QuizManagementView/QuizEditView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "309"
+                  endingLineNumber = "309"
+                  offsetFromSymbolStart = "4803">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FC26B998-B182-4A73-85D1-4B4F550BD015"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Quiz/ViewController/QuizManagementViewController/QuizEditViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "realmAction(parameters:completion:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FC26B998-B182-4A73-85D1-4B4F550BD015 - cb063729801d56f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Quiz.QuizEditViewController.rightButtonAction() -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/ViewController/QuizManagementViewController/QuizEditViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "175">
+               </Location>
+               <Location
+                  uuid = "FC26B998-B182-4A73-85D1-4B4F550BD015 - d578c58be68e301"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Quiz.QuizEditViewController.rightButtonAction() -&gt; ()"
+                  moduleName = "Quiz"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/masaharu/SwiftProjects/Quiz/Quiz/ViewController/QuizManagementViewController/QuizEditViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "19">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

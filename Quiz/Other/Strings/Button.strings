@@ -1,0 +1,15 @@
+/* 
+  Button.strings
+  Quiz
+
+  Created by 土橋正晴 on 2021/03/28.
+  Copyright © 2021 m.dobashi. All rights reserved.
+*/
+
+
+"edit" = "編集";
+"delete" = "削除";
+"Yes" = "はい";
+"No" = "いいえ";
+"close" = "閉じる";
+"cancel" = "キャンセル";

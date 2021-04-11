@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--メイン-->
+        <scene sceneID="15t-52-wrv">
+            <objects>
+                <viewController restorationIdentifier="QuizMainViewController" storyboardIdentifier="QuizMainViewController" id="4hT-oE-nx4" customClass="QuizMainViewController" customModule="Quiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VKu-Xs-tCD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="5L3-80-o8p">
+                                <rect key="frame" x="50" y="144" width="314" height="132"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vWz-TB-5e6">
+                                        <rect key="frame" x="0.0" y="0.0" width="314" height="34"/>
+                                        <color key="backgroundColor" name="Geranium"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <state key="normal" title="クイズスタート">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapQuizStartButton:" destination="4hT-oE-nx4" eventType="touchUpInside" id="6Zq-bf-3WZ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQR-8b-tJ8">
+                                        <rect key="frame" x="0.0" y="49" width="314" height="34"/>
+                                        <color key="backgroundColor" name="Geranium"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <state key="normal" title="カテゴリ">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapQuizTypeButton:" destination="4hT-oE-nx4" eventType="touchUpInside" id="yHO-d5-lQO"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kx-wU-E92">
+                                        <rect key="frame" x="0.0" y="98" width="314" height="34"/>
+                                        <color key="backgroundColor" name="Rose"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <state key="normal" title="履歴">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="didTapHistoryButton:" destination="4hT-oE-nx4" eventType="touchUpInside" id="8Jk-cP-1Ak"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ihO-r9-yem"/>
+                        <color key="backgroundColor" name="Beige"/>
+                        <constraints>
+                            <constraint firstItem="5L3-80-o8p" firstAttribute="top" secondItem="ihO-r9-yem" secondAttribute="top" constant="100" id="Rbg-jG-ga9"/>
+                            <constraint firstItem="5L3-80-o8p" firstAttribute="leading" secondItem="ihO-r9-yem" secondAttribute="leading" constant="50" id="cYy-xx-hQf"/>
+                            <constraint firstItem="ihO-r9-yem" firstAttribute="trailing" secondItem="5L3-80-o8p" secondAttribute="trailing" constant="50" id="yca-3m-Y2z"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="メイン" image="gamecontroller.fill" catalog="system" id="DJd-N7-lO5"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="historyButton" destination="4kx-wU-E92" id="mIq-7K-efF"/>
+                        <outlet property="quizStartButton" destination="vWz-TB-5e6" id="GA7-e5-1UI"/>
+                        <outlet property="quizTypeButton" destination="mQR-8b-tJ8" id="wiG-KO-3ym"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="l9f-6G-yJS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-676" y="5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="gamecontroller.fill" catalog="system" width="128" height="80"/>
+        <namedColor name="Beige">
+            <color red="0.96078431372549022" green="0.96078431372549022" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Geranium">
+            <color red="0.85490196078431369" green="0.23921568627450981" blue="0.36078431372549019" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Rose">
+            <color red="0.95686274509803926" green="0.31372549019607843" blue="0.42745098039215684" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
