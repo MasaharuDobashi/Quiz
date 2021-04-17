@@ -50,17 +50,16 @@ class QuizModel: Object {
     // MARK: Function
 
     /// クイズの全件検索
-    class func allFindQuiz(_ vc: UIViewController, isSort: Bool = true) -> [QuizModel] {
+    class func allFindQuiz(_ vc: UIViewController) -> [QuizModel] {
         guard let realm = RealmManager.realm else { return [] }
         var returnModel = [QuizModel]()
-        var model: Results<QuizModel>
-
-        if isSort {
-            model = realm.objects(QuizModel.self).sorted(byKeyPath: "createTime")
-        } else {
-            model = realm.objects(QuizModel.self)
+        let model: Results<QuizModel> = realm.objects(QuizModel.self)
+        model.forEach { value in
+            returnModel.append(value)
+            returnModel.sort {
+                $0.createTime ?? "" < $1.createTime ?? ""
+            }
         }
-        model.forEach { returnModel.append($0) }
         return returnModel
     }
 
@@ -69,9 +68,9 @@ class QuizModel: Object {
         guard let realm = RealmManager.realm else { return nil }
 
         if let _createTime = createTime {
-            return (realm.objects(QuizModel.self).filter("createTime == '\(String(describing: _createTime))'").first)
+            return (realm.objects(QuizModel.self).filter("createTime == '\(_createTime)'").first)
         } else {
-            return(realm.objects(QuizModel.self).filter("id == '\(String(describing: quizid))'").first)
+            return(realm.objects(QuizModel.self).filter("id == '\(quizid)'").first)
         }
     }
 

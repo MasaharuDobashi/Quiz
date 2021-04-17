@@ -31,9 +31,7 @@ class HistoryModel: Object {
         }
 
         var returnModel: [HistoryModel] = [HistoryModel]()
-        results.forEach { value in
-            returnModel.append(value)
-        }
+        results.forEach { returnModel.append($0) }
 
         return returnModel
     }
@@ -64,6 +62,7 @@ class HistoryModel: Object {
             AlertManager().alertAction(vc, title: nil, message: R.string.errors.errorMessage(), didTapCloseButton: nil)
         }
 
+        /// 履歴の保存の最大件数を３０件、超えたら古いものから削除
         if (realm.objects(HistoryModel.self).count) > 30 {
             deleteFirstHistory(vc, realm: realm)
         }
@@ -74,11 +73,10 @@ class HistoryModel: Object {
     /// - Parameters:
     ///   - vc: 呼び出し元のVC
     ///   - realm: realmのインスタンス
-    class func deleteFirstHistory(_ vc: UIViewController, realm: Realm) {
+    private class func deleteFirstHistory(_ vc: UIViewController, realm: Realm) {
         var historyModel: [HistoryModel] = [HistoryModel]()
-        for i in 0..<realm.objects(HistoryModel.self).count {
-            historyModel.append(realm.objects(HistoryModel.self)[i])
-
+        realm.objects(HistoryModel.self).forEach { value in
+            historyModel.append(value)
             historyModel.sort {
                 $0.date < $1.date
             }

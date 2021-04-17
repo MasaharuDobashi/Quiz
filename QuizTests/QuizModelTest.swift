@@ -99,7 +99,7 @@ class QuizModelTest: XCTestCase {
                              createTime: quizModel?.createTime
         )
 
-        let allquizModel = QuizModel.allFindQuiz(UIViewController(), isSort: true)
+        let allquizModel = QuizModel.allFindQuiz(UIViewController())
         XCTAssert(allquizModel.count == 0, "クイズが削除されていない")
 
     }
