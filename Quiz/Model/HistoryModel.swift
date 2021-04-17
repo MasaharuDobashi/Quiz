@@ -6,7 +6,6 @@
 //  Copyright © 2020 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class HistoryModel: Object {
@@ -23,7 +22,7 @@ class HistoryModel: Object {
 
     /// 履歴の全件検索
     class func allFindHistory(_ vc: UIViewController) -> [HistoryModel] {
-        guard let realm = RealmManager.initRealm(vc) else { return [] }
+        guard let realm = RealmManager.realm else { return [] }
         let results = realm.objects(HistoryModel.self).sorted(byKeyPath: "date")
 
         guard !results.isEmpty else {
@@ -45,7 +44,7 @@ class HistoryModel: Object {
     ///   - count: 正解数
     class func addHistory(_ vc: UIViewController, count: Int) {
 
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
 
         let historyModel = HistoryModel()
         historyModel.quizTrueCount = String(count)
