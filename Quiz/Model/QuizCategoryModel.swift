@@ -6,7 +6,6 @@
 //  Copyright © 2020 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class QuizCategoryModel: Object {
@@ -32,7 +31,7 @@ class QuizCategoryModel: Object {
 
     /// カテゴリの全件検索
     class func findAllQuizCategoryModel(_ vc: UIViewController) -> [QuizCategoryModel] {
-        guard let realm = RealmManager.initRealm(vc) else { return [] }
+        guard let realm = RealmManager.realm else { return [] }
         var returnModel = [QuizCategoryModel]()
         realm.objects(QuizCategoryModel.self).forEach { returnModel.append($0) }
         return returnModel
@@ -40,7 +39,7 @@ class QuizCategoryModel: Object {
 
     /// カテゴリの検索
     class func findQuizCategoryModel(_ vc: UIViewController, id: String, createTime: String?) -> QuizCategoryModel? {
-        guard let realm = RealmManager.initRealm(vc) else { return nil }
+        guard let realm = RealmManager.realm else { return nil }
 
         if let _createTime = createTime {
             return (realm.objects(QuizCategoryModel.self).filter("createTime == '\(String(describing: _createTime))'").first)
@@ -51,14 +50,14 @@ class QuizCategoryModel: Object {
 
     /// 選択されているカテゴリの検索
     class func findSelectQuizCategoryModel(_ vc: UIViewController) -> QuizCategoryModel? {
-        guard let realm = RealmManager.initRealm(vc) else { return nil }
+        guard let realm = RealmManager.realm else { return nil }
         return (realm.objects(QuizCategoryModel.self).filter("isSelect == '1'").first)
     }
 
     /// カテゴリを追加する
     class func addQuizCategoryModel(_ vc: UIViewController, categorytitle: String) {
 
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
         let quizCategoryModel = QuizCategoryModel()
 
         quizCategoryModel.id = String(realm.objects(QuizCategoryModel.self).count + 1)
@@ -80,7 +79,7 @@ class QuizCategoryModel: Object {
 
     /// カテゴリを更新する
     class func updateQuizCategoryModel(_ vc: UIViewController, id: String, createTime: String?, categorytitle: String) {
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
 
         if let quizCategoryModel = QuizCategoryModel.findQuizCategoryModel(vc, id: id, createTime: createTime) {
             do {
@@ -106,7 +105,7 @@ class QuizCategoryModel: Object {
     /// 選択されたカテゴリを更新する
     class func updateisSelect(_ vc: UIViewController, selectCategory: QuizCategoryModel) {
 
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
         let alreadySelectedCategory = QuizCategoryModel.findSelectQuizCategoryModel(vc)
         let selectedCategory = QuizCategoryModel.findQuizCategoryModel(vc, id: selectCategory.id, createTime: selectCategory.createTime)
 
@@ -122,7 +121,7 @@ class QuizCategoryModel: Object {
 
     /// カテゴリの削除
     func deleteQuizCategoryModel(_ vc: UIViewController, id: String, createTime: String, completeHandler: () -> Void) {
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
 
         guard let quizCategoryModel = QuizCategoryModel.findQuizCategoryModel(vc, id: id, createTime: createTime) else {
             AlertManager().alertAction(vc,

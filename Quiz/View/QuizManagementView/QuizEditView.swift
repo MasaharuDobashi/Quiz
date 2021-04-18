@@ -107,6 +107,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
 
         register(R.nib.quizInputCell)
         register(R.nib.quizSwitchCell)
+        register(R.nib.quizInputPickerCell)
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -184,7 +185,7 @@ extension QuizEditView: UITableViewDelegate, UITableViewDataSource {
             return cell
 
         case .quizType:
-            guard let cell: QuizInputCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputCell.identifier) as? QuizInputCell else {
+            guard let cell: QuizInputPickerCell = tableView.dequeueReusableCell(withIdentifier: R.nib.quizInputPickerCell.identifier) as? QuizInputPickerCell else {
                 return UITableViewCell()
             }
             cell.setTextFieldValue(text: quizTypeTitle, placeholder: rowEditValue.placeholder, toolBar: toolBar)
@@ -294,7 +295,7 @@ extension QuizEditView: UITextFieldDelegate {
 
 }
 
-extension QuizEditView: QuizInputCellCategoryDeleagte {
+extension QuizEditView: QuizInputPickerCellDeleagte {
     func categoryChange(category_id: String) {
         typeid = category_id
     }

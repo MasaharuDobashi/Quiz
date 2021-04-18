@@ -183,7 +183,7 @@ extension QuizManagementViewController: ManagementProtocol {
 
     /// 配列にRealmで保存したデータを追加する
     func modelAppend() {
-        quizModel = QuizModel.allFindQuiz(self, isSort: true)
+        quizModel = QuizModel.allFindQuiz(self)
     }
 
     /// 指定したクイズの詳細を開く

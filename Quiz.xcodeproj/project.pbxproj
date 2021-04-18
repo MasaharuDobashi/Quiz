@@ -31,6 +31,8 @@
 		D06DA264244C927B00222033 /* QuizModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = D06DA263244C927B00222033 /* QuizModelTest.swift */; };
 		D073E25F2289974B000F9874 /* UILabelExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D073E25E2289974B000F9874 /* UILabelExtension.swift */; };
 		D074ED8A2618C20C0065D99E /* Messages.strings in Resources */ = {isa = PBXBuildFile; fileRef = D074ED892618C20C0065D99E /* Messages.strings */; };
+		D07C7E7C2628839C00681285 /* QuizInputPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07C7E7B2628839C00681285 /* QuizInputPickerCell.swift */; };
+		D07C7E80262883A900681285 /* QuizInputPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D07C7E7F262883A900681285 /* QuizInputPickerCell.xib */; };
 		D07D27E125F4C69900612365 /* QuizTypeManagementViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D07D27E025F4C69900612365 /* QuizTypeManagementViewController.storyboard */; };
 		D07D522F244DE3D7001C692E /* HistoryModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D07D522E244DE3D7001C692E /* HistoryModelTests.swift */; };
 		D0816C4E240807720015BFB0 /* R.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0816C4D240807710015BFB0 /* R.generated.swift */; };
@@ -127,6 +129,8 @@
 		D06DA263244C927B00222033 /* QuizModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizModelTest.swift; sourceTree = "<group>"; };
 		D073E25E2289974B000F9874 /* UILabelExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabelExtension.swift; sourceTree = "<group>"; };
 		D074ED892618C20C0065D99E /* Messages.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Messages.strings; sourceTree = "<group>"; };
+		D07C7E7B2628839C00681285 /* QuizInputPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizInputPickerCell.swift; sourceTree = "<group>"; };
+		D07C7E7F262883A900681285 /* QuizInputPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuizInputPickerCell.xib; sourceTree = "<group>"; };
 		D07D27E025F4C69900612365 /* QuizTypeManagementViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = QuizTypeManagementViewController.storyboard; sourceTree = "<group>"; };
 		D07D522E244DE3D7001C692E /* HistoryModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryModelTests.swift; sourceTree = "<group>"; };
 		D0816C4D240807710015BFB0 /* R.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = R.generated.swift; sourceTree = SOURCE_ROOT; };
@@ -214,6 +218,8 @@
 			children = (
 				D0B40B5D2606F02600C8A430 /* QuizInputCell.swift */,
 				D0B40B592606EFCC00C8A430 /* QuizInputCell.xib */,
+				D07C7E7B2628839C00681285 /* QuizInputPickerCell.swift */,
+				D07C7E7F262883A900681285 /* QuizInputPickerCell.xib */,
 				D0B40B692607344000C8A430 /* QuizSwitchCell.swift */,
 				D0B40B65260733F700C8A430 /* QuizSwitchCell.xib */,
 			);
@@ -568,6 +574,7 @@
 				D07D27E125F4C69900612365 /* QuizTypeManagementViewController.storyboard in Resources */,
 				D014AE8E26102ACF00634CCF /* Button.strings in Resources */,
 				D08EBA6721F9FA5300B63F02 /* Assets.xcassets in Resources */,
+				D07C7E80262883A900681285 /* QuizInputPickerCell.xib in Resources */,
 				D0540B1925FCCBCC00029F11 /* QuizListCell.xib in Resources */,
 				D0DCE6FF257CF3420018A4BA /* Notifications.strings in Resources */,
 				D0B40B66260733F700C8A430 /* QuizSwitchCell.xib in Resources */,
@@ -726,6 +733,7 @@
 				D01CEA2221F9FC8E00AF1266 /* QuizScreenViewController.swift in Sources */,
 				D0D042E525812D6E00E0649F /* Format.swift in Sources */,
 				D0C6E9AA2201D48D0001B4FE /* AlertManager.swift in Sources */,
+				D07C7E7C2628839C00681285 /* QuizInputPickerCell.swift in Sources */,
 				D05196CB236FF9BF00762178 /* QuizTypeEditViewController.swift in Sources */,
 				D01CEA2A21F9FD0E00AF1266 /* ResultScreenView.swift in Sources */,
 				D0E197D721FD8A340062728F /* UIViewControllerExtension.swift in Sources */,
@@ -1012,7 +1020,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.4;
+				MARKETING_VERSION = 2.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.Quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1033,7 +1041,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.1.4;
+				MARKETING_VERSION = 2.1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = m.dobashi.Quiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

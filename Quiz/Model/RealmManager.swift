@@ -6,29 +6,25 @@
 //  Copyright © 2020 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class RealmManager {
 
     /// Realmのインスタンス化
-    class func initRealm(_ vc: UIViewController) -> Realm? {
-
+    static let realm: Realm? = {
         let realm: Realm
         do {
             realm = try Realm()
-
             return realm
         } catch {
-            AlertManager().alertAction(vc, message: "エラーが発生しました") { _ in
-            }
+            print("realm error: \(error)")
+            return nil
         }
-        return nil
-    }
+    }()
 
     /// Realmで保存したDB全件削除
     func allModelDelete(_ vc: UIViewController, completion: () -> Void) {
-        let realm = RealmManager.initRealm(vc)
+        let realm = RealmManager.realm
 
         do {
             try realm?.write {
@@ -39,8 +35,7 @@ class RealmManager {
         } catch {
             AlertManager().alertAction(vc,
                                        message: R.string.errors.errorMessage(),
-                                       didTapCloseButton: { _ in
-                                       })
+                                       didTapCloseButton: nil)
             return
         }
 
@@ -50,7 +45,7 @@ class RealmManager {
     ///
     /// テスト時にしか使用しない
     func allDelete() {
-        let realm = try? Realm()
+        let realm = RealmManager.realm
 
         try? realm?.write {
             realm?.deleteAll()

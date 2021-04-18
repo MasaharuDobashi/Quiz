@@ -121,7 +121,7 @@ final class QuizMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        isActiveQuiz = QuizModel.allFindQuiz(self, isSort: true).count != 0 ? true : false
+        isActiveQuiz = QuizModel.allFindQuiz(self).count != 0 ? true : false
         isQuizType = QuizCategoryModel.findAllQuizCategoryModel(self).count != 0 ? true : false
         isHistory = HistoryModel.allFindHistory(self).isEmpty ? false : true
     }

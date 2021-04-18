@@ -6,7 +6,6 @@
 //  Copyright © 2019 m.dobashi. All rights reserved.
 //
 
-import Foundation
 import RealmSwift
 
 class QuizModel: Object {
@@ -51,34 +50,33 @@ class QuizModel: Object {
     // MARK: Function
 
     /// クイズの全件検索
-    class func allFindQuiz(_ vc: UIViewController, isSort: Bool = true) -> [QuizModel] {
-        guard let realm = RealmManager.initRealm(vc) else { return [] }
+    class func allFindQuiz(_ vc: UIViewController) -> [QuizModel] {
+        guard let realm = RealmManager.realm else { return [] }
         var returnModel = [QuizModel]()
-        var model: Results<QuizModel>
-
-        if isSort {
-            model = realm.objects(QuizModel.self).sorted(byKeyPath: "id")
-        } else {
-            model = realm.objects(QuizModel.self)
+        let model: Results<QuizModel> = realm.objects(QuizModel.self)
+        model.forEach { value in
+            returnModel.append(value)
+            returnModel.sort {
+                $0.createTime ?? "" < $1.createTime ?? ""
+            }
         }
-        model.forEach { returnModel.append($0) }
         return returnModel
     }
 
     /// クイズの１件検索
     class func findQuiz(_ vc: UIViewController, quizid: String, createTime: String?) -> QuizModel? {
-        guard let realm = RealmManager.initRealm(vc) else { return nil }
+        guard let realm = RealmManager.realm else { return nil }
 
         if let _createTime = createTime {
-            return (realm.objects(QuizModel.self).filter("createTime == '\(String(describing: _createTime))'").first)
+            return (realm.objects(QuizModel.self).filter("createTime == '\(_createTime)'").first)
         } else {
-            return(realm.objects(QuizModel.self).filter("id == '\(String(describing: quizid))'").first)
+            return(realm.objects(QuizModel.self).filter("id == '\(quizid)'").first)
         }
     }
 
     /// クイズの全件検索
     class func displayFindQuiz(_ vc: UIViewController) -> [QuizModel] {
-        guard let realm = RealmManager.initRealm(vc) else { return [] }
+        guard let realm = RealmManager.realm else { return [] }
         var model: [QuizModel] = [QuizModel]()
         let realmModel = (realm.objects(QuizModel.self).filter("displayFlag == '0'"))
         realmModel.forEach { model.append($0) }
@@ -87,7 +85,7 @@ class QuizModel: Object {
 
     /// 選択されているカテゴリのクイズを検索
     class func selectQuiz(_ vc: UIViewController) -> [QuizModel] {
-        guard let realm = RealmManager.initRealm(vc) else { return [] }
+        guard let realm = RealmManager.realm else { return [] }
         var model: [QuizModel] = [QuizModel]()
         let realmModel = (realm.objects(QuizModel.self).filter("quizTypeModel.isSelect == '1' AND displayFlag == '0'"))
         realmModel.forEach { model.append($0) }
@@ -100,7 +98,7 @@ class QuizModel: Object {
     ///   - parameters: 登録するクイズのパラメータ
     class func addQuiz(_ vc: UIViewController, title: String, correctAnswer: String, incorrectAnswer1: String, incorrectAnswer2: String, incorrectAnswer3: String, displayFlag: String, quizType: String) {
 
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
         let quizModel = QuizModel()
         quizModel.id = String(realm.objects(QuizModel.self).count + 1)
         quizModel.quizTitle = title
@@ -132,7 +130,7 @@ class QuizModel: Object {
     ///   - id: 更新するクイズのID
     ///   - createTime: 更新するクイズの作成日
     class func updateQuiz(_ vc: UIViewController, id: String, createTime: String?, title: String, correctAnswer: String, incorrectAnswer1: String, incorrectAnswer2: String, incorrectAnswer3: String, displayFlag: String, quizType: String) {
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
 
         if let quizModel = QuizModel.findQuiz(vc, quizid: id, createTime: createTime) {
             do {
@@ -171,7 +169,7 @@ class QuizModel: Object {
     ///   - id: 削除するクイズのID
     ///   - createTime: 削除するクイズの作成日
     class func deleteQuiz(_ vc: UIViewController, id: String, createTime: String?) {
-        guard let realm = RealmManager.initRealm(vc) else { return }
+        guard let realm = RealmManager.realm else { return }
         if let quizModel = QuizModel.findQuiz(vc, quizid: id, createTime: createTime) {
             do {
                 try realm.write {

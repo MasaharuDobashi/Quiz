@@ -16,6 +16,9 @@ final class QuizListCell: UITableViewCell {
     /// Noラベル
     @IBOutlet private weak var quizNoLabel: UILabel!
 
+    /// Noラベルの長さ
+    @IBOutlet private weak var quizNoWidthConstraint: NSLayoutConstraint!
+
     /// クイズタイトルラベル
     @IBOutlet private weak var quizTitleLabel: UILabel!
 
@@ -40,6 +43,8 @@ final class QuizListCell: UITableViewCell {
     func setValue(row: Int, model: QuizModel?) {
         guard let _model = model else { return }
         quizNoLabel.text = "問題\(String(row + 1)):"
+        quizNoLabel.sizeToFit()
+        quizNoWidthConstraint.constant = quizNoLabel.frame.width
         quizTitleLabel.text = _model.quizTitle
         quizTypeLable.text = _model.quizTypeModel?.quizTypeTitle
         displaySwitch = _model.displayFlag
